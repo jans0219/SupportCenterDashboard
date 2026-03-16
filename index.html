@@ -391,6 +391,19 @@ function switchTileCrop(ti, idx) {
   const tile = document.getElementById('tile-' + ti);
   tile.innerHTML = buildTileHTML(ti);
   requestAnimationFrame(() => drawTileChart(ti));
+  // Reset this tile's rotation timer on manual click
+  const tp = TILE_PAIRS[ti];
+  if (tp) {
+    clearInterval(tileTimers[ti]);
+    tileTimers[ti] = setInterval(() => {
+      if (!marketData) return;
+      const nextIdx = tileActive[ti] === 0 ? 1 : 0;
+      tileActive[ti] = nextIdx;
+      if (tileCharts[ti]) { tileCharts[ti].destroy(); delete tileCharts[ti]; }
+      const t = document.getElementById('tile-' + ti);
+      if (t) { t.innerHTML = buildTileHTML(ti); requestAnimationFrame(() => drawTileChart(ti)); }
+    }, TILE_ROTATE_MS);
+  }
 }
 
 function setChartMode(mode) {
@@ -628,9 +641,38 @@ async function loadAllWeather(){
 async function init() {
   await loadMarketData();
   loadAllWeather();
+  startTileCarousels();
 }
 init();
 
+// ══════════════════════════════════════
+// TILE CAROUSEL — auto-rotate each tile
+// between its two crops every 8 seconds
+// ══════════════════════════════════════
+const TILE_ROTATE_MS = 8000;
+let tileTimers = {};
+
+function startTileCarousels() {
+  TILE_PAIRS.forEach(tp => {
+    clearInterval(tileTimers[tp.tileId]);
+    tileTimers[tp.tileId] = setInterval(() => {
+      // Only rotate if market data is loaded
+      if (!marketData) return;
+      const nextIdx = tileActive[tp.tileId] === 0 ? 1 : 0;
+      tileActive[tp.tileId] = nextIdx;
+      if (tileCharts[tp.tileId]) {
+        tileCharts[tp.tileId].destroy();
+        delete tileCharts[tp.tileId];
+      }
+      const tile = document.getElementById('tile-' + tp.tileId);
+      if (tile) {
+        tile.innerHTML = buildTileHTML(tp.tileId);
+        requestAnimationFrame(() => drawTileChart(tp.tileId));
+      }
+    }, TILE_ROTATE_MS + tp.tileId * 1500); // offset each tile so they don't all flip at once
+  });
+}
+ 
 // Reload market data every 6 hours (aligned with Actions schedule)
 setInterval(loadMarketData, 6 * 60 * 60 * 1000);
 // Weather every 30 minutes
