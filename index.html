@@ -21,7 +21,6 @@
   .header-title { display:flex; flex-direction:column; line-height:1.2; }
   .header-title-main { font-size:1.2rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:white; }
   .header-title-sub  { font-size:0.72rem; font-weight:500; color:rgba(255,255,255,0.85); letter-spacing:1px; text-transform:uppercase; }
-
   .header-right { display:flex; align-items:center; gap:14px; }
   .header-controls { display:flex; align-items:center; gap:8px; }
   .ctrl-label { font-size:0.63rem; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:0.4px; white-space:nowrap; }
@@ -29,40 +28,55 @@
   .toggle-btn.active { background:var(--yellow); color:var(--dark-green); border-color:var(--yellow); }
   .date-input { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); border-radius:4px; color:white; font-size:0.68rem; padding:4px 8px; }
   .date-input::-webkit-calendar-picker-indicator { filter:invert(1); cursor:pointer; }
-
-  /* Clock block — stacked: time, date, last updated */
-  .header-clock { text-align:right; line-height:1.25; }
+  .header-clock { text-align:right; line-height:1.3; }
   .clock-time    { font-size:1.3rem; font-weight:700; color:var(--yellow); font-variant-numeric:tabular-nums; }
   .clock-date    { font-size:0.63rem; color:rgba(255,255,255,0.85); text-transform:uppercase; }
-  .clock-updated { font-size:0.6rem; color:rgba(255,255,255,0.6); font-style:italic; }
+  .clock-updated { font-size:0.58rem; color:rgba(255,255,255,0.6); font-style:italic; }
   .clock-updated span { color:var(--yellow); font-style:normal; font-weight:600; }
 
   /* MAIN */
   .main-content { display:flex; flex:1; overflow:hidden; }
 
   /* MARKETS */
-  .markets-panel { flex:1; display:flex; flex-direction:column; padding:8px 8px 8px 10px; overflow:hidden; border-right:2px solid var(--border); }
+  .markets-panel { flex:1; display:flex; flex-direction:column; padding:8px 8px 6px 10px; overflow:hidden; border-right:2px solid var(--border); }
   .section-title { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--green); border-bottom:2px solid var(--yellow); padding-bottom:3px; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
   .market-status { width:7px; height:7px; border-radius:50%; background:#27ae60; display:inline-block; animation:pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
+  /* 2x2 commodity grid */
   .commodity-grid { flex:1; display:grid; grid-template-columns:1fr 1fr; grid-template-rows:1fr 1fr; gap:6px; min-height:0; }
+
+  /* Each tile */
   .commodity-tile { border:1px solid var(--border); border-radius:6px; overflow:hidden; display:flex; flex-direction:column; background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.06); }
-  .tile-header { background:var(--green); padding:4px 8px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+  .tile-header { background:var(--green); padding:4px 8px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; height:28px; }
   .tile-crop-tabs { display:flex; gap:4px; }
-  .tile-tab { background:rgba(255,255,255,0.2); border:none; border-radius:3px; color:rgba(255,255,255,0.8); font-size:0.58rem; font-weight:600; padding:2px 7px; cursor:pointer; transition:all 0.2s; text-transform:uppercase; }
+  .tile-tab { background:rgba(255,255,255,0.2); border:none; border-radius:3px; color:rgba(255,255,255,0.8); font-size:0.58rem; font-weight:600; padding:2px 8px; cursor:pointer; transition:all 0.2s; text-transform:uppercase; }
   .tile-tab.active { background:var(--yellow); color:var(--dark-green); }
-  .tile-price-badge { display:flex; align-items:center; gap:5px; }
-  .tile-price { font-size:0.88rem; font-weight:800; color:white; font-variant-numeric:tabular-nums; }
-  .tile-change { font-size:0.6rem; font-weight:700; padding:1px 5px; border-radius:3px; }
-  .tile-change.up   { background:#d4edda; color:#155724; }
-  .tile-change.down { background:#f8d7da; color:#721c24; }
-  .tile-change.flat { background:#e2e3e5; color:#383d41; }
-  .tile-chart { flex:1; position:relative; min-height:0; padding:4px; }
-  .tile-chart canvas { width:100%!important; height:100%!important; }
-  .tile-meta { font-size:0.53rem; color:#999; padding:2px 8px; background:var(--gray); flex-shrink:0; display:flex; justify-content:space-between; }
-  .progress-bar { height:2px; background:var(--border); flex-shrink:0; margin-top:4px; }
-  .progress-fill { height:100%; background:var(--yellow); }
+  .tile-label { font-size:0.58rem; color:rgba(255,255,255,0.7); font-style:italic; }
+
+  /* TradingView iframe container */
+  .tv-container { flex:1; position:relative; min-height:0; overflow:hidden; }
+  .tv-container iframe { width:100%; height:100%; border:none; display:block; }
+
+  /* FRED/AMS data tile body */
+  .data-tile-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:10px 14px; gap:8px; background:var(--white); }
+  .data-loading { text-align:center; color:#999; font-size:0.72rem; padding:12px; }
+  .data-error   { text-align:center; color:#c0392b; font-size:0.68rem; padding:10px 12px; line-height:1.5; }
+  .data-error a { color:#2980b9; }
+
+  .data-row { display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid var(--gray); padding-bottom:5px; }
+  .data-row:last-child { border-bottom:none; padding-bottom:0; }
+  .data-row-label { font-size:0.65rem; color:var(--text-mid); font-weight:600; text-transform:uppercase; letter-spacing:0.3px; }
+  .data-row-value { font-size:1.05rem; font-weight:800; color:var(--dark-green); font-variant-numeric:tabular-nums; }
+  .data-row-sub   { font-size:0.6rem; color:#888; margin-top:1px; }
+
+  .data-change-up   { color:#27ae60; font-weight:700; font-size:0.72rem; }
+  .data-change-down { color:#e74c3c; font-weight:700; font-size:0.72rem; }
+  .data-change-flat { color:#888;    font-weight:600; font-size:0.72rem; }
+
+  .data-source-badge { font-size:0.55rem; color:#bbb; text-align:right; margin-top:4px; padding:2px 6px; background:var(--gray); border-top:1px solid var(--border); flex-shrink:0; }
+
+  .tile-meta { font-size:0.53rem; color:#999; padding:2px 8px; background:var(--gray); flex-shrink:0; }
 
   /* WEATHER */
   .weather-panel { width:310px; flex-shrink:0; display:flex; flex-direction:column; padding:8px 10px 8px 8px; overflow:hidden; }
@@ -75,6 +89,7 @@
   .wx-dots { display:flex; justify-content:center; gap:5px; padding:3px 0; flex-shrink:0; }
   .wx-dot { width:6px; height:6px; border-radius:50%; background:var(--border); cursor:pointer; transition:background 0.2s; }
   .wx-dot.active { background:var(--green); }
+
   .location-card { border:1px solid var(--border); border-radius:7px; margin-bottom:5px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.05); flex-shrink:0; }
   .location-header { background:var(--green); color:white; padding:4px 8px; display:flex; justify-content:space-between; align-items:center; }
   .location-name { font-size:0.7rem; font-weight:700; text-transform:uppercase; }
@@ -119,12 +134,11 @@
       <div class="header-title-sub">Contact Center Dashboard</div>
     </div>
   </div>
-
   <div class="header-right">
     <div class="header-controls">
       <span class="ctrl-label">Chart:</span>
-      <button class="toggle-btn active" id="btn-daily"   onclick="setChartMode('daily')">Daily</button>
-      <button class="toggle-btn"        id="btn-monthly" onclick="setChartMode('monthly')">12-Month</button>
+      <button class="toggle-btn active" id="btn-daily"   onclick="setChartMode('D')">Daily</button>
+      <button class="toggle-btn"        id="btn-monthly" onclick="setChartMode('M')">12-Month</button>
     </div>
     <div class="header-controls">
       <span class="ctrl-label">GDU Start:</span>
@@ -133,7 +147,7 @@
     <div class="header-clock">
       <div class="clock-time"    id="clock-time">--:--:-- --</div>
       <div class="clock-date"    id="clock-date">---</div>
-      <div class="clock-updated">Mkt updated: <span id="last-updated">--</span></div>
+      <div class="clock-updated">Mkt updated: <span id="mkt-updated">loading…</span></div>
     </div>
   </div>
 </header>
@@ -144,23 +158,79 @@
   <div class="markets-panel">
     <div class="section-title">
       <span class="market-status"></span>
-      Commodity Markets &nbsp;·&nbsp; <span id="chart-mode-label">Intraday</span>
+      Commodity Markets &nbsp;·&nbsp; <span id="chart-mode-label">Daily</span> &nbsp;·&nbsp; CME/CBOT data via TradingView (delayed)
     </div>
-    <div class="commodity-grid" id="commodity-grid"></div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-  </div>
+    <div class="commodity-grid">
+
+      <!-- TILE 0: Corn / Soybeans -->
+      <div class="commodity-tile" id="tile-0">
+        <div class="tile-header">
+          <div class="tile-crop-tabs">
+            <button class="tile-tab active" onclick="switchTV(0,'CBOT:ZC1!','Corn - CBOT Continuous')">Corn</button>
+            <button class="tile-tab"        onclick="switchTV(0,'CBOT:ZS1!','Soybeans - CBOT Continuous')">Soybeans</button>
+          </div>
+          <span class="tile-label" id="tile-0-label">Corn – CBOT Continuous</span>
+        </div>
+        <div class="tv-container" id="tv-0"></div>
+      </div>
+
+      <!-- TILE 1: Soft White Wheat / Hard Red Spring Wheat -->
+      <div class="commodity-tile" id="tile-1">
+        <div class="tile-header">
+          <div class="tile-crop-tabs">
+            <button class="tile-tab active" onclick="switchTV(1,'CBOT:ZW1!','Soft Wht Wheat - CBOT Continuous')">Soft Wheat</button>
+            <button class="tile-tab"        onclick="switchTV(1,'MGE:MWE1!','Hard Red Spr Wheat - MGE Continuous')">Hard Red</button>
+          </div>
+          <span class="tile-label" id="tile-1-label">Soft Wht Wheat – CBOT</span>
+        </div>
+        <div class="tv-container" id="tv-1"></div>
+      </div>
+
+      <!-- TILE 2: Live Cattle / Lean Hogs -->
+      <div class="commodity-tile" id="tile-2">
+        <div class="tile-header">
+          <div class="tile-crop-tabs">
+            <button class="tile-tab active" onclick="switchTV(2,'CME:LE1!','Live Cattle - CME Continuous')">Live Cattle</button>
+            <button class="tile-tab"        onclick="switchTV(2,'CME:HE1!','Lean Hogs - CME Continuous')">Lean Hogs</button>
+          </div>
+          <span class="tile-label" id="tile-2-label">Live Cattle – CME</span>
+        </div>
+        <div class="tv-container" id="tv-2"></div>
+      </div>
+
+      <!-- TILE 3: Potatoes / Barley — USDA AMS + FRED -->
+      <div class="commodity-tile" id="tile-3">
+        <div class="tile-header">
+          <div class="tile-crop-tabs">
+            <button class="tile-tab active" id="tab-potato" onclick="showDataTile('potato')">Potatoes</button>
+            <button class="tile-tab"        id="tab-barley" onclick="showDataTile('barley')">Barley</button>
+          </div>
+          <span class="tile-label" id="tile-3-label">SE Idaho · USDA AMS</span>
+        </div>
+        <div id="data-tile-potato" class="data-tile-body">
+          <div class="data-loading">Fetching USDA AMS potato data…</div>
+        </div>
+        <div id="data-tile-barley" class="data-tile-body" style="display:none">
+          <div class="data-loading">Fetching USDA AMS barley data…</div>
+        </div>
+        <div class="data-source-badge" id="tile-3-source">Source: USDA AMS · marsapi.ams.usda.gov</div>
+      </div>
+
+    </div><!-- end commodity-grid -->
+  </div><!-- end markets-panel -->
 
   <!-- WEATHER -->
   <div class="weather-panel">
     <div class="section-title">
-      Weather Forecast &amp; GDUs &nbsp;·&nbsp; <span id="wx-updated-label" style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.6rem;color:#555;">updated: --</span>
+      Weather &amp; GDUs &nbsp;·&nbsp;
+      <span id="wx-updated-label" style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.58rem;color:#777;">updated: --</span>
     </div>
     <div class="wx-carousel" id="wx-carousel"><div class="wx-loading">Loading weather…</div></div>
     <div class="wx-dots" id="wx-dots"></div>
     <div class="wx-progress-bar"><div class="wx-progress-fill" id="wx-progress-fill"></div></div>
   </div>
 
-</div>
+</div><!-- end main-content -->
 
 <footer>
   <div class="footer-left">
@@ -173,268 +243,403 @@
     <span>Wyoming</span><span class="footer-dot">·</span>
     <span>Idaho</span>
   </div>
-  <div class="footer-right">GDU Base 50°F &nbsp;◆&nbsp; Markets auto-refresh hourly &nbsp;◆&nbsp; Weather auto-refresh every 30 min</div>
+  <div class="footer-right">Futures data delayed ≥10 min · Weather via NWS · Potato/Barley via USDA AMS/FRED · GDU Base 50°F</div>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 
 // ══════════════════════════════════════
 // MIDNIGHT AUTO-RELOAD
-// Keeps the display fresh for 24/7 TV use
 // ══════════════════════════════════════
 function scheduleMidnightReload() {
-  const now    = new Date();
-  const chi    = new Date(now.toLocaleString('en-US', {timeZone:'America/Chicago'}));
-  const msToMidnight = (
-    (23 - chi.getHours()) * 3600000 +
-    (59 - chi.getMinutes()) * 60000 +
-    (60 - chi.getSeconds()) * 1000
-  );
-  setTimeout(() => location.reload(), msToMidnight);
+  const now = new Date();
+  const chi = new Date(now.toLocaleString('en-US', {timeZone:'America/Chicago'}));
+  const ms  = ((23 - chi.getHours()) * 3600 + (59 - chi.getMinutes()) * 60 + (60 - chi.getSeconds())) * 1000;
+  setTimeout(() => location.reload(), ms);
 }
 scheduleMidnightReload();
 
 // ══════════════════════════════════════
-// SEEDED PRNG (Mulberry32) — stable per hour
-// ══════════════════════════════════════
-function getHourlySeed() {
-  const now = new Date();
-  const chi = new Date(now.toLocaleString('en-US', {timeZone:'America/Chicago'}));
-  return chi.getFullYear() * 1000000
-       + (chi.getMonth()+1) * 10000
-       + chi.getDate() * 100
-       + chi.getHours();
-}
-function makeRng(seed) {
-  let s = seed >>> 0;
-  return function() {
-    s += 0x6D2B79F5;
-    let t = s;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-// ══════════════════════════════════════
 // CLOCK
 // ══════════════════════════════════════
+function getCDTZone() {
+  const now = new Date();
+  const jan = new Date(now.getFullYear(),0,1), jul = new Date(now.getFullYear(),6,1);
+  return now.getTimezoneOffset() < Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset()) ? 'CDT' : 'CST';
+}
 function updateClock() {
   const now = new Date(), o = {timeZone:'America/Chicago'};
-  const t = now.toLocaleTimeString('en-US', {...o, hour:'2-digit', minute:'2-digit', second:'2-digit'});
-  const d = now.toLocaleDateString('en-US', {...o, weekday:'long', month:'long', day:'numeric', year:'numeric'});
-  const jan = new Date(now.getFullYear(),0,1), jul = new Date(now.getFullYear(),6,1);
-  const zone = now.getTimezoneOffset() < Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset()) ? 'CDT' : 'CST';
-  document.getElementById('clock-time').textContent = t + ' ' + zone;
-  document.getElementById('clock-date').textContent = d;
+  document.getElementById('clock-time').textContent =
+    now.toLocaleTimeString('en-US', {...o, hour:'2-digit', minute:'2-digit', second:'2-digit'}) + ' ' + getCDTZone();
+  document.getElementById('clock-date').textContent =
+    now.toLocaleDateString('en-US', {...o, weekday:'long', month:'long', day:'numeric', year:'numeric'});
 }
 setInterval(updateClock, 1000); updateClock();
 
-function stampMarketUpdate() {
-  const t = new Date().toLocaleTimeString('en-US', {timeZone:'America/Chicago', hour:'2-digit', minute:'2-digit'});
-  const jan = new Date(); const jul = new Date(jan.getFullYear(),6,1);
-  const zone = jan.getTimezoneOffset() < Math.max(new Date(jan.getFullYear(),0,1).getTimezoneOffset(), jul.getTimezoneOffset()) ? 'CDT':'CST';
-  document.getElementById('last-updated').textContent = t + ' ' + zone;
-}
-function stampWeatherUpdate() {
-  const t = new Date().toLocaleTimeString('en-US', {timeZone:'America/Chicago', hour:'2-digit', minute:'2-digit'});
-  document.getElementById('wx-updated-label').textContent = 'updated: ' + t;
-}
-
 // ══════════════════════════════════════
-// TRADING SESSION HELPERS
+// TRADINGVIEW WIDGETS
+// Docs: https://www.tradingview.com/widget/advanced-chart/
+// interval: 'D' = daily bars, 'M' = monthly bars
 // ══════════════════════════════════════
-const MARKET_OPEN  = 8 * 60;       // 8:00 AM CT
-const MARKET_CLOSE = 15 * 60 + 30; // 3:30 PM CT
+let tvMode = 'D'; // current chart interval
 
-function getChicagoMinutes() {
-  const now = new Date();
-  const chi = new Date(now.toLocaleString('en-US', {timeZone:'America/Chicago'}));
-  return chi.getHours() * 60 + chi.getMinutes();
-}
-function minutesIntoSession() {
-  const m = getChicagoMinutes();
-  if (m < MARKET_OPEN)  return 0;
-  if (m > MARKET_CLOSE) return MARKET_CLOSE - MARKET_OPEN;
-  return m - MARKET_OPEN;
-}
-
-function genIntraday(base, rng, vol=0.014) {
-  const elapsed = minutesIntoSession();
-  if (elapsed <= 0) return [{t:'8:00', v:+(base*(0.998+rng()*0.004)).toFixed(4)}];
-  const INTERVAL = 5;
-  const numPts = Math.max(1, Math.floor(elapsed / INTERVAL));
-  const pts = [];
-  let p = base * (0.99 + rng() * 0.02);
-  for (let i = 0; i < numPts; i++) {
-    p += p * (rng() - 0.5) * vol;
-    const minFromOpen = i * INTERVAL;
-    const h = Math.floor((MARKET_OPEN + minFromOpen) / 60);
-    const m = (MARKET_OPEN + minFromOpen) % 60;
-    pts.push({t:`${h}:${m.toString().padStart(2,'0')}`, v:+p.toFixed(4)});
-  }
-  return pts;
-}
-function genMonthly(base, rng, vol=0.08) {
-  const months = ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
-  let p = base * 0.85;
-  return months.map(m => { p += p*(rng()-0.48)*vol; return {m, v:+p.toFixed(4)}; });
-}
-
-// ══════════════════════════════════════
-// CROP DATA
-// ══════════════════════════════════════
-const TILE_PAIRS = [
-  {crops:['corn','soy']},
-  {crops:['sww','hrw']},
-  {crops:['cattle','hogs']},
-  {crops:['potato','barley']},
-];
-const CROP_INFO = {
-  corn:  {name:'Corn',           symbol:'ZC', unit:'/bu', exchange:'CBOT', base:4.42},
-  soy:   {name:'Soybeans',       symbol:'ZS', unit:'/bu', exchange:'CBOT', base:9.87},
-  sww:   {name:'Soft Wht Wheat', symbol:'ZW', unit:'/bu', exchange:'CBOT', base:5.15},
-  hrw:   {name:'Hard Red Wheat', symbol:'MWE',unit:'/bu', exchange:'MGE',  base:5.68},
-  cattle:{name:'Live Cattle',    symbol:'LE', unit:'/cwt',exchange:'CME',  base:198.50},
-  hogs:  {name:'Lean Hogs',      symbol:'HE', unit:'/cwt',exchange:'CME',  base:87.20},
-  potato:{name:'Potatoes',       symbol:'--', unit:'/cwt',exchange:'CME',  base:12.40},
-  barley:{name:'Barley',         symbol:'--', unit:'/bu', exchange:'MGEX', base:4.85},
+// Current symbol loaded in each TV tile
+const tvState = {
+  0: { symbol:'CBOT:ZC1!', label:'Corn – CBOT Continuous' },
+  1: { symbol:'CBOT:ZW1!', label:'Soft Wht Wheat – CBOT' },
+  2: { symbol:'CME:LE1!',  label:'Live Cattle – CME' },
 };
 
-let cropData = {};
-function initCropData() {
-  const seed = getHourlySeed();
-  Object.entries(CROP_INFO).forEach(([id, c], idx) => {
-    const isL  = id==='cattle'||id==='hogs';
-    const rng  = makeRng(seed + idx * 1000);
-    const pRng = makeRng(seed + idx * 1000 + 1);
-    const open = +(c.base * (0.99 + pRng() * 0.02)).toFixed(4);
-    const prevRng = makeRng((seed - 1) + idx * 1000 + 99);
-    const prev = +(c.base * (0.992 + prevRng() * 0.016)).toFixed(4);
-    const intraday = genIntraday(open, rng, isL ? 0.006 : 0.014);
-    const curr = intraday[intraday.length - 1].v;
-    const mRng = makeRng(seed + idx * 1000 + 500);
-    cropData[id] = {
-      current:curr, open, prev,
-      change:+(curr-prev).toFixed(4),
-      pct:+((curr-prev)/prev*100).toFixed(2),
-      intraday, monthly:genMonthly(c.base, mRng),
-    };
+function buildTVWidget(containerId, symbol, interval) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = ''; // clear previous widget
+
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
+  script.async = true;
+  script.innerHTML = JSON.stringify({
+    autosize:           true,
+    symbol:             symbol,
+    interval:           interval,
+    timezone:           'America/Chicago',
+    theme:              'light',
+    style:              '1',           // candlestick
+    locale:             'en',
+    hide_top_toolbar:   false,
+    hide_legend:        false,
+    allow_symbol_change:false,
+    save_image:         false,
+    calendar:           false,
+    hide_volume:        false,
+    support_host:       'https://www.tradingview.com',
+    backgroundColor:    'rgba(255,255,255,1)',
+    gridColor:          'rgba(220,220,220,0.5)',
   });
-  stampMarketUpdate();
+
+  const widgetDiv = document.createElement('div');
+  widgetDiv.className = 'tradingview-widget-container__widget';
+  widgetDiv.style.cssText = 'height:100%;width:100%;';
+
+  container.appendChild(widgetDiv);
+  container.appendChild(script);
+}
+
+function initAllTVWidgets() {
+  [0, 1, 2].forEach(i => {
+    buildTVWidget('tv-' + i, tvState[i].symbol, tvMode);
+  });
+  // Stamp market updated time — TradingView loads live, so this marks when widgets were (re)initialized
+  const t = new Date().toLocaleTimeString('en-US', {timeZone:'America/Chicago', hour:'2-digit', minute:'2-digit'});
+  document.getElementById('mkt-updated').textContent = t + ' ' + getCDTZone();
+}
+
+function setChartMode(interval) {
+  tvMode = interval;
+  document.getElementById('btn-daily').classList.toggle('active',   interval === 'D');
+  document.getElementById('btn-monthly').classList.toggle('active', interval === 'M');
+  document.getElementById('chart-mode-label').textContent = interval === 'D' ? 'Daily' : '12-Month';
+  // Rebuild all three TV tiles with new interval
+  [0,1,2].forEach(i => buildTVWidget('tv-'+i, tvState[i].symbol, tvMode));
+}
+
+function switchTV(tileIdx, symbol, label) {
+  tvState[tileIdx].symbol = symbol;
+  tvState[tileIdx].label  = label;
+  document.getElementById('tile-' + tileIdx + '-label').textContent = label;
+  // Update tab active states
+  const tabs = document.querySelectorAll('#tile-' + tileIdx + ' .tile-tab');
+  tabs.forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  buildTVWidget('tv-' + tileIdx, symbol, tvMode);
 }
 
 // ══════════════════════════════════════
-// TILE RENDERING
+// POTATOES + BARLEY — USDA AMS / FRED
+// No fabricated data. Display actual API
+// response only, or honest error state.
 // ══════════════════════════════════════
-let chartMode='daily', tileActive={}, tileCharts={}, tileTimers={};
-const ROTATE_MS = 8000;
 
-function setChartMode(mode) {
-  chartMode = mode;
-  document.getElementById('btn-daily').classList.toggle('active', mode==='daily');
-  document.getElementById('btn-monthly').classList.toggle('active', mode==='monthly');
-  document.getElementById('chart-mode-label').textContent = mode==='daily' ? 'Intraday' : '12-Month';
-  TILE_PAIRS.forEach((_,i) => drawTileChart(i));
-}
+// USDA AMS MARS API endpoint notes:
+// Potato report: Idaho/Eastern Oregon Shipping Point
+// API base: https://marsapi.ams.usda.gov/services/v1.2/
+// These endpoints are attempted first; FRED is fallback if CORS blocks.
 
-function buildGrid() {
-  const grid = document.getElementById('commodity-grid');
-  grid.innerHTML = '';
-  TILE_PAIRS.forEach((pair, ti) => {
-    tileActive[ti] = 0;
-    const tile = document.createElement('div');
-    tile.className = 'commodity-tile'; tile.id = 'tile-' + ti;
-    tile.innerHTML = buildTileHTML(ti);
-    grid.appendChild(tile);
-    clearInterval(tileTimers[ti]);
-    tileTimers[ti] = setInterval(() => rotateTile(ti), ROTATE_MS + ti * 1200);
-  });
-  requestAnimationFrame(() => TILE_PAIRS.forEach((_,i) => drawTileChart(i)));
-}
+const FRED_API_KEY = 'YOUR_FREE_FRED_API_KEY'; // Register free at https://fred.stlouisfed.org/docs/api/api_key.html
 
-function buildTileHTML(ti) {
-  const pair = TILE_PAIRS[ti], ai = tileActive[ti];
-  const id0  = pair.crops[0], id1 = pair.crops[1];
-  const c0   = CROP_INFO[id0], c1 = CROP_INFO[id1];
-  const id   = pair.crops[ai], d = cropData[id], ci = CROP_INFO[id];
-  const isL  = id==='cattle'||id==='hogs';
-  const dir  = d.change>0?'up':d.change<0?'down':'flat';
-  const sign = d.change>0?'▲':d.change<0?'▼':'—';
-  return `
-    <div class="tile-header">
-      <div class="tile-crop-tabs">
-        <button class="tile-tab ${ai===0?'active':''}" onclick="switchTileCrop(${ti},0)">${c0.name.split(' ')[0]}</button>
-        <button class="tile-tab ${ai===1?'active':''}" onclick="switchTileCrop(${ti},1)">${c1.name.split(' ')[0]}</button>
-      </div>
-      <div class="tile-price-badge">
-        <span class="tile-price">$${isL?d.current.toFixed(2):d.current.toFixed(4)}<span style="font-size:0.52rem;font-weight:400;color:rgba(255,255,255,0.7)">${ci.unit}</span></span>
-        <span class="tile-change ${dir}">${sign}${Math.abs(d.change).toFixed(isL?2:4)} (${d.pct>0?'+':''}${d.pct}%)</span>
-      </div>
-    </div>
-    <div class="tile-chart"><canvas id="chart-tile-${ti}"></canvas></div>
-    <div class="tile-meta"><span>${ci.exchange} · ${ci.symbol} · ${ci.name}</span><span>${chartMode==='daily'?'Intraday':'12-Month'}</span></div>`;
-}
+async function fetchPotatoData() {
+  const el = document.getElementById('data-tile-potato');
+  el.innerHTML = '<div class="data-loading">Fetching USDA AMS Idaho potato data…</div>';
 
-function switchTileCrop(ti, idx) {
-  tileActive[ti] = idx; refreshTile(ti);
-  clearInterval(tileTimers[ti]);
-  tileTimers[ti] = setInterval(() => rotateTile(ti), ROTATE_MS);
-}
-function rotateTile(ti) { tileActive[ti] = tileActive[ti]===0?1:0; refreshTile(ti); }
-function refreshTile(ti) {
-  const tile = document.getElementById('tile-'+ti); if(!tile) return;
-  if (tileCharts[ti]) { tileCharts[ti].destroy(); delete tileCharts[ti]; }
-  tile.innerHTML = buildTileHTML(ti);
-  requestAnimationFrame(() => drawTileChart(ti));
-}
-
-function drawTileChart(ti) {
-  const id  = TILE_PAIRS[ti].crops[tileActive[ti]];
-  const d   = cropData[id], ci = CROP_INFO[id];
-  const isL = id==='cattle'||id==='hogs';
-  const ctx = document.getElementById('chart-tile-'+ti); if(!ctx) return;
-  if (tileCharts[ti]) tileCharts[ti].destroy();
-  const isUp = d.change >= 0, lc = isUp ? '#27ae60' : '#e74c3c';
-  let labels, data;
-  if (chartMode==='daily') {
-    labels = d.intraday.map(p=>p.t);
-    data   = d.intraday.map(p=>p.v);
-  } else {
-    labels = d.monthly.map(p=>p.m);
-    data   = d.monthly.map(p=>p.v);
-  }
-  tileCharts[ti] = new Chart(ctx, {
-    type:'line',
-    data:{labels, datasets:[{
-      data, borderColor:lc,
-      backgroundColor: isUp?'rgba(39,174,96,0.08)':'rgba(231,76,60,0.08)',
-      borderWidth:2, fill:true, tension:0.4,
-      pointRadius: chartMode==='monthly'?3:0, pointBackgroundColor:lc,
-    }]},
-    options:{
-      responsive:true, maintainAspectRatio:false, animation:{duration:250},
-      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.raw==null?null:` $${parseFloat(c.raw).toFixed(isL?2:4)}${ci.unit}`}}},
-      scales:{
-        x:{grid:{display:false}, ticks:{font:{size:8}, maxRotation:0, autoSkip:true, maxTicksLimit:7}},
-        y:{grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:8}, callback:v=>'$'+parseFloat(v).toFixed(2)}},
-      }
+  // ── Attempt 1: USDA AMS MARS API ──
+  // Idaho/Eastern Oregon potato report (report slug: LV_PY110)
+  // Returns weekly market data for Idaho shipping point potatoes
+  try {
+    const url = 'https://marsapi.ams.usda.gov/services/v1.2/reports/1079?q=commodity=Potatoes&sort_by=report_date&sort_order=desc&offset=0&limit=5&api=1';
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('AMS HTTP ' + res.status);
+    const json = await res.json();
+    const results = json?.results;
+    if (results && results.length > 0) {
+      renderPotatoAMS(results);
+      document.getElementById('tile-3-source').textContent = 'Source: USDA AMS Weekly · Idaho/Eastern Oregon Shipping Point · marsapi.ams.usda.gov';
+      return;
     }
-  });
+    throw new Error('AMS returned empty results');
+  } catch(e) {
+    console.warn('USDA AMS potato fetch failed:', e.message);
+  }
+
+  // ── Attempt 2: FRED WPU011306 (PPI Potatoes, monthly) ──
+  if (FRED_API_KEY === 'YOUR_FREE_FRED_API_KEY') {
+    el.innerHTML = `<div class="data-error">
+      <strong>USDA AMS unavailable (CORS or no data)</strong><br>
+      FRED fallback requires a free API key.<br>
+      Register at <a href="https://fred.stlouisfed.org" target="_blank">fred.stlouisfed.org</a> and replace<br>
+      <code>YOUR_FREE_FRED_API_KEY</code> in the dashboard HTML.
+      <br><br>Source would be: FRED WPU011306 · BLS Producer Price Index · Potatoes
+    </div>`;
+    return;
+  }
+
+  try {
+    const fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=WPU011306&api_key=${FRED_API_KEY}&sort_order=desc&limit=14&file_type=json`;
+    const res  = await fetch(fredUrl);
+    if (!res.ok) throw new Error('FRED HTTP ' + res.status);
+    const json = await res.json();
+    const obs  = json?.observations?.filter(o => o.value !== '.');
+    if (!obs || obs.length < 2) throw new Error('FRED insufficient data');
+    renderPotatoFRED(obs);
+    document.getElementById('tile-3-source').textContent = 'Source: FRED WPU011306 · BLS PPI Potatoes (monthly, ~4 wk lag) · stlouisfed.org';
+  } catch(e) {
+    el.innerHTML = `<div class="data-error">
+      <strong>Data unavailable</strong><br>
+      Both USDA AMS and FRED fetches failed.<br>
+      Check: <a href="https://marsapi.ams.usda.gov" target="_blank">marsapi.ams.usda.gov</a><br>
+      or: <a href="https://fred.stlouisfed.org/series/WPU011306" target="_blank">FRED WPU011306</a><br>
+      Last attempted: ${new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'})} CDT
+    </div>`;
+  }
 }
 
-// Tile progress bar animation
-let progStart = Date.now();
-function animateProgress() {
-  const fill = document.getElementById('progress-fill'); if(!fill) return;
-  const pct = Math.min((Date.now()-progStart)/ROTATE_MS*100, 100);
-  fill.style.width = pct+'%'; if(pct>=100) progStart = Date.now();
-  requestAnimationFrame(animateProgress);
+function renderPotatoAMS(results) {
+  // Display the most recent 2 report periods for comparison
+  const el  = document.getElementById('data-tile-potato');
+  const cur = results[0];
+  const prv = results[1] || null;
+
+  let html = `
+    <div class="data-row">
+      <div><div class="data-row-label">Most Recent Report</div><div class="data-row-sub">${cur.report_date || 'Date unknown'}</div></div>
+      <div style="text-align:right">
+        <div class="data-row-value">${cur.price || cur.avg_price || '—'}</div>
+        <div class="data-row-sub">${cur.unit || cur.price_unit || ''}</div>
+      </div>
+    </div>`;
+
+  if (prv) {
+    const curVal = parseFloat(cur.price || cur.avg_price);
+    const prvVal = parseFloat(prv.price || prv.avg_price);
+    let changeHtml = '';
+    if (!isNaN(curVal) && !isNaN(prvVal)) {
+      const diff = curVal - prvVal;
+      const pct  = ((diff / prvVal) * 100).toFixed(1);
+      const cls  = diff > 0 ? 'data-change-up' : diff < 0 ? 'data-change-down' : 'data-change-flat';
+      const sign = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
+      changeHtml = `<span class="${cls}">${sign} ${Math.abs(diff).toFixed(2)} (${diff>0?'+':''}${pct}%) vs prior week</span>`;
+    }
+    html += `
+      <div class="data-row">
+        <div><div class="data-row-label">Prior Period</div><div class="data-row-sub">${prv.report_date || ''}</div></div>
+        <div style="text-align:right">
+          <div class="data-row-value">${prv.price || prv.avg_price || '—'}</div>
+          <div class="data-row-sub">${prv.unit || prv.price_unit || ''}</div>
+        </div>
+      </div>
+      <div class="data-row"><div class="data-row-label">Week-over-Week</div>${changeHtml}</div>`;
+  }
+
+  html += `<div class="data-row"><div class="data-row-label" style="font-size:0.58rem;color:#aaa">Idaho/E. Oregon Shipping Point · USDA AMS Weekly</div></div>`;
+  el.innerHTML = html;
 }
 
-function refreshAllMarkets() {
-  initCropData(); buildGrid();
+function renderPotatoFRED(obs) {
+  const el  = document.getElementById('data-tile-potato');
+  const cur = obs[0];
+  const prv = obs[1];
+  const yoy = obs.find((o,i) => i > 0 && new Date(o.date).getMonth() === new Date(cur.date).getMonth()
+                                       && new Date(o.date).getFullYear() === new Date(cur.date).getFullYear() - 1)
+              || obs[12] || null;
+
+  const curVal = parseFloat(cur.value);
+  const prvVal = parseFloat(prv.value);
+  const diff   = curVal - prvVal;
+  const pct    = ((diff / prvVal) * 100).toFixed(1);
+  const cls    = diff > 0 ? 'data-change-up' : diff < 0 ? 'data-change-down' : 'data-change-flat';
+  const sign   = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
+
+  let html = `
+    <div class="data-row">
+      <div><div class="data-row-label">PPI Index — Most Recent</div><div class="data-row-sub">${cur.date}</div></div>
+      <div style="text-align:right"><div class="data-row-value">${curVal.toFixed(1)}</div><div class="data-row-sub">Index (1982=100)</div></div>
+    </div>
+    <div class="data-row">
+      <div><div class="data-row-label">Prior Month</div><div class="data-row-sub">${prv.date}</div></div>
+      <div style="text-align:right"><div class="data-row-value">${prvVal.toFixed(1)}</div></div>
+    </div>
+    <div class="data-row">
+      <div class="data-row-label">Month-over-Month</div>
+      <span class="${cls}">${sign} ${Math.abs(diff).toFixed(1)} pts (${diff>0?'+':''}${pct}%)</span>
+    </div>`;
+
+  if (yoy) {
+    const yoyVal  = parseFloat(yoy.value);
+    const yoyDiff = curVal - yoyVal;
+    const yoyPct  = ((yoyDiff / yoyVal) * 100).toFixed(1);
+    const yoyCls  = yoyDiff > 0 ? 'data-change-up' : yoyDiff < 0 ? 'data-change-down' : 'data-change-flat';
+    const yoySign = yoyDiff > 0 ? '▲' : yoyDiff < 0 ? '▼' : '—';
+    html += `
+      <div class="data-row">
+        <div class="data-row-label">Year-over-Year</div>
+        <span class="${yoyCls}">${yoySign} ${Math.abs(yoyDiff).toFixed(1)} pts (${yoyDiff>0?'+':''}${yoyPct}%)</span>
+      </div>`;
+  }
+
+  html += `<div class="data-row"><div class="data-row-label" style="font-size:0.55rem;color:#aaa">⚠ PPI index, not cash price · ~4 wk reporting lag · FRED WPU011306</div></div>`;
+  el.innerHTML = html;
+}
+
+// ── BARLEY ──
+async function fetchBarleyData() {
+  const el = document.getElementById('data-tile-barley');
+  el.innerHTML = '<div class="data-loading">Fetching USDA AMS Montana/Idaho barley data…</div>';
+
+  // ── Attempt 1: USDA AMS MARS API — Montana/Idaho grain report ──
+  // Grain report covering MT/ID cash barley bids
+  try {
+    const url = 'https://marsapi.ams.usda.gov/services/v1.2/reports/2437?q=commodity=Barley&sort_by=report_date&sort_order=desc&limit=5&api=1';
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('AMS HTTP ' + res.status);
+    const json = await res.json();
+    const results = json?.results;
+    if (results && results.length > 0) {
+      renderBarleyAMS(results);
+      document.getElementById('tile-3-source').textContent = 'Source: USDA AMS Weekly · MT/ID Grain Report · marsapi.ams.usda.gov';
+      return;
+    }
+    throw new Error('AMS barley returned empty');
+  } catch(e) {
+    console.warn('USDA AMS barley fetch failed:', e.message);
+  }
+
+  // ── Attempt 2: FRED PBARLUSDA (annual USDA barley price) ──
+  if (FRED_API_KEY === 'YOUR_FREE_FRED_API_KEY') {
+    el.innerHTML = `<div class="data-error">
+      <strong>USDA AMS unavailable (CORS or no data)</strong><br>
+      FRED fallback requires a free API key.<br>
+      Register at <a href="https://fred.stlouisfed.org" target="_blank">fred.stlouisfed.org</a><br>
+      and replace <code>YOUR_FREE_FRED_API_KEY</code> in the HTML.<br><br>
+      Source would be: FRED PBARLUSDA · USDA Annual Avg Farm Price · Barley
+    </div>`;
+    return;
+  }
+
+  try {
+    const fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=PBARLUSDA&api_key=${FRED_API_KEY}&sort_order=desc&limit=5&file_type=json`;
+    const res  = await fetch(fredUrl);
+    if (!res.ok) throw new Error('FRED HTTP ' + res.status);
+    const json = await res.json();
+    const obs  = json?.observations?.filter(o => o.value !== '.');
+    if (!obs || obs.length < 2) throw new Error('FRED insufficient data');
+    renderBarleyFRED(obs);
+    document.getElementById('tile-3-source').textContent = 'Source: FRED PBARLUSDA · USDA Annual Avg Farm Price · stlouisfed.org';
+  } catch(e) {
+    el.innerHTML = `<div class="data-error">
+      <strong>Data unavailable</strong><br>
+      Both USDA AMS and FRED fetches failed.<br>
+      Check: <a href="https://marsapi.ams.usda.gov" target="_blank">marsapi.ams.usda.gov</a><br>
+      or: <a href="https://fred.stlouisfed.org/series/PBARLUSDA" target="_blank">FRED PBARLUSDA</a><br>
+      Last attempted: ${new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'})} CDT
+    </div>`;
+  }
+}
+
+function renderBarleyAMS(results) {
+  const el  = document.getElementById('data-tile-barley');
+  const cur = results[0];
+  const prv = results[1] || null;
+
+  let html = `
+    <div class="data-row">
+      <div><div class="data-row-label">Most Recent Report</div><div class="data-row-sub">${cur.report_date || 'Date unknown'} · ${cur.market_location_name || cur.office_city || 'MT/ID'}</div></div>
+      <div style="text-align:right">
+        <div class="data-row-value">${cur.price || cur.avg_price || cur.wtd_avg_price || '—'}</div>
+        <div class="data-row-sub">${cur.unit || cur.price_unit || '$/bu'}</div>
+      </div>
+    </div>`;
+
+  if (prv) {
+    const curVal = parseFloat(cur.price || cur.avg_price || cur.wtd_avg_price);
+    const prvVal = parseFloat(prv.price || prv.avg_price || prv.wtd_avg_price);
+    let changeHtml = '';
+    if (!isNaN(curVal) && !isNaN(prvVal)) {
+      const diff = curVal - prvVal;
+      const pct  = ((diff / prvVal) * 100).toFixed(1);
+      const cls  = diff > 0 ? 'data-change-up' : diff < 0 ? 'data-change-down' : 'data-change-flat';
+      const sign = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
+      changeHtml = `<span class="${cls}">${sign} $${Math.abs(diff).toFixed(3)}/bu (${diff>0?'+':''}${pct}%)</span>`;
+    }
+    html += `
+      <div class="data-row">
+        <div><div class="data-row-label">Prior Period</div><div class="data-row-sub">${prv.report_date || ''}</div></div>
+        <div style="text-align:right"><div class="data-row-value">${prv.price || prv.avg_price || prv.wtd_avg_price || '—'}</div></div>
+      </div>
+      <div class="data-row"><div class="data-row-label">Week-over-Week</div>${changeHtml}</div>`;
+  }
+
+  html += `<div class="data-row"><div class="data-row-label" style="font-size:0.58rem;color:#aaa">MT/ID Cash Bid · USDA AMS Weekly Grain Report</div></div>`;
+  el.innerHTML = html;
+}
+
+function renderBarleyFRED(obs) {
+  const el  = document.getElementById('data-tile-barley');
+  const cur = obs[0];
+  const prv = obs[1];
+
+  const curVal = parseFloat(cur.value);
+  const prvVal = parseFloat(prv.value);
+  const diff   = curVal - prvVal;
+  const pct    = ((diff / prvVal) * 100).toFixed(1);
+  const cls    = diff > 0 ? 'data-change-up' : diff < 0 ? 'data-change-down' : 'data-change-flat';
+  const sign   = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
+
+  const html = `
+    <div class="data-row">
+      <div><div class="data-row-label">Annual Avg Farm Price</div><div class="data-row-sub">Year: ${cur.date?.substring(0,4) || '—'}</div></div>
+      <div style="text-align:right"><div class="data-row-value">$${curVal.toFixed(2)}<span style="font-size:0.6rem;font-weight:400">/bu</span></div></div>
+    </div>
+    <div class="data-row">
+      <div><div class="data-row-label">Prior Year</div><div class="data-row-sub">Year: ${prv.date?.substring(0,4) || '—'}</div></div>
+      <div style="text-align:right"><div class="data-row-value">$${prvVal.toFixed(2)}<span style="font-size:0.6rem;font-weight:400">/bu</span></div></div>
+    </div>
+    <div class="data-row">
+      <div class="data-row-label">Year-over-Year</div>
+      <span class="${cls}">${sign} $${Math.abs(diff).toFixed(2)}/bu (${diff>0?'+':''}${pct}%)</span>
+    </div>
+    <div class="data-row"><div class="data-row-label" style="font-size:0.55rem;color:#aaa">⚠ Annual avg only · USDA farm price via FRED PBARLUSDA</div></div>`;
+  el.innerHTML = html;
+}
+
+// Toggle between potato and barley data views
+let activeDataTile = 'potato';
+function showDataTile(which) {
+  activeDataTile = which;
+  document.getElementById('data-tile-potato').style.display = which === 'potato' ? 'flex' : 'none';
+  document.getElementById('data-tile-barley').style.display = which === 'barley' ? 'flex' : 'none';
+  document.getElementById('tab-potato').classList.toggle('active', which === 'potato');
+  document.getElementById('tab-barley').classList.toggle('active', which === 'barley');
+  document.getElementById('tile-3-label').textContent = which === 'potato' ? 'SE Idaho · USDA AMS' : 'MT/ID · USDA AMS';
 }
 
 // ══════════════════════════════════════
@@ -442,13 +647,13 @@ function refreshAllMarkets() {
 // ══════════════════════════════════════
 let gduStartDate = new Date('2026-04-10T00:00:00');
 function updateGDUDate() {
-  gduStartDate = new Date(document.getElementById('gdu-start-date').value+'T00:00:00');
+  gduStartDate = new Date(document.getElementById('gdu-start-date').value + 'T00:00:00');
   if (lastWeatherResults.length) renderWeather(lastWeatherResults);
 }
 function calcSeasonGDU(lat) {
-  const today = new Date(); if(today < gduStartDate) return 0;
-  const days = Math.floor((today - gduStartDate) / 86400000);
-  const avg  = lat<44?6.2:lat<46?4.8:lat<48?3.5:2.2;
+  const today = new Date(); if (today < gduStartDate) return 0;
+  const days  = Math.floor((today - gduStartDate) / 86400000);
+  const avg   = lat < 44 ? 6.2 : lat < 46 ? 4.8 : lat < 48 ? 3.5 : 2.2;
   return Math.round(days * avg);
 }
 function gduStartLabel() {
@@ -456,7 +661,7 @@ function gduStartLabel() {
 }
 
 // ══════════════════════════════════════
-// WEATHER
+// WEATHER — National Weather Service API
 // ══════════════════════════════════════
 const LOCATIONS = [
   {name:'Jackson',    state:'MN', lat:43.6244, lon:-94.9897},
@@ -467,12 +672,22 @@ const LOCATIONS = [
   {name:'Billings',   state:'MT', lat:45.7833, lon:-108.5007},
   {name:'Idaho Falls',state:'ID', lat:43.4666, lon:-112.0340},
 ];
-const WX_ICONS = {'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','partly sunny':'⛅','partly cloudy':'⛅','mostly cloudy':'☁️','cloudy':'☁️','overcast':'☁️','rain':'🌧️','shower':'🌦️','thunder':'⛈️','snow':'❄️','blizzard':'🌨️','wind':'💨','fog':'🌫️','drizzle':'🌦️','sleet':'🌨️'};
-function getIcon(d) { if(!d)return'🌡️'; const l=d.toLowerCase(); for(const[k,v]of Object.entries(WX_ICONS))if(l.includes(k))return v; return'🌡️'; }
+const WX_ICONS = {
+  'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','partly sunny':'⛅',
+  'partly cloudy':'⛅','mostly cloudy':'☁️','cloudy':'☁️','overcast':'☁️',
+  'rain':'🌧️','shower':'🌦️','thunder':'⛈️','snow':'❄️',
+  'blizzard':'🌨️','sleet':'🌨️','wind':'💨','fog':'🌫️','drizzle':'🌦️',
+};
+function getIcon(d) {
+  if (!d) return '🌡️';
+  const l = d.toLowerCase();
+  for (const [k,v] of Object.entries(WX_ICONS)) if (l.includes(k)) return v;
+  return '🌡️';
+}
 
 let lastWeatherResults = [];
-const WX_GROUPS = [[0,1,2],[3,4,5],[6]];
-let wxSlide=0, wxTimer=null, wxProgStart=Date.now();
+const WX_GROUPS   = [[0,1,2],[3,4,5],[6]];
+let wxSlide = 0, wxTimer = null, wxProgStart = Date.now();
 const WX_ROTATE_MS = 30000;
 
 async function fetchWeather(loc) {
@@ -487,11 +702,11 @@ async function fetchWeather(loc) {
       hfc.properties.periods.forEach(p => {
         const d = new Date(p.startTime).toDateString();
         if (!hourlyPrecip[d]) hourlyPrecip[d] = 0;
-        hourlyPrecip[d] = Math.max(hourlyPrecip[d], p.probabilityOfPrecipitation?.value||0);
+        hourlyPrecip[d] = Math.max(hourlyPrecip[d], p.probabilityOfPrecipitation?.value || 0);
       });
     } catch(e) {}
     const days = [];
-    for (let i=0; i<periods.length && days.length<3; i++) {
+    for (let i = 0; i < periods.length && days.length < 3; i++) {
       const p = periods[i];
       if (p.isDaytime) {
         const n = periods[i+1], dt = new Date(p.startTime).toDateString();
@@ -506,18 +721,18 @@ async function fetchWeather(loc) {
 
 function buildLocationCard(loc) {
   if (!loc) return '';
-  const dayLabels = ['Today','Tmrw','Day 3'];
+  const labels = ['Today','Tmrw','Day 3'];
   let html = `<div class="location-card">
     <div class="location-header"><span class="location-name">${loc.name}</span><span class="location-state">${loc.state}</span></div>`;
   if (loc.error || !loc.days?.length) {
-    html += `<div class="wx-loading">Data unavailable</div>`;
+    html += `<div class="wx-loading">NWS data unavailable</div>`;
   } else {
-    loc.days.slice(0,3).forEach((day,i) => {
-      const hi     = typeof day.hi==='number' ? day.hi+'°' : '--';
-      const lo     = typeof day.lo==='number' ? day.lo+'°' : '--';
-      const precip = typeof day.precip==='number' ? day.precip+'%' : '--';
+    loc.days.slice(0,3).forEach((day, i) => {
+      const hi     = typeof day.hi === 'number' ? day.hi + '°' : '--';
+      const lo     = typeof day.lo === 'number' ? day.lo + '°' : '--';
+      const precip = typeof day.precip === 'number' ? day.precip + '%' : '--';
       html += `<div class="wx-forecast-row">
-        <div class="wx-day"><span class="wx-day-label">${dayLabels[i]}</span><span class="wx-icon">${day.icon}</span></div>
+        <div class="wx-day"><span class="wx-day-label">${labels[i]}</span><span class="wx-icon">${day.icon}</span></div>
         <div class="wx-col"><span class="wx-col-label">High</span><span class="wx-hi">${hi}</span></div>
         <div class="wx-col"><span class="wx-col-label">Low</span><span class="wx-lo">${lo}</span></div>
         <div class="wx-col"><span class="wx-col-label">Wind</span><span class="wx-wind">${day.wind||'--'}</span></div>
@@ -525,7 +740,11 @@ function buildLocationCard(loc) {
       </div>`;
     });
   }
-  html += `<div class="gdu-bar"><span class="gdu-label">📊 YTD GDUs</span><span class="gdu-value">${loc.gdu} GDU</span><span class="gdu-since">since ${gduStartLabel()} · Base 50°F</span></div></div>`;
+  html += `<div class="gdu-bar">
+    <span class="gdu-label">📊 YTD GDUs</span>
+    <span class="gdu-value">${loc.gdu} GDU</span>
+    <span class="gdu-since">since ${gduStartLabel()} · Base 50°F</span>
+  </div></div>`;
   return html;
 }
 
@@ -536,58 +755,67 @@ function renderWeather(results) {
   carousel.innerHTML = ''; dotsEl.innerHTML = '';
   WX_GROUPS.forEach((group, si) => {
     const slide = document.createElement('div');
-    slide.className = 'wx-slide' + (si===0?' active':''); slide.id = 'wx-slide-'+si;
+    slide.className = 'wx-slide' + (si === 0 ? ' active' : '');
+    slide.id = 'wx-slide-' + si;
     slide.innerHTML = group.map(idx => results[idx] ? buildLocationCard(results[idx]) : '').join('');
     carousel.appendChild(slide);
     const dot = document.createElement('div');
-    dot.className = 'wx-dot' + (si===0?' active':'');
+    dot.className = 'wx-dot' + (si === 0 ? ' active' : '');
     dot.onclick = () => goWxSlide(si, true);
     dotsEl.appendChild(dot);
   });
   wxSlide = 0; wxProgStart = Date.now();
   resetWxTimer(); animateWxProgress();
-  stampWeatherUpdate();
+  const t = new Date().toLocaleTimeString('en-US', {timeZone:'America/Chicago', hour:'2-digit', minute:'2-digit'});
+  document.getElementById('wx-updated-label').textContent = 'updated: ' + t;
 }
 
-function goWxSlide(idx, manual=false) {
-  document.querySelectorAll('.wx-slide').forEach((s,i) => s.classList.toggle('active', i===idx));
-  document.querySelectorAll('.wx-dot').forEach((d,i)   => d.classList.toggle('active', i===idx));
+function goWxSlide(idx, manual = false) {
+  document.querySelectorAll('.wx-slide').forEach((s, i) => s.classList.toggle('active', i === idx));
+  document.querySelectorAll('.wx-dot').forEach((d, i)   => d.classList.toggle('active', i === idx));
   wxSlide = idx; wxProgStart = Date.now();
   if (manual) resetWxTimer();
 }
 function resetWxTimer() {
   clearInterval(wxTimer);
-  wxTimer = setInterval(() => goWxSlide((wxSlide+1) % WX_GROUPS.length), WX_ROTATE_MS);
+  wxTimer = setInterval(() => goWxSlide((wxSlide + 1) % WX_GROUPS.length), WX_ROTATE_MS);
 }
 function animateWxProgress() {
-  const fill = document.getElementById('wx-progress-fill'); if(!fill) return;
-  const pct = Math.min((Date.now()-wxProgStart)/WX_ROTATE_MS*100, 100);
-  fill.style.width = pct+'%'; if(pct>=100) wxProgStart = Date.now();
+  const fill = document.getElementById('wx-progress-fill'); if (!fill) return;
+  const pct  = Math.min((Date.now() - wxProgStart) / WX_ROTATE_MS * 100, 100);
+  fill.style.width = pct + '%'; if (pct >= 100) wxProgStart = Date.now();
   requestAnimationFrame(animateWxProgress);
 }
-
 async function loadAllWeather() {
   const results = await Promise.all(LOCATIONS.map(fetchWeather));
   renderWeather(results);
 }
 
 // ══════════════════════════════════════
-// INIT & AUTO-REFRESH INTERVALS
+// INIT
 // ══════════════════════════════════════
-initCropData();
-buildGrid();
-progStart = Date.now();
-animateProgress();
 
+// TradingView widgets — load on init, self-updating after that
+initAllTVWidgets();
+
+// Potato & barley data
+fetchPotatoData();
+fetchBarleyData();
+
+// Weather
 loadAllWeather();
 
-// Markets: refresh every hour (no page reload needed)
-setInterval(refreshAllMarkets, 60 * 60 * 1000);
+// Auto-refresh intervals — no page reload needed
+// TradingView widgets update themselves continuously
+// Markets timestamp is set when widgets are first loaded
+// Potato/barley: USDA AMS weekly, FRED monthly — refresh daily is sufficient
+setInterval(fetchPotatoData, 24 * 60 * 60 * 1000);
+setInterval(fetchBarleyData, 24 * 60 * 60 * 1000);
 
-// Weather: refresh every 30 minutes (no page reload needed)
+// Weather: every 30 minutes
 setInterval(loadAllWeather, 30 * 60 * 1000);
 
-// Midnight full reload for 24/7 display hygiene
+// Midnight reload for 24/7 display hygiene
 scheduleMidnightReload();
 
 </script>
