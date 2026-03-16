@@ -98,13 +98,13 @@ def build_output():
     # Daily intraday: range=1d, interval=5m
     # Monthly history: range=1y, interval=1mo
     SYMBOLS = [
-        ('ZC=F',  'Corn',              'CBOT', '/bu'),
-        ('ZS=F',  'Soybeans',          'CBOT', '/bu'),
-        ('ZW=F',  'Soft Wht Wheat',    'CBOT', '/bu'),
-        ('KE=F',  'Hard Red Wheat',    'KCBT', '/bu'),
-        ('LE=F',  'Live Cattle',       'CME',  '/cwt'),
-        ('HE=F',  'Lean Hogs',         'CME',  '/cwt'),
-    ]
+    ('ZC=F',  'Corn',              'CBOT', '/bu',  True),   # quoted in cents/bu
+    ('ZS=F',  'Soybeans',          'CBOT', '/bu',  True),   # quoted in cents/bu
+    ('ZW=F',  'Soft Wht Wheat',    'CBOT', '/bu',  True),   # quoted in cents/bu
+    ('KE=F',  'Hard Red Wheat',    'KCBT', '/bu',  True),   # quoted in cents/bu
+    ('LE=F',  'Live Cattle',       'CME',  '/cwt', False),  # quoted in dollars/cwt
+    ('HE=F',  'Lean Hogs',         'CME',  '/cwt', False),  # quoted in dollars/cwt
+]
 
     commodities = {}
     for symbol, name, exchange, unit in SYMBOLS:
