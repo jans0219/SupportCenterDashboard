@@ -30,18 +30,19 @@ def fetch_yahoo(symbol, range_param='1y', interval='1mo'):
         print(f"Yahoo fetch failed for {symbol}: {e}")
         return None
 
+
 def extract_chart_data(result, symbol):
     if not result:
-        return {'symbol': symbol, 'error': True, 'errorMsg': 'fetch failed'}
+        return {'symbol': symbol, 'error': True, 'errorMsg': 'fetch failed', 'pairs': []}
 
     meta       = result.get('meta', {})
     timestamps = result.get('timestamp', [])
-    closes     = result.get('indicators', {}).get('quote', [{}])[0].get('close', [])
-    opens      = result.get('indicators', {}).get('quote', [{}])[0].get('open',  [])
-    highs      = result.get('indicators', {}).get('quote', [{}])[0].get('high',  [])
-    lows       = result.get('indicators', {}).get('quote', [{}])[0].get('low',   [])
+    quote      = result.get('indicators', {}).get('quote', [{}])[0]
+    closes     = quote.get('close', [])
+    opens      = quote.get('open',  [])
+    highs      = quote.get('high',  [])
+    lows       = quote.get('low',   [])
 
-    # Build clean pairs filtering nulls
     pairs = []
     for i, t in enumerate(timestamps):
         if i < len(closes) and closes[i] is not None:
@@ -68,11 +69,10 @@ def extract_chart_data(result, symbol):
         'prevClose':    prev_close,
         'change':       change,
         'pct':          pct,
-        'currency':     meta.get('currency', 'USD'),
-        'exchangeName': meta.get('exchangeName', ''),
         'marketState':  meta.get('marketState', ''),
         'pairs':        pairs,
     }
+
 
 # ── FRED fetch ──
 def fetch_fred(series_id, limit=14):
@@ -93,66 +93,82 @@ def fetch_fred(series_id, limit=14):
         print(f"FRED fetch failed for {series_id}: {e}")
         return []
 
+
+def convert_pairs(pairs, divisor):
+    """Convert price pairs by divisor (for cents-to-dollars conversion)."""
+    result = []
+    for pt in pairs:
+        result.append({
+            't': pt['t'],
+            'c': round(pt['c'] / divisor, 4),
+            'o': round(pt['o'] / divisor, 4) if pt.get('o') is not None else None,
+            'h': round(pt['h'] / divisor, 4) if pt.get('h') is not None else None,
+            'l': round(pt['l'] / divisor, 4) if pt.get('l') is not None else None,
+        })
+    return result
+
+
+def convert_price(p, divisor):
+    if p is None:
+        return None
+    return round(p / divisor, 4)
+
+
 def build_output():
     # ── Commodity symbols ──
-    # Daily intraday: range=1d, interval=5m
-    # Monthly history: range=1y, interval=1mo
+    # is_cents=True  → Yahoo returns price in cents/bu (grains)
+    # is_cents=False → Yahoo returns price in dollars (livestock)
     SYMBOLS = [
-    ('ZC=F',  'Corn',              'CBOT', '/bu',  True),   # quoted in cents/bu
-    ('ZS=F',  'Soybeans',          'CBOT', '/bu',  True),   # quoted in cents/bu
-    ('ZW=F',  'Soft Wht Wheat',    'CBOT', '/bu',  True),   # quoted in cents/bu
-    ('KE=F',  'Hard Red Wheat',    'KCBT', '/bu',  True),   # quoted in cents/bu
-    ('LE=F',  'Live Cattle',       'CME',  '/cwt', False),  # quoted in dollars/cwt
-    ('HE=F',  'Lean Hogs',         'CME',  '/cwt', False),  # quoted in dollars/cwt
-]
+        ('ZC=F', 'Corn',           'CBOT', '/bu',  True),
+        ('ZS=F', 'Soybeans',       'CBOT', '/bu',  True),
+        ('ZW=F', 'Soft Wht Wheat', 'CBOT', '/bu',  True),
+        ('KE=F', 'Hard Red Wheat', 'KCBT', '/bu',  True),
+        ('LE=F', 'Live Cattle',    'CME',  '/cwt', False),
+        ('HE=F', 'Lean Hogs',      'CME',  '/cwt', False),
+    ]
 
     commodities = {}
+
     for symbol, name, exchange, unit, is_cents in SYMBOLS:
-    print(f"Fetching Yahoo Finance daily: {symbol}...")
-    daily_result   = fetch_yahoo(symbol, range_param='1d', interval='5m')
-    time.sleep(0.5)
-    print(f"Fetching Yahoo Finance monthly: {symbol}...")
-    monthly_result = fetch_yahoo(symbol, range_param='1y', interval='1mo')
-    time.sleep(0.5)
+        divisor = 100.0 if is_cents else 1.0
 
-    daily_data   = extract_chart_data(daily_result,   symbol)
-    monthly_data = extract_chart_data(monthly_result, symbol)
+        print(f"Fetching Yahoo Finance daily:   {symbol}...")
+        daily_result = fetch_yahoo(symbol, range_param='1d', interval='5m')
+        time.sleep(0.5)
 
-    # Convert cents to dollars for grain contracts
-    divisor = 100.0 if is_cents else 1.0
+        print(f"Fetching Yahoo Finance monthly: {symbol}...")
+        monthly_result = fetch_yahoo(symbol, range_param='1y', interval='1mo')
+        time.sleep(0.5)
 
-    def convert_price(p):
-        if p is None: return None
-        return round(p / divisor, 4)
+        daily_data   = extract_chart_data(daily_result,   symbol)
+        monthly_data = extract_chart_data(monthly_result, symbol)
 
-    def convert_pairs(pairs):
-        return [
-            {**pt, 'c': round(pt['c'] / divisor, 4),
-                   'o': round(pt['o'] / divisor, 4) if pt.get('o') is not None else None,
-                   'h': round(pt['h'] / divisor, 4) if pt.get('h') is not None else None,
-                   'l': round(pt['l'] / divisor, 4) if pt.get('l') is not None else None,
-            }
-            for pt in pairs
-        ]
+        current_price = convert_price(daily_data.get('currentPrice'), divisor)
+        prev_close    = convert_price(daily_data.get('prevClose'),    divisor)
+        change        = convert_price(daily_data.get('change'),       divisor)
+        pct           = daily_data.get('pct')  # percentage ratio unchanged
 
-    commodities[symbol] = {
-        'name':         name,
-        'exchange':     exchange,
-        'unit':         unit,
-        'currentPrice': convert_price(daily_data.get('currentPrice')),
-        'prevClose':    convert_price(daily_data.get('prevClose')),
-        'change':       convert_price(daily_data.get('change')),
-        'pct':          daily_data.get('pct'),   # pct is already correct — ratio doesn't change
-        'marketState':  daily_data.get('marketState', ''),
-        'error':        daily_data.get('error', False),
-        'errorMsg':     daily_data.get('errorMsg', ''),
-        'dailyPairs':   convert_pairs(daily_data.get('pairs', [])),
-        'monthlyPairs': convert_pairs(monthly_data.get('pairs', [])),
-    }
-    print(f"  {symbol}: price={commodities[symbol]['currentPrice']} change={commodities[symbol]['change']} pct={commodities[symbol]['pct']}%")
+        commodities[symbol] = {
+            'name':         name,
+            'exchange':     exchange,
+            'unit':         unit,
+            'currentPrice': current_price,
+            'prevClose':    prev_close,
+            'change':       change,
+            'pct':          pct,
+            'marketState':  daily_data.get('marketState', ''),
+            'error':        daily_data.get('error', False),
+            'errorMsg':     daily_data.get('errorMsg', ''),
+            'dailyPairs':   convert_pairs(daily_data.get('pairs',   []), divisor),
+            'monthlyPairs': convert_pairs(monthly_data.get('pairs', []), divisor),
+        }
+
+        print(f"  -> price=${current_price}  change={change}  pct={pct}%  "
+              f"daily_pts={len(commodities[symbol]['dailyPairs'])}  "
+              f"monthly_pts={len(commodities[symbol]['monthlyPairs'])}")
 
     # ── FRED ──
-    print("Fetching FRED WPU011306 (Potatoes PPI)...")
+    print("\nFetching FRED WPU011306 (Potatoes PPI)...")
     potato_obs = fetch_fred('WPU011306', limit=14)
 
     print("Fetching FRED PBARLUSDA (Barley annual)...")
@@ -183,6 +199,7 @@ def build_output():
     print(f"  Commodities: {len(commodities)}")
     print(f"  Potato obs:  {len(potato_obs)}")
     print(f"  Barley obs:  {len(barley_obs)}")
+
 
 if __name__ == '__main__':
     build_output()
