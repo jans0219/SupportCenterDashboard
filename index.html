@@ -14,25 +14,13 @@
   body { font-family:'Segoe UI',Arial,sans-serif; background:var(--white); color:var(--text-dark); height:100vh; width:100vw; overflow:hidden; display:flex; flex-direction:column; }
 
   /* HEADER */
-  header { background:var(--green); color:white; display:flex; align-items:center; justify-content:space-between; padding:0 16px; height:60px; flex-shrink:0; border-bottom:4px solid var(--yellow); }
+  header { background:var(--green); color:white; display:flex; align-items:center; justify-content:space-between; padding:0 16px; height:64px; flex-shrink:0; border-bottom:4px solid var(--yellow); }
   .header-left { display:flex; align-items:center; gap:12px; }
-
-  /* C&B Logo - white rect with green diamond */
-  .cb-logo-wrap {
-    background: white;
-    border-radius: 4px;
-    padding: 4px 8px;
-    height: 46px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-  }
-  .cb-logo-wrap svg { height: 36px; width: auto; }
-
+  .cb-logo-wrap { background:white; border-radius:4px; padding:4px 8px; height:48px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .cb-logo-wrap svg { height:38px; width:auto; }
   .header-title { display:flex; flex-direction:column; line-height:1.2; }
   .header-title-main { font-size:1.2rem; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:white; }
-  .header-title-sub { font-size:0.72rem; font-weight:500; color:rgba(255,255,255,0.85); letter-spacing:1px; text-transform:uppercase; }
+  .header-title-sub  { font-size:0.72rem; font-weight:500; color:rgba(255,255,255,0.85); letter-spacing:1px; text-transform:uppercase; }
 
   .header-right { display:flex; align-items:center; gap:14px; }
   .header-controls { display:flex; align-items:center; gap:8px; }
@@ -42,9 +30,12 @@
   .date-input { background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.4); border-radius:4px; color:white; font-size:0.68rem; padding:4px 8px; }
   .date-input::-webkit-calendar-picker-indicator { filter:invert(1); cursor:pointer; }
 
-  .header-clock { text-align:right; line-height:1.3; }
-  .clock-time { font-size:1.25rem; font-weight:700; color:var(--yellow); font-variant-numeric:tabular-nums; }
-  .clock-date { font-size:0.65rem; color:rgba(255,255,255,0.85); text-transform:uppercase; }
+  /* Clock block — stacked: time, date, last updated */
+  .header-clock { text-align:right; line-height:1.25; }
+  .clock-time    { font-size:1.3rem; font-weight:700; color:var(--yellow); font-variant-numeric:tabular-nums; }
+  .clock-date    { font-size:0.63rem; color:rgba(255,255,255,0.85); text-transform:uppercase; }
+  .clock-updated { font-size:0.6rem; color:rgba(255,255,255,0.6); font-style:italic; }
+  .clock-updated span { color:var(--yellow); font-style:normal; font-weight:600; }
 
   /* MAIN */
   .main-content { display:flex; flex:1; overflow:hidden; }
@@ -75,26 +66,19 @@
 
   /* WEATHER */
   .weather-panel { width:310px; flex-shrink:0; display:flex; flex-direction:column; padding:8px 10px 8px 8px; overflow:hidden; }
-
-  /* Weather carousel */
   .wx-carousel { flex:1; position:relative; overflow:hidden; }
   .wx-slide { display:none; flex-direction:column; height:100%; }
   .wx-slide.active { display:flex; animation:wxFade 0.5s ease; }
   @keyframes wxFade { from{opacity:0} to{opacity:1} }
-
   .wx-progress-bar { height:3px; background:var(--border); margin-top:4px; flex-shrink:0; border-radius:2px; overflow:hidden; }
   .wx-progress-fill { height:100%; background:var(--yellow); }
-
-  /* Dot indicators */
   .wx-dots { display:flex; justify-content:center; gap:5px; padding:3px 0; flex-shrink:0; }
   .wx-dot { width:6px; height:6px; border-radius:50%; background:var(--border); cursor:pointer; transition:background 0.2s; }
   .wx-dot.active { background:var(--green); }
-
   .location-card { border:1px solid var(--border); border-radius:7px; margin-bottom:5px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.05); flex-shrink:0; }
   .location-header { background:var(--green); color:white; padding:4px 8px; display:flex; justify-content:space-between; align-items:center; }
   .location-name { font-size:0.7rem; font-weight:700; text-transform:uppercase; }
   .location-state { font-size:0.62rem; color:var(--yellow); font-weight:600; }
-
   .wx-forecast-row { display:grid; grid-template-columns:36px 1fr 1fr 1fr 1fr; border-bottom:1px solid var(--gray); }
   .wx-forecast-row:last-child { border-bottom:none; }
   .wx-day { padding:4px 4px; background:var(--gray); display:flex; flex-direction:column; align-items:center; justify-content:center; border-right:1px solid var(--border); }
@@ -102,13 +86,12 @@
   .wx-icon { font-size:1rem; line-height:1; }
   .wx-col { padding:3px 4px; display:flex; flex-direction:column; align-items:center; justify-content:center; border-right:1px solid #eee; }
   .wx-col:last-child { border-right:none; }
-  .wx-col-label { font-size:0.48rem; text-transform:uppercase; color:#aaa; letter-spacing:0.2px; }
+  .wx-col-label { font-size:0.48rem; text-transform:uppercase; color:#aaa; }
   .wx-hi    { font-size:0.82rem; font-weight:800; color:#c0392b; }
   .wx-lo    { font-size:0.72rem; font-weight:600; color:#2980b9; }
   .wx-wind  { font-size:0.6rem; font-weight:600; color:var(--text-mid); text-align:center; }
   .wx-precip{ font-size:0.62rem; font-weight:700; color:#1a6e9e; }
-
-  .gdu-bar { background:var(--light-green); padding:3px 8px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); }
+  .gdu-bar  { background:var(--light-green); padding:3px 8px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); }
   .gdu-label { font-size:0.53rem; color:var(--dark-green); font-weight:600; text-transform:uppercase; }
   .gdu-value { font-size:0.7rem; font-weight:800; color:var(--green); }
   .gdu-since { font-size:0.5rem; color:#888; }
@@ -116,7 +99,7 @@
 
   /* FOOTER */
   footer { height:36px; background:var(--dark-green); color:rgba(255,255,255,0.75); font-size:0.68rem; display:flex; align-items:center; justify-content:space-between; padding:0 18px; flex-shrink:0; border-top:4px solid var(--yellow); }
-  .footer-left { display:flex; align-items:center; gap:6px; flex-wrap:nowrap; }
+  .footer-left { display:flex; align-items:center; gap:6px; }
   .footer-dot { color:var(--yellow); }
   .footer-right { color:var(--yellow); font-weight:600; font-size:0.63rem; white-space:nowrap; }
 </style>
@@ -125,7 +108,6 @@
 
 <header>
   <div class="header-left">
-    <!-- C&B Logo: white background rectangle, green diamond, bold C&B -->
     <div class="cb-logo-wrap">
       <svg viewBox="0 0 110 56" xmlns="http://www.w3.org/2000/svg">
         <polygon points="55,3 107,28 55,53 3,28" fill="white" stroke="#367C2B" stroke-width="4" stroke-linejoin="round"/>
@@ -141,16 +123,17 @@
   <div class="header-right">
     <div class="header-controls">
       <span class="ctrl-label">Chart:</span>
-      <button class="toggle-btn active" id="btn-daily" onclick="setChartMode('daily')">Daily</button>
-      <button class="toggle-btn" id="btn-monthly" onclick="setChartMode('monthly')">12-Month</button>
+      <button class="toggle-btn active" id="btn-daily"   onclick="setChartMode('daily')">Daily</button>
+      <button class="toggle-btn"        id="btn-monthly" onclick="setChartMode('monthly')">12-Month</button>
     </div>
     <div class="header-controls">
       <span class="ctrl-label">GDU Start:</span>
       <input type="date" class="date-input" id="gdu-start-date" value="2026-04-10" onchange="updateGDUDate()">
     </div>
     <div class="header-clock">
-      <div class="clock-time" id="clock-time">--:--:-- --</div>
-      <div class="clock-date" id="clock-date">---</div>
+      <div class="clock-time"    id="clock-time">--:--:-- --</div>
+      <div class="clock-date"    id="clock-date">---</div>
+      <div class="clock-updated">Mkt updated: <span id="last-updated">--</span></div>
     </div>
   </div>
 </header>
@@ -161,7 +144,7 @@
   <div class="markets-panel">
     <div class="section-title">
       <span class="market-status"></span>
-      Commodity Markets &nbsp;·&nbsp; <span id="chart-mode-label">Intraday</span> &nbsp;·&nbsp; Last updated: <span id="last-updated">--</span>
+      Commodity Markets &nbsp;·&nbsp; <span id="chart-mode-label">Intraday</span>
     </div>
     <div class="commodity-grid" id="commodity-grid"></div>
     <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
@@ -169,10 +152,10 @@
 
   <!-- WEATHER -->
   <div class="weather-panel">
-    <div class="section-title">Weather Forecast &amp; GDUs</div>
-    <div class="wx-carousel" id="wx-carousel">
-      <div class="wx-loading">Loading weather…</div>
+    <div class="section-title">
+      Weather Forecast &amp; GDUs &nbsp;·&nbsp; <span id="wx-updated-label" style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.6rem;color:#555;">updated: --</span>
     </div>
+    <div class="wx-carousel" id="wx-carousel"><div class="wx-loading">Loading weather…</div></div>
     <div class="wx-dots" id="wx-dots"></div>
     <div class="wx-progress-bar"><div class="wx-progress-fill" id="wx-progress-fill"></div></div>
   </div>
@@ -190,106 +173,195 @@
     <span>Wyoming</span><span class="footer-dot">·</span>
     <span>Idaho</span>
   </div>
-  <div class="footer-right">GDU Base 50°F &nbsp;◆&nbsp; Market data 10-min delayed &nbsp;◆&nbsp; Weather via NWS</div>
+  <div class="footer-right">GDU Base 50°F &nbsp;◆&nbsp; Markets auto-refresh hourly &nbsp;◆&nbsp; Weather auto-refresh every 30 min</div>
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 
-// ══ CLOCK ══
+// ══════════════════════════════════════
+// MIDNIGHT AUTO-RELOAD
+// Keeps the display fresh for 24/7 TV use
+// ══════════════════════════════════════
+function scheduleMidnightReload() {
+  const now    = new Date();
+  const chi    = new Date(now.toLocaleString('en-US', {timeZone:'America/Chicago'}));
+  const msToMidnight = (
+    (23 - chi.getHours()) * 3600000 +
+    (59 - chi.getMinutes()) * 60000 +
+    (60 - chi.getSeconds()) * 1000
+  );
+  setTimeout(() => location.reload(), msToMidnight);
+}
+scheduleMidnightReload();
+
+// ══════════════════════════════════════
+// SEEDED PRNG (Mulberry32) — stable per hour
+// ══════════════════════════════════════
+function getHourlySeed() {
+  const now = new Date();
+  const chi = new Date(now.toLocaleString('en-US', {timeZone:'America/Chicago'}));
+  return chi.getFullYear() * 1000000
+       + (chi.getMonth()+1) * 10000
+       + chi.getDate() * 100
+       + chi.getHours();
+}
+function makeRng(seed) {
+  let s = seed >>> 0;
+  return function() {
+    s += 0x6D2B79F5;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+// ══════════════════════════════════════
+// CLOCK
+// ══════════════════════════════════════
 function updateClock() {
-  const now = new Date(), o={timeZone:'America/Chicago'};
-  const t = now.toLocaleTimeString('en-US',{...o,hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  const d = now.toLocaleDateString('en-US',{...o,weekday:'long',month:'long',day:'numeric',year:'numeric'});
-  const jan=new Date(now.getFullYear(),0,1),jul=new Date(now.getFullYear(),6,1);
-  const zone=now.getTimezoneOffset()<Math.max(jan.getTimezoneOffset(),jul.getTimezoneOffset())?'CDT':'CST';
-  document.getElementById('clock-time').textContent=t+' '+zone;
-  document.getElementById('clock-date').textContent=d;
+  const now = new Date(), o = {timeZone:'America/Chicago'};
+  const t = now.toLocaleTimeString('en-US', {...o, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  const d = now.toLocaleDateString('en-US', {...o, weekday:'long', month:'long', day:'numeric', year:'numeric'});
+  const jan = new Date(now.getFullYear(),0,1), jul = new Date(now.getFullYear(),6,1);
+  const zone = now.getTimezoneOffset() < Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset()) ? 'CDT' : 'CST';
+  document.getElementById('clock-time').textContent = t + ' ' + zone;
+  document.getElementById('clock-date').textContent = d;
 }
-setInterval(updateClock,1000); updateClock();
+setInterval(updateClock, 1000); updateClock();
 
-// ══ GDU ══
-let gduStartDate=new Date('2026-04-10T00:00:00');
-function updateGDUDate(){
-  gduStartDate=new Date(document.getElementById('gdu-start-date').value+'T00:00:00');
-  if(lastWeatherResults.length) renderWeather(lastWeatherResults);
+function stampMarketUpdate() {
+  const t = new Date().toLocaleTimeString('en-US', {timeZone:'America/Chicago', hour:'2-digit', minute:'2-digit'});
+  const jan = new Date(); const jul = new Date(jan.getFullYear(),6,1);
+  const zone = jan.getTimezoneOffset() < Math.max(new Date(jan.getFullYear(),0,1).getTimezoneOffset(), jul.getTimezoneOffset()) ? 'CDT':'CST';
+  document.getElementById('last-updated').textContent = t + ' ' + zone;
 }
-function calcSeasonGDU(lat){
-  const today=new Date();
-  if(today<gduStartDate) return 0;
-  const days=Math.floor((today-gduStartDate)/86400000);
-  const avg=lat<44?6.2:lat<46?4.8:lat<48?3.5:2.2;
-  return Math.round(days*avg);
-}
-function gduStartLabel(){
-  return gduStartDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+function stampWeatherUpdate() {
+  const t = new Date().toLocaleTimeString('en-US', {timeZone:'America/Chicago', hour:'2-digit', minute:'2-digit'});
+  document.getElementById('wx-updated-label').textContent = 'updated: ' + t;
 }
 
-// ══ COMMODITY DATA ══
-const TILE_PAIRS=[
+// ══════════════════════════════════════
+// TRADING SESSION HELPERS
+// ══════════════════════════════════════
+const MARKET_OPEN  = 8 * 60;       // 8:00 AM CT
+const MARKET_CLOSE = 15 * 60 + 30; // 3:30 PM CT
+
+function getChicagoMinutes() {
+  const now = new Date();
+  const chi = new Date(now.toLocaleString('en-US', {timeZone:'America/Chicago'}));
+  return chi.getHours() * 60 + chi.getMinutes();
+}
+function minutesIntoSession() {
+  const m = getChicagoMinutes();
+  if (m < MARKET_OPEN)  return 0;
+  if (m > MARKET_CLOSE) return MARKET_CLOSE - MARKET_OPEN;
+  return m - MARKET_OPEN;
+}
+
+function genIntraday(base, rng, vol=0.014) {
+  const elapsed = minutesIntoSession();
+  if (elapsed <= 0) return [{t:'8:00', v:+(base*(0.998+rng()*0.004)).toFixed(4)}];
+  const INTERVAL = 5;
+  const numPts = Math.max(1, Math.floor(elapsed / INTERVAL));
+  const pts = [];
+  let p = base * (0.99 + rng() * 0.02);
+  for (let i = 0; i < numPts; i++) {
+    p += p * (rng() - 0.5) * vol;
+    const minFromOpen = i * INTERVAL;
+    const h = Math.floor((MARKET_OPEN + minFromOpen) / 60);
+    const m = (MARKET_OPEN + minFromOpen) % 60;
+    pts.push({t:`${h}:${m.toString().padStart(2,'0')}`, v:+p.toFixed(4)});
+  }
+  return pts;
+}
+function genMonthly(base, rng, vol=0.08) {
+  const months = ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+  let p = base * 0.85;
+  return months.map(m => { p += p*(rng()-0.48)*vol; return {m, v:+p.toFixed(4)}; });
+}
+
+// ══════════════════════════════════════
+// CROP DATA
+// ══════════════════════════════════════
+const TILE_PAIRS = [
   {crops:['corn','soy']},
   {crops:['sww','hrw']},
   {crops:['cattle','hogs']},
   {crops:['potato','barley']},
 ];
-const CROP_INFO={
-  corn:  {name:'Corn',           symbol:'ZC', unit:'/bu', exchange:'CBOT',base:4.42},
-  soy:   {name:'Soybeans',       symbol:'ZS', unit:'/bu', exchange:'CBOT',base:9.87},
-  sww:   {name:'Soft Wht Wheat', symbol:'ZW', unit:'/bu', exchange:'CBOT',base:5.15},
-  hrw:   {name:'Hard Red Wheat', symbol:'MWE',unit:'/bu', exchange:'MGE', base:5.68},
-  cattle:{name:'Live Cattle',    symbol:'LE', unit:'/cwt',exchange:'CME', base:198.50},
-  hogs:  {name:'Lean Hogs',      symbol:'HE', unit:'/cwt',exchange:'CME', base:87.20},
-  potato:{name:'Potatoes',       symbol:'--', unit:'/cwt',exchange:'CME', base:12.40},
-  barley:{name:'Barley',         symbol:'--', unit:'/bu', exchange:'MGEX',base:4.85},
+const CROP_INFO = {
+  corn:  {name:'Corn',           symbol:'ZC', unit:'/bu', exchange:'CBOT', base:4.42},
+  soy:   {name:'Soybeans',       symbol:'ZS', unit:'/bu', exchange:'CBOT', base:9.87},
+  sww:   {name:'Soft Wht Wheat', symbol:'ZW', unit:'/bu', exchange:'CBOT', base:5.15},
+  hrw:   {name:'Hard Red Wheat', symbol:'MWE',unit:'/bu', exchange:'MGE',  base:5.68},
+  cattle:{name:'Live Cattle',    symbol:'LE', unit:'/cwt',exchange:'CME',  base:198.50},
+  hogs:  {name:'Lean Hogs',      symbol:'HE', unit:'/cwt',exchange:'CME',  base:87.20},
+  potato:{name:'Potatoes',       symbol:'--', unit:'/cwt',exchange:'CME',  base:12.40},
+  barley:{name:'Barley',         symbol:'--', unit:'/bu', exchange:'MGEX', base:4.85},
 };
 
-function genSpark(base,vol=0.014,n=30){let p=base*(0.98+Math.random()*0.04),a=[];for(let i=0;i<n;i++){p+=p*(Math.random()-0.5)*vol;a.push(+p.toFixed(4));}return a;}
-function genMonthly(base,vol=0.08){const mo=['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];let p=base*0.85,a=[];for(let i=0;i<12;i++){p+=p*(Math.random()-0.48)*vol;a.push({m:mo[i],v:+p.toFixed(4)});}return a;}
-
-let cropData={};
-function initCropData(){
-  Object.entries(CROP_INFO).forEach(([id,c])=>{
-    const isL=id==='cattle'||id==='hogs';
-    const daily=genSpark(c.base,isL?0.006:0.014);
-    const prev=c.base*(0.99+Math.random()*0.02),curr=daily[daily.length-1];
-    cropData[id]={current:curr,prev,change:+(curr-prev).toFixed(4),pct:+((curr-prev)/prev*100).toFixed(2),daily,monthly:genMonthly(c.base)};
+let cropData = {};
+function initCropData() {
+  const seed = getHourlySeed();
+  Object.entries(CROP_INFO).forEach(([id, c], idx) => {
+    const isL  = id==='cattle'||id==='hogs';
+    const rng  = makeRng(seed + idx * 1000);
+    const pRng = makeRng(seed + idx * 1000 + 1);
+    const open = +(c.base * (0.99 + pRng() * 0.02)).toFixed(4);
+    const prevRng = makeRng((seed - 1) + idx * 1000 + 99);
+    const prev = +(c.base * (0.992 + prevRng() * 0.016)).toFixed(4);
+    const intraday = genIntraday(open, rng, isL ? 0.006 : 0.014);
+    const curr = intraday[intraday.length - 1].v;
+    const mRng = makeRng(seed + idx * 1000 + 500);
+    cropData[id] = {
+      current:curr, open, prev,
+      change:+(curr-prev).toFixed(4),
+      pct:+((curr-prev)/prev*100).toFixed(2),
+      intraday, monthly:genMonthly(c.base, mRng),
+    };
   });
+  stampMarketUpdate();
 }
 
-let chartMode='daily',tileActive={},tileCharts={},tileTimers={};
-const ROTATE_MS=8000;
+// ══════════════════════════════════════
+// TILE RENDERING
+// ══════════════════════════════════════
+let chartMode='daily', tileActive={}, tileCharts={}, tileTimers={};
+const ROTATE_MS = 8000;
 
-function setChartMode(mode){
-  chartMode=mode;
-  document.getElementById('btn-daily').classList.toggle('active',mode==='daily');
-  document.getElementById('btn-monthly').classList.toggle('active',mode==='monthly');
-  document.getElementById('chart-mode-label').textContent=mode==='daily'?'Intraday':'12-Month';
-  TILE_PAIRS.forEach((_,i)=>drawTileChart(i));
+function setChartMode(mode) {
+  chartMode = mode;
+  document.getElementById('btn-daily').classList.toggle('active', mode==='daily');
+  document.getElementById('btn-monthly').classList.toggle('active', mode==='monthly');
+  document.getElementById('chart-mode-label').textContent = mode==='daily' ? 'Intraday' : '12-Month';
+  TILE_PAIRS.forEach((_,i) => drawTileChart(i));
 }
 
-function buildGrid(){
-  const grid=document.getElementById('commodity-grid');
-  grid.innerHTML='';
-  TILE_PAIRS.forEach((pair,ti)=>{
-    tileActive[ti]=0;
-    const tile=document.createElement('div');
-    tile.className='commodity-tile'; tile.id='tile-'+ti;
-    tile.innerHTML=buildTileHTML(ti);
+function buildGrid() {
+  const grid = document.getElementById('commodity-grid');
+  grid.innerHTML = '';
+  TILE_PAIRS.forEach((pair, ti) => {
+    tileActive[ti] = 0;
+    const tile = document.createElement('div');
+    tile.className = 'commodity-tile'; tile.id = 'tile-' + ti;
+    tile.innerHTML = buildTileHTML(ti);
     grid.appendChild(tile);
     clearInterval(tileTimers[ti]);
-    tileTimers[ti]=setInterval(()=>rotateTile(ti),ROTATE_MS+(ti*1200));
+    tileTimers[ti] = setInterval(() => rotateTile(ti), ROTATE_MS + ti * 1200);
   });
-  requestAnimationFrame(()=>TILE_PAIRS.forEach((_,i)=>drawTileChart(i)));
+  requestAnimationFrame(() => TILE_PAIRS.forEach((_,i) => drawTileChart(i)));
 }
 
-function buildTileHTML(ti){
-  const pair=TILE_PAIRS[ti],ai=tileActive[ti];
-  const id0=pair.crops[0],id1=pair.crops[1];
-  const c0=CROP_INFO[id0],c1=CROP_INFO[id1];
-  const id=pair.crops[ai],d=cropData[id],ci=CROP_INFO[id];
-  const isL=id==='cattle'||id==='hogs';
-  const dir=d.change>0?'up':d.change<0?'down':'flat';
-  const sign=d.change>0?'▲':d.change<0?'▼':'—';
+function buildTileHTML(ti) {
+  const pair = TILE_PAIRS[ti], ai = tileActive[ti];
+  const id0  = pair.crops[0], id1 = pair.crops[1];
+  const c0   = CROP_INFO[id0], c1 = CROP_INFO[id1];
+  const id   = pair.crops[ai], d = cropData[id], ci = CROP_INFO[id];
+  const isL  = id==='cattle'||id==='hogs';
+  const dir  = d.change>0?'up':d.change<0?'down':'flat';
+  const sign = d.change>0?'▲':d.change<0?'▼':'—';
   return `
     <div class="tile-header">
       <div class="tile-crop-tabs">
@@ -305,108 +377,146 @@ function buildTileHTML(ti){
     <div class="tile-meta"><span>${ci.exchange} · ${ci.symbol} · ${ci.name}</span><span>${chartMode==='daily'?'Intraday':'12-Month'}</span></div>`;
 }
 
-function switchTileCrop(ti,idx){tileActive[ti]=idx;refreshTile(ti);clearInterval(tileTimers[ti]);tileTimers[ti]=setInterval(()=>rotateTile(ti),ROTATE_MS);}
-function rotateTile(ti){tileActive[ti]=tileActive[ti]===0?1:0;refreshTile(ti);}
-function refreshTile(ti){
-  const tile=document.getElementById('tile-'+ti); if(!tile)return;
-  if(tileCharts[ti]){tileCharts[ti].destroy();delete tileCharts[ti];}
-  tile.innerHTML=buildTileHTML(ti);
-  requestAnimationFrame(()=>drawTileChart(ti));
+function switchTileCrop(ti, idx) {
+  tileActive[ti] = idx; refreshTile(ti);
+  clearInterval(tileTimers[ti]);
+  tileTimers[ti] = setInterval(() => rotateTile(ti), ROTATE_MS);
+}
+function rotateTile(ti) { tileActive[ti] = tileActive[ti]===0?1:0; refreshTile(ti); }
+function refreshTile(ti) {
+  const tile = document.getElementById('tile-'+ti); if(!tile) return;
+  if (tileCharts[ti]) { tileCharts[ti].destroy(); delete tileCharts[ti]; }
+  tile.innerHTML = buildTileHTML(ti);
+  requestAnimationFrame(() => drawTileChart(ti));
 }
 
-function drawTileChart(ti){
-  const id=TILE_PAIRS[ti].crops[tileActive[ti]],d=cropData[id],ci=CROP_INFO[id];
-  const isL=id==='cattle'||id==='hogs';
-  const ctx=document.getElementById('chart-tile-'+ti); if(!ctx)return;
-  if(tileCharts[ti]){tileCharts[ti].destroy();}
-  const isUp=d.change>=0,lc=isUp?'#27ae60':'#e74c3c';
-  let labels,data;
-  if(chartMode==='daily'){
-    labels=d.daily.map((_,i)=>{const h=8+Math.floor(i*(7.5/d.daily.length)),m=Math.floor((i*(7.5/d.daily.length)%1)*60);return`${h}:${m.toString().padStart(2,'0')}`;});
-    data=d.daily;
+function drawTileChart(ti) {
+  const id  = TILE_PAIRS[ti].crops[tileActive[ti]];
+  const d   = cropData[id], ci = CROP_INFO[id];
+  const isL = id==='cattle'||id==='hogs';
+  const ctx = document.getElementById('chart-tile-'+ti); if(!ctx) return;
+  if (tileCharts[ti]) tileCharts[ti].destroy();
+  const isUp = d.change >= 0, lc = isUp ? '#27ae60' : '#e74c3c';
+  let labels, data;
+  if (chartMode==='daily') {
+    labels = d.intraday.map(p=>p.t);
+    data   = d.intraday.map(p=>p.v);
   } else {
-    labels=d.monthly.map(p=>p.m); data=d.monthly.map(p=>p.v);
+    labels = d.monthly.map(p=>p.m);
+    data   = d.monthly.map(p=>p.v);
   }
-  tileCharts[ti]=new Chart(ctx,{type:'line',data:{labels,datasets:[{data,borderColor:lc,backgroundColor:isUp?'rgba(39,174,96,0.08)':'rgba(231,76,60,0.08)',borderWidth:2,fill:true,tension:0.4,pointRadius:chartMode==='monthly'?3:0,pointBackgroundColor:lc}]},options:{responsive:true,maintainAspectRatio:false,animation:{duration:250},plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.raw==null?null:` $${parseFloat(c.raw).toFixed(isL?2:4)}${ci.unit}`}}},scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:0,autoSkip:true,maxTicksLimit:7}},y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:8},callback:v=>'$'+parseFloat(v).toFixed(2)}}}}});
+  tileCharts[ti] = new Chart(ctx, {
+    type:'line',
+    data:{labels, datasets:[{
+      data, borderColor:lc,
+      backgroundColor: isUp?'rgba(39,174,96,0.08)':'rgba(231,76,60,0.08)',
+      borderWidth:2, fill:true, tension:0.4,
+      pointRadius: chartMode==='monthly'?3:0, pointBackgroundColor:lc,
+    }]},
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:{duration:250},
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>c.raw==null?null:` $${parseFloat(c.raw).toFixed(isL?2:4)}${ci.unit}`}}},
+      scales:{
+        x:{grid:{display:false}, ticks:{font:{size:8}, maxRotation:0, autoSkip:true, maxTicksLimit:7}},
+        y:{grid:{color:'rgba(0,0,0,0.04)'}, ticks:{font:{size:8}, callback:v=>'$'+parseFloat(v).toFixed(2)}},
+      }
+    }
+  });
 }
 
-// Tile progress bar
-let progStart=Date.now();
-function animateProgress(){
-  const fill=document.getElementById('progress-fill'); if(!fill)return;
-  const pct=Math.min((Date.now()-progStart)/ROTATE_MS*100,100);
-  fill.style.width=pct+'%'; if(pct>=100)progStart=Date.now();
+// Tile progress bar animation
+let progStart = Date.now();
+function animateProgress() {
+  const fill = document.getElementById('progress-fill'); if(!fill) return;
+  const pct = Math.min((Date.now()-progStart)/ROTATE_MS*100, 100);
+  fill.style.width = pct+'%'; if(pct>=100) progStart = Date.now();
   requestAnimationFrame(animateProgress);
 }
 
-function refreshAllMarkets(){
+function refreshAllMarkets() {
   initCropData(); buildGrid();
-  const t=new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'});
-  document.getElementById('last-updated').textContent=t+' CDT';
 }
 
-// ══ WEATHER ══
-const LOCATIONS=[
-  {name:'Jackson',    state:'MN',lat:43.6244,lon:-94.9897},
-  {name:'Ida Grove',  state:'IA',lat:42.3411,lon:-95.4711},
-  {name:'Gettysburg', state:'SD',lat:45.0047,lon:-99.9579},
-  {name:'Yankton',    state:'SD',lat:42.8711,lon:-97.3978},
-  {name:'Culbertson', state:'MT',lat:48.1455,lon:-104.5202},
-  {name:'Billings',   state:'MT',lat:45.7833,lon:-108.5007},
-  {name:'Idaho Falls',state:'ID',lat:43.4666,lon:-112.0340},
+// ══════════════════════════════════════
+// GDU
+// ══════════════════════════════════════
+let gduStartDate = new Date('2026-04-10T00:00:00');
+function updateGDUDate() {
+  gduStartDate = new Date(document.getElementById('gdu-start-date').value+'T00:00:00');
+  if (lastWeatherResults.length) renderWeather(lastWeatherResults);
+}
+function calcSeasonGDU(lat) {
+  const today = new Date(); if(today < gduStartDate) return 0;
+  const days = Math.floor((today - gduStartDate) / 86400000);
+  const avg  = lat<44?6.2:lat<46?4.8:lat<48?3.5:2.2;
+  return Math.round(days * avg);
+}
+function gduStartLabel() {
+  return gduStartDate.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+}
+
+// ══════════════════════════════════════
+// WEATHER
+// ══════════════════════════════════════
+const LOCATIONS = [
+  {name:'Jackson',    state:'MN', lat:43.6244, lon:-94.9897},
+  {name:'Ida Grove',  state:'IA', lat:42.3411, lon:-95.4711},
+  {name:'Gettysburg', state:'SD', lat:45.0047, lon:-99.9579},
+  {name:'Yankton',    state:'SD', lat:42.8711, lon:-97.3978},
+  {name:'Culbertson', state:'MT', lat:48.1455, lon:-104.5202},
+  {name:'Billings',   state:'MT', lat:45.7833, lon:-108.5007},
+  {name:'Idaho Falls',state:'ID', lat:43.4666, lon:-112.0340},
 ];
-const WX_ICONS={'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','partly sunny':'⛅','partly cloudy':'⛅','mostly cloudy':'☁️','cloudy':'☁️','overcast':'☁️','rain':'🌧️','shower':'🌦️','thunder':'⛈️','snow':'❄️','blizzard':'🌨️','wind':'💨','fog':'🌫️','drizzle':'🌦️','sleet':'🌨️'};
-function getIcon(d){if(!d)return'🌡️';const l=d.toLowerCase();for(const[k,v]of Object.entries(WX_ICONS))if(l.includes(k))return v;return'🌡️';}
-function calcDailyGDU(hi,lo){return Math.max(0,((hi+lo)/2)-50);}
+const WX_ICONS = {'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','partly sunny':'⛅','partly cloudy':'⛅','mostly cloudy':'☁️','cloudy':'☁️','overcast':'☁️','rain':'🌧️','shower':'🌦️','thunder':'⛈️','snow':'❄️','blizzard':'🌨️','wind':'💨','fog':'🌫️','drizzle':'🌦️','sleet':'🌨️'};
+function getIcon(d) { if(!d)return'🌡️'; const l=d.toLowerCase(); for(const[k,v]of Object.entries(WX_ICONS))if(l.includes(k))return v; return'🌡️'; }
 
-let lastWeatherResults=[];
-// Split 7 locations into groups of 3 (3, 3, 1 → pad last to 3 with blanks or show 3+4)
-// We'll do groups: [0,1,2], [3,4,5], [6] — 3 slides
-const WX_GROUPS=[[0,1,2],[3,4,5],[6]];
-
+let lastWeatherResults = [];
+const WX_GROUPS = [[0,1,2],[3,4,5],[6]];
 let wxSlide=0, wxTimer=null, wxProgStart=Date.now();
-const WX_ROTATE_MS=30000;
+const WX_ROTATE_MS = 30000;
 
-async function fetchWeather(loc){
-  try{
-    const pt=await(await fetch(`https://api.weather.gov/points/${loc.lat},${loc.lon}`)).json();
-    const{gridId,gridX,gridY}=pt.properties;
-    const fc=await(await fetch(`https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}/forecast`)).json();
-    const periods=fc.properties.periods;
-    let hourlyPrecip={};
-    try{
-      const hfc=await(await fetch(`https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}/forecast/hourly`)).json();
-      hfc.properties.periods.forEach(p=>{
-        const d=new Date(p.startTime).toDateString();
-        if(!hourlyPrecip[d])hourlyPrecip[d]=0;
-        hourlyPrecip[d]=Math.max(hourlyPrecip[d],p.probabilityOfPrecipitation?.value||0);
+async function fetchWeather(loc) {
+  try {
+    const pt = await (await fetch(`https://api.weather.gov/points/${loc.lat},${loc.lon}`)).json();
+    const {gridId, gridX, gridY} = pt.properties;
+    const fc = await (await fetch(`https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}/forecast`)).json();
+    const periods = fc.properties.periods;
+    let hourlyPrecip = {};
+    try {
+      const hfc = await (await fetch(`https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}/forecast/hourly`)).json();
+      hfc.properties.periods.forEach(p => {
+        const d = new Date(p.startTime).toDateString();
+        if (!hourlyPrecip[d]) hourlyPrecip[d] = 0;
+        hourlyPrecip[d] = Math.max(hourlyPrecip[d], p.probabilityOfPrecipitation?.value||0);
       });
-    }catch(e){}
-    const days=[];
-    for(let i=0;i<periods.length&&days.length<3;i++){
-      const p=periods[i];
-      if(p.isDaytime){
-        const n=periods[i+1],dt=new Date(p.startTime).toDateString();
-        days.push({name:p.name,hi:p.temperature,lo:n?n.temperature:'--',wind:p.windSpeed,precip:hourlyPrecip[dt]??'--',icon:getIcon(p.shortForecast)});
+    } catch(e) {}
+    const days = [];
+    for (let i=0; i<periods.length && days.length<3; i++) {
+      const p = periods[i];
+      if (p.isDaytime) {
+        const n = periods[i+1], dt = new Date(p.startTime).toDateString();
+        days.push({name:p.name, hi:p.temperature, lo:n?n.temperature:'--', wind:p.windSpeed, precip:hourlyPrecip[dt]??'--', icon:getIcon(p.shortForecast)});
       }
     }
-    return{...loc,days,gdu:calcSeasonGDU(loc.lat),error:false};
-  }catch(e){return{...loc,days:[],gdu:calcSeasonGDU(loc.lat),error:true};}
+    return {...loc, days, gdu:calcSeasonGDU(loc.lat), error:false};
+  } catch(e) {
+    return {...loc, days:[], gdu:calcSeasonGDU(loc.lat), error:true};
+  }
 }
 
-function buildLocationCard(loc){
-  if(!loc) return '';
-  const dayLabels=['Today','Tmrw','Day 3'];
-  let html=`<div class="location-card">
+function buildLocationCard(loc) {
+  if (!loc) return '';
+  const dayLabels = ['Today','Tmrw','Day 3'];
+  let html = `<div class="location-card">
     <div class="location-header"><span class="location-name">${loc.name}</span><span class="location-state">${loc.state}</span></div>`;
-  if(loc.error||!loc.days||!loc.days.length){
-    html+=`<div class="wx-loading">Data unavailable</div>`;
+  if (loc.error || !loc.days?.length) {
+    html += `<div class="wx-loading">Data unavailable</div>`;
   } else {
-    loc.days.slice(0,3).forEach((day,i)=>{
-      const hi=typeof day.hi==='number'?day.hi+'°':'--';
-      const lo=typeof day.lo==='number'?day.lo+'°':'--';
-      const precip=typeof day.precip==='number'?day.precip+'%':'--';
-      html+=`<div class="wx-forecast-row">
+    loc.days.slice(0,3).forEach((day,i) => {
+      const hi     = typeof day.hi==='number' ? day.hi+'°' : '--';
+      const lo     = typeof day.lo==='number' ? day.lo+'°' : '--';
+      const precip = typeof day.precip==='number' ? day.precip+'%' : '--';
+      html += `<div class="wx-forecast-row">
         <div class="wx-day"><span class="wx-day-label">${dayLabels[i]}</span><span class="wx-icon">${day.icon}</span></div>
         <div class="wx-col"><span class="wx-col-label">High</span><span class="wx-hi">${hi}</span></div>
         <div class="wx-col"><span class="wx-col-label">Low</span><span class="wx-lo">${lo}</span></div>
@@ -415,74 +525,71 @@ function buildLocationCard(loc){
       </div>`;
     });
   }
-  html+=`<div class="gdu-bar"><span class="gdu-label">📊 YTD GDUs</span><span class="gdu-value">${loc.gdu} GDU</span><span class="gdu-since">since ${gduStartLabel()} · Base 50°F</span></div>
-  </div>`;
+  html += `<div class="gdu-bar"><span class="gdu-label">📊 YTD GDUs</span><span class="gdu-value">${loc.gdu} GDU</span><span class="gdu-since">since ${gduStartLabel()} · Base 50°F</span></div></div>`;
   return html;
 }
 
-function renderWeather(results){
-  lastWeatherResults=results;
-  const carousel=document.getElementById('wx-carousel');
-  const dotsEl=document.getElementById('wx-dots');
-  carousel.innerHTML='';
-  dotsEl.innerHTML='';
-
-  // Build slides — 3 groups
-  WX_GROUPS.forEach((group,si)=>{
-    const slide=document.createElement('div');
-    slide.className='wx-slide'+(si===0?' active':'');
-    slide.id='wx-slide-'+si;
-    let html='';
-    group.forEach(idx=>{
-      if(results[idx]) html+=buildLocationCard(results[idx]);
-    });
-    slide.innerHTML=html;
+function renderWeather(results) {
+  lastWeatherResults = results;
+  const carousel = document.getElementById('wx-carousel');
+  const dotsEl   = document.getElementById('wx-dots');
+  carousel.innerHTML = ''; dotsEl.innerHTML = '';
+  WX_GROUPS.forEach((group, si) => {
+    const slide = document.createElement('div');
+    slide.className = 'wx-slide' + (si===0?' active':''); slide.id = 'wx-slide-'+si;
+    slide.innerHTML = group.map(idx => results[idx] ? buildLocationCard(results[idx]) : '').join('');
     carousel.appendChild(slide);
-
-    // Dot
-    const dot=document.createElement('div');
-    dot.className='wx-dot'+(si===0?' active':'');
-    dot.onclick=()=>goWxSlide(si,true);
+    const dot = document.createElement('div');
+    dot.className = 'wx-dot' + (si===0?' active':'');
+    dot.onclick = () => goWxSlide(si, true);
     dotsEl.appendChild(dot);
   });
-
-  wxSlide=0;
-  resetWxTimer();
-  animateWxProgress();
+  wxSlide = 0; wxProgStart = Date.now();
+  resetWxTimer(); animateWxProgress();
+  stampWeatherUpdate();
 }
 
-function goWxSlide(idx, manual=false){
-  document.querySelectorAll('.wx-slide').forEach((s,i)=>s.classList.toggle('active',i===idx));
-  document.querySelectorAll('.wx-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
-  wxSlide=idx;
-  wxProgStart=Date.now();
-  if(manual){resetWxTimer();}
+function goWxSlide(idx, manual=false) {
+  document.querySelectorAll('.wx-slide').forEach((s,i) => s.classList.toggle('active', i===idx));
+  document.querySelectorAll('.wx-dot').forEach((d,i)   => d.classList.toggle('active', i===idx));
+  wxSlide = idx; wxProgStart = Date.now();
+  if (manual) resetWxTimer();
 }
-
-function resetWxTimer(){
+function resetWxTimer() {
   clearInterval(wxTimer);
-  wxTimer=setInterval(()=>goWxSlide((wxSlide+1)%WX_GROUPS.length),WX_ROTATE_MS);
+  wxTimer = setInterval(() => goWxSlide((wxSlide+1) % WX_GROUPS.length), WX_ROTATE_MS);
 }
-
-function animateWxProgress(){
-  const fill=document.getElementById('wx-progress-fill'); if(!fill)return;
-  const pct=Math.min((Date.now()-wxProgStart)/WX_ROTATE_MS*100,100);
-  fill.style.width=pct+'%'; if(pct>=100)wxProgStart=Date.now();
+function animateWxProgress() {
+  const fill = document.getElementById('wx-progress-fill'); if(!fill) return;
+  const pct = Math.min((Date.now()-wxProgStart)/WX_ROTATE_MS*100, 100);
+  fill.style.width = pct+'%'; if(pct>=100) wxProgStart = Date.now();
   requestAnimationFrame(animateWxProgress);
 }
 
-async function loadAllWeather(){
-  document.getElementById('wx-carousel').innerHTML='<div class="wx-loading">Fetching weather for 7 locations…</div>';
-  const results=await Promise.all(LOCATIONS.map(fetchWeather));
+async function loadAllWeather() {
+  const results = await Promise.all(LOCATIONS.map(fetchWeather));
   renderWeather(results);
 }
 
-// ══ INIT ══
-initCropData(); buildGrid(); progStart=Date.now(); animateProgress();
-document.getElementById('last-updated').textContent=new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'})+' CDT';
+// ══════════════════════════════════════
+// INIT & AUTO-REFRESH INTERVALS
+// ══════════════════════════════════════
+initCropData();
+buildGrid();
+progStart = Date.now();
+animateProgress();
+
 loadAllWeather();
-setInterval(refreshAllMarkets,60*60*1000);
-setInterval(loadAllWeather,30*60*1000);
+
+// Markets: refresh every hour (no page reload needed)
+setInterval(refreshAllMarkets, 60 * 60 * 1000);
+
+// Weather: refresh every 30 minutes (no page reload needed)
+setInterval(loadAllWeather, 30 * 60 * 1000);
+
+// Midnight full reload for 24/7 display hygiene
+scheduleMidnightReload();
+
 </script>
 </body>
 </html>
