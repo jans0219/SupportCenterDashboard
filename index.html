@@ -257,12 +257,13 @@ let chartMode   = 'daily';
 async function fetchYahooChart(symbol, range, interval) {
   // range:    '1d' = today, '1y' = 12 months
   // interval: '5m' = 5-minute bars (daily), '1mo' = monthly (12-month)
+
 const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=${range}&interval=${interval}&includePrePost=false`;
 const proxyUrl = `https://corsproxy.io/?url=${encodeURIComponent(yahooUrl)}`;
 const res = await fetch(proxyUrl, {
   headers: { 'Accept': 'application/json' }
 });
-  });
+ 
   if (!res.ok) throw new Error(`Yahoo HTTP ${res.status} for ${symbol}`);
   const json = await res.json();
   const result = json?.chart?.result?.[0];
