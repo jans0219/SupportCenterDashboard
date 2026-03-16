@@ -1,0 +1,39 @@
+name: Fetch Market Data
+
+on:
+  schedule:
+    # Runs every 6 hours — cron is UTC
+    # 6am, 12pm, 6pm, midnight UTC = roughly market hours coverage CT
+    - cron: '0 6,12,18,0 * * *'
+  
+  # Also allows you to trigger it manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  fetch-data:
+    runs-on: ubuntu-latest
+    
+    permissions:
+      contents: write  # needed to commit the JSON file back to repo
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch market data from FRED
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: python scripts/fetch_data.py
+
+      - name: Commit and push updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/market-data.json
+          git diff --staged --quiet || git commit -m "Auto-update market data $(date -u '+%Y-%m-%d %H:%M UTC')"
+          git push
