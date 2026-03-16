@@ -107,34 +107,49 @@ def build_output():
 ]
 
     commodities = {}
-    for symbol, name, exchange, unit in SYMBOLS:
-        print(f"Fetching Yahoo Finance daily: {symbol}...")
-        daily_result   = fetch_yahoo(symbol, range_param='1d', interval='5m')
-        time.sleep(0.5)  # be polite to Yahoo
-        print(f"Fetching Yahoo Finance monthly: {symbol}...")
-        monthly_result = fetch_yahoo(symbol, range_param='1y', interval='1mo')
-        time.sleep(0.5)
+    for symbol, name, exchange, unit, is_cents in SYMBOLS:
+    print(f"Fetching Yahoo Finance daily: {symbol}...")
+    daily_result   = fetch_yahoo(symbol, range_param='1d', interval='5m')
+    time.sleep(0.5)
+    print(f"Fetching Yahoo Finance monthly: {symbol}...")
+    monthly_result = fetch_yahoo(symbol, range_param='1y', interval='1mo')
+    time.sleep(0.5)
 
-        daily_data   = extract_chart_data(daily_result,   symbol)
-        monthly_data = extract_chart_data(monthly_result, symbol)
+    daily_data   = extract_chart_data(daily_result,   symbol)
+    monthly_data = extract_chart_data(monthly_result, symbol)
 
-        commodities[symbol] = {
-            'name':     name,
-            'exchange': exchange,
-            'unit':     unit,
-            # Current price info comes from daily fetch
-            'currentPrice': daily_data.get('currentPrice'),
-            'prevClose':    daily_data.get('prevClose'),
-            'change':       daily_data.get('change'),
-            'pct':          daily_data.get('pct'),
-            'marketState':  daily_data.get('marketState', ''),
-            'error':        daily_data.get('error', False),
-            'errorMsg':     daily_data.get('errorMsg', ''),
-            # Chart data
-            'dailyPairs':   daily_data.get('pairs', []),
-            'monthlyPairs': monthly_data.get('pairs', []),
-        }
-        print(f"  {symbol}: price={daily_data.get('currentPrice')} change={daily_data.get('change')} daily_pts={len(daily_data.get('pairs',[]))} monthly_pts={len(monthly_data.get('pairs',[]))}")
+    # Convert cents to dollars for grain contracts
+    divisor = 100.0 if is_cents else 1.0
+
+    def convert_price(p):
+        if p is None: return None
+        return round(p / divisor, 4)
+
+    def convert_pairs(pairs):
+        return [
+            {**pt, 'c': round(pt['c'] / divisor, 4),
+                   'o': round(pt['o'] / divisor, 4) if pt.get('o') is not None else None,
+                   'h': round(pt['h'] / divisor, 4) if pt.get('h') is not None else None,
+                   'l': round(pt['l'] / divisor, 4) if pt.get('l') is not None else None,
+            }
+            for pt in pairs
+        ]
+
+    commodities[symbol] = {
+        'name':         name,
+        'exchange':     exchange,
+        'unit':         unit,
+        'currentPrice': convert_price(daily_data.get('currentPrice')),
+        'prevClose':    convert_price(daily_data.get('prevClose')),
+        'change':       convert_price(daily_data.get('change')),
+        'pct':          daily_data.get('pct'),   # pct is already correct — ratio doesn't change
+        'marketState':  daily_data.get('marketState', ''),
+        'error':        daily_data.get('error', False),
+        'errorMsg':     daily_data.get('errorMsg', ''),
+        'dailyPairs':   convert_pairs(daily_data.get('pairs', [])),
+        'monthlyPairs': convert_pairs(monthly_data.get('pairs', [])),
+    }
+    print(f"  {symbol}: price={commodities[symbol]['currentPrice']} change={commodities[symbol]['change']} pct={commodities[symbol]['pct']}%")
 
     # ── FRED ──
     print("Fetching FRED WPU011306 (Potatoes PPI)...")
