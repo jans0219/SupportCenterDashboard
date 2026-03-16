@@ -13,7 +13,6 @@
   }
   body { font-family:'Segoe UI',Arial,sans-serif; background:var(--white); color:var(--text-dark); height:100vh; width:100vw; overflow:hidden; display:flex; flex-direction:column; }
 
-  /* HEADER */
   header { background:var(--green); color:white; display:flex; align-items:center; justify-content:space-between; padding:0 16px; height:64px; flex-shrink:0; border-bottom:4px solid var(--yellow); }
   .header-left { display:flex; align-items:center; gap:12px; }
   .cb-logo-wrap { background:white; border-radius:4px; padding:4px 8px; height:48px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -34,12 +33,11 @@
   .clock-updated { font-size:0.58rem; color:rgba(255,255,255,0.6); font-style:italic; }
   .clock-updated span { color:var(--yellow); font-style:normal; font-weight:600; }
 
-  /* MAIN */
   .main-content { display:flex; flex:1; overflow:hidden; }
 
   /* MARKETS */
   .markets-panel { flex:1; display:flex; flex-direction:column; padding:8px 8px 6px 10px; overflow:hidden; border-right:2px solid var(--border); }
-  .section-title { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--green); border-bottom:2px solid var(--yellow); padding-bottom:3px; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+  .section-title { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--green); border-bottom:2px solid var(--yellow); padding-bottom:3px; margin-bottom:6px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
   .market-status { width:7px; height:7px; border-radius:50%; background:#27ae60; display:inline-block; animation:pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
@@ -49,22 +47,23 @@
   .tile-crop-tabs { display:flex; gap:4px; }
   .tile-tab { background:rgba(255,255,255,0.2); border:none; border-radius:3px; color:rgba(255,255,255,0.8); font-size:0.58rem; font-weight:600; padding:2px 8px; cursor:pointer; transition:all 0.2s; text-transform:uppercase; }
   .tile-tab.active { background:var(--yellow); color:var(--dark-green); }
-  .tile-label { font-size:0.56rem; color:rgba(255,255,255,0.65); font-style:italic; white-space:nowrap; }
+  .tile-price-badge { display:flex; align-items:center; gap:5px; }
+  .tile-price { font-size:0.88rem; font-weight:800; color:white; font-variant-numeric:tabular-nums; }
+  .tile-change { font-size:0.6rem; font-weight:700; padding:1px 5px; border-radius:3px; }
+  .tile-change.up   { background:#d4edda; color:#155724; }
+  .tile-change.down { background:#f8d7da; color:#721c24; }
+  .tile-change.flat { background:#e2e3e5; color:#383d41; }
+  .tile-chart { flex:1; position:relative; min-height:0; padding:4px; }
+  .tile-chart canvas { width:100%!important; height:100%!important; }
+  .tile-meta { font-size:0.53rem; color:#999; padding:2px 8px; background:var(--gray); flex-shrink:0; display:flex; justify-content:space-between; border-top:1px solid var(--border); }
+  .tile-loading { flex:1; display:flex; align-items:center; justify-content:center; color:#999; font-size:0.72rem; }
+  .tile-error { flex:1; display:flex; align-items:center; justify-content:center; color:#c0392b; font-size:0.65rem; padding:8px; text-align:center; line-height:1.5; }
 
-  /* CME iframe container */
-  .cme-container { flex:1; position:relative; min-height:0; overflow:hidden; background:#fff; }
-  .cme-container iframe { width:100%; height:100%; border:none; display:block; }
-  .cme-loading { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:0.7rem; color:#999; background:#fff; }
-
-  /* ── CONTRACT ROLL NOTICE ── */
-  .tile-footer { font-size:0.5rem; color:#aaa; padding:2px 8px; background:var(--gray); flex-shrink:0; display:flex; justify-content:space-between; border-top:1px solid var(--border); }
-
-  /* FRED/AMS data tile */
+  /* FRED/AMS tile */
   .data-tile-body { flex:1; display:flex; flex-direction:column; justify-content:center; padding:10px 14px; gap:7px; overflow:hidden; }
   .data-loading { text-align:center; color:#999; font-size:0.72rem; padding:12px; }
   .data-error   { color:#c0392b; font-size:0.65rem; padding:8px 10px; line-height:1.6; }
   .data-error a { color:#2980b9; }
-  .data-error code { background:#f4f4f4; padding:1px 4px; border-radius:3px; font-size:0.6rem; }
   .data-row { display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid var(--gray); padding-bottom:5px; gap:8px; }
   .data-row:last-child { border-bottom:none; padding-bottom:0; }
   .data-row-label { font-size:0.63rem; color:var(--text-mid); font-weight:600; text-transform:uppercase; letter-spacing:0.3px; flex-shrink:0; }
@@ -108,7 +107,6 @@
   .gdu-since { font-size:0.5rem; color:#888; }
   .wx-loading { text-align:center; color:#999; font-size:0.7rem; padding:8px; }
 
-  /* FOOTER */
   footer { height:36px; background:var(--dark-green); color:rgba(255,255,255,0.75); font-size:0.68rem; display:flex; align-items:center; justify-content:space-between; padding:0 18px; flex-shrink:0; border-top:4px solid var(--yellow); }
   .footer-left { display:flex; align-items:center; gap:6px; }
   .footer-dot { color:var(--yellow); }
@@ -143,103 +141,25 @@
     <div class="header-clock">
       <div class="clock-time"    id="clock-time">--:--:-- --</div>
       <div class="clock-date"    id="clock-date">---</div>
-      <div class="clock-updated">Page loaded: <span id="page-loaded">--</span></div>
+      <div class="clock-updated">Mkt fetched: <span id="mkt-updated">--</span></div>
     </div>
   </div>
 </header>
 
 <div class="main-content">
-
-  <!-- MARKETS -->
   <div class="markets-panel">
     <div class="section-title">
       <span class="market-status"></span>
       Commodity Markets &nbsp;·&nbsp;
       <span id="chart-mode-label">Daily</span> &nbsp;·&nbsp;
-      CME/CBOT via cmegroup.com (delayed) &nbsp;·&nbsp;
-      <span style="color:#e67e22;font-style:italic;font-weight:400;text-transform:none;letter-spacing:0">
-        ⚠ Update contract months on rollover — see tile footers
-      </span>
+      Yahoo Finance (unofficial, delayed) &nbsp;·&nbsp;
+      Potato/Barley: FRED via GitHub Actions
     </div>
+    <div class="commodity-grid" id="commodity-grid">
+      <!-- Tiles built by JS -->
+    </div>
+  </div>
 
-    <div class="commodity-grid">
-
-      <!-- TILE 0: Corn / Soybeans -->
-      <div class="commodity-tile">
-        <div class="tile-header">
-          <div class="tile-crop-tabs">
-            <button class="tile-tab active" id="t0-tab0" onclick="switchCME(0,0)">Corn</button>
-            <button class="tile-tab"        id="t0-tab1" onclick="switchCME(0,1)">Soybeans</button>
-          </div>
-          <span class="tile-label" id="t0-label">Corn · ZCK26 · May 2026</span>
-        </div>
-        <div class="cme-container" id="cme-0">
-          <div class="cme-loading">Loading CME chart…</div>
-        </div>
-        <div class="tile-footer">
-          <span>CBOT · 10-min delayed</span>
-          <span id="t0-contract">ZCK26 / ZSK26 — roll ~Mar 14 · Jul 14 · Nov 14</span>
-        </div>
-      </div>
-
-      <!-- TILE 1: Soft White Wheat / Hard Red Spring Wheat -->
-      <div class="commodity-tile">
-        <div class="tile-header">
-          <div class="tile-crop-tabs">
-            <button class="tile-tab active" id="t1-tab0" onclick="switchCME(1,0)">Soft Wheat</button>
-            <button class="tile-tab"        id="t1-tab1" onclick="switchCME(1,1)">Hard Red</button>
-          </div>
-          <span class="tile-label" id="t1-label">Soft Wht Wheat · ZWK26 · May 2026</span>
-        </div>
-        <div class="cme-container" id="cme-1">
-          <div class="cme-loading">Loading CME chart…</div>
-        </div>
-        <div class="tile-footer">
-          <span>CBOT / MGE · 10-min delayed</span>
-          <span id="t1-contract">ZWK26 / MWK26 — roll ~Mar 14 · May 14 · Jul 14</span>
-        </div>
-      </div>
-
-      <!-- TILE 2: Live Cattle / Lean Hogs -->
-      <div class="commodity-tile">
-        <div class="tile-header">
-          <div class="tile-crop-tabs">
-            <button class="tile-tab active" id="t2-tab0" onclick="switchCME(2,0)">Live Cattle</button>
-            <button class="tile-tab"        id="t2-tab1" onclick="switchCME(2,1)">Lean Hogs</button>
-          </div>
-          <span class="tile-label" id="t2-label">Live Cattle · LEJ26 · Apr 2026</span>
-        </div>
-        <div class="cme-container" id="cme-2">
-          <div class="cme-loading">Loading CME chart…</div>
-        </div>
-        <div class="tile-footer">
-          <span>CME · 10-min delayed</span>
-          <span id="t2-contract">LEJ26 / HEJ26 — roll ~Feb 28 · Apr 30 · Jun 30</span>
-        </div>
-      </div>
-
-      <!-- TILE 3: Potatoes / Barley — USDA AMS + FRED fallback -->
-      <div class="commodity-tile">
-        <div class="tile-header">
-          <div class="tile-crop-tabs">
-            <button class="tile-tab active" id="tab-potato" onclick="showDataTile('potato')">Potatoes</button>
-            <button class="tile-tab"        id="tab-barley" onclick="showDataTile('barley')">Barley</button>
-          </div>
-          <span class="tile-label" id="tile-3-label">SE Idaho · USDA AMS / FRED</span>
-        </div>
-        <div id="data-tile-potato" class="data-tile-body">
-          <div class="data-loading">Fetching potato data…</div>
-        </div>
-        <div id="data-tile-barley" class="data-tile-body" style="display:none">
-          <div class="data-loading">Fetching barley data…</div>
-        </div>
-        <div class="data-source-badge" id="tile-3-source">Source: attempting USDA AMS…</div>
-      </div>
-
-    </div><!-- end commodity-grid -->
-  </div><!-- end markets-panel -->
-
-  <!-- WEATHER -->
   <div class="weather-panel">
     <div class="section-title">
       Weather &amp; GDUs &nbsp;·&nbsp;
@@ -249,7 +169,6 @@
     <div class="wx-dots" id="wx-dots"></div>
     <div class="wx-progress-bar"><div class="wx-progress-fill" id="wx-progress-fill"></div></div>
   </div>
-
 </div>
 
 <footer>
@@ -263,262 +182,344 @@
     <span>Wyoming</span><span class="footer-dot">·</span>
     <span>Idaho</span>
   </div>
-  <div class="footer-right">Futures delayed ≥10 min · Weather via NWS · Potato/Barley via USDA AMS/FRED · GDU Base 50°F</div>
+  <div class="footer-right">Futures delayed · Weather via NWS · Potato/Barley via FRED · GDU Base 50°F</div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 
 // ══════════════════════════════════════
-// MIDNIGHT AUTO-RELOAD
+// MIDNIGHT RELOAD
 // ══════════════════════════════════════
 function scheduleMidnightReload() {
   const now = new Date();
-  const chi = new Date(now.toLocaleString('en-US', {timeZone:'America/Chicago'}));
-  const ms  = ((23 - chi.getHours()) * 3600 + (59 - chi.getMinutes()) * 60 + (60 - chi.getSeconds())) * 1000;
-  setTimeout(() => location.reload(), ms);
+  const chi = new Date(now.toLocaleString('en-US',{timeZone:'America/Chicago'}));
+  const ms  = ((23-chi.getHours())*3600+(59-chi.getMinutes())*60+(60-chi.getSeconds()))*1000;
+  setTimeout(()=>location.reload(), ms);
 }
 scheduleMidnightReload();
 
 // ══════════════════════════════════════
 // CLOCK
 // ══════════════════════════════════════
-function getCDTZone() {
-  const now = new Date();
-  const jan = new Date(now.getFullYear(),0,1), jul = new Date(now.getFullYear(),6,1);
-  return now.getTimezoneOffset() < Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset()) ? 'CDT' : 'CST';
+function getCDTZone(){
+  const now=new Date(),jan=new Date(now.getFullYear(),0,1),jul=new Date(now.getFullYear(),6,1);
+  return now.getTimezoneOffset()<Math.max(jan.getTimezoneOffset(),jul.getTimezoneOffset())?'CDT':'CST';
 }
-function updateClock() {
-  const now = new Date(), o = {timeZone:'America/Chicago'};
-  document.getElementById('clock-time').textContent =
-    now.toLocaleTimeString('en-US', {...o, hour:'2-digit', minute:'2-digit', second:'2-digit'}) + ' ' + getCDTZone();
-  document.getElementById('clock-date').textContent =
-    now.toLocaleDateString('en-US', {...o, weekday:'long', month:'long', day:'numeric', year:'numeric'});
+function updateClock(){
+  const now=new Date(),o={timeZone:'America/Chicago'};
+  document.getElementById('clock-time').textContent=
+    now.toLocaleTimeString('en-US',{...o,hour:'2-digit',minute:'2-digit',second:'2-digit'})+' '+getCDTZone();
+  document.getElementById('clock-date').textContent=
+    now.toLocaleDateString('en-US',{...o,weekday:'long',month:'long',day:'numeric',year:'numeric'});
 }
-setInterval(updateClock, 1000); updateClock();
-
-// Stamp page load time — NOT market data update time
-// CME widgets manage their own data refresh
-const loadTime = new Date().toLocaleTimeString('en-US',
-  {timeZone:'America/Chicago', hour:'2-digit', minute:'2-digit'});
-document.getElementById('page-loaded').textContent = loadTime + ' ' + getCDTZone();
+setInterval(updateClock,1000); updateClock();
 
 // ══════════════════════════════════════
-// CME WIDGET CONFIGURATION
+// COMMODITY CONFIG
+// Yahoo Finance symbols for futures
 // ══════════════════════════════════════
-// Chart type parameter:
-//   type=p  = candlestick (OHLC)
-//   type=l  = line chart  ← preferred per user
-//   type=b  = bar chart
-//
-// Interval parameter:
-//   interval=1   = 1-day bars (Daily view)
-//   interval=W   = Weekly bars
-//   interval=M   = Monthly bars (12-Month view)
-//
-// Contract month codes: F=Jan G=Feb H=Mar J=Apr K=May M=Jun
-//                       N=Jul Q=Aug U=Sep V=Oct X=Nov Z=Dec
-//
-// ⚠ IMPORTANT — CONTRACT ROLL DATES:
-// Update the 'contract' field below when front month rolls.
-// Grain contracts typically roll ~2 weeks before expiry.
-// Livestock contracts roll ~last day of month prior to delivery.
-// Current as of: March 2026
-// ══════════════════════════════════════
-
-const CME_BASE = 'https://www.cmegroup.com/apps/cmegroup/widgets/esignal-charts.html';
-
-// Each tile has two crops; tileState tracks which is active
-const TILE_CONFIG = [
+const TILE_PAIRS = [
   {
+    tileId: 0,
     crops: [
-      { label:'Corn · ZCK26 · May 2026',          code:'ZC', contract:'ZCK26', monthYear:'K6', exchange:'XCBT' },
-      { label:'Soybeans · ZSK26 · May 2026',       code:'ZS', contract:'ZSK26', monthYear:'K6', exchange:'XCBT' },
+      { id:'corn',   name:'Corn',            symbol:'ZC=F', unit:'/bu', exchange:'CBOT' },
+      { id:'soy',    name:'Soybeans',         symbol:'ZS=F', unit:'/bu', exchange:'CBOT' },
     ]
   },
   {
+    tileId: 1,
     crops: [
-      { label:'Soft Wht Wheat · ZWK26 · May 2026', code:'ZW', contract:'ZWK26', monthYear:'K6', exchange:'XCBT' },
-      { label:'Hard Red Wheat · MWK26 · May 2026', code:'MW', contract:'MWK26', monthYear:'K6', exchange:'XMGE' },
+      { id:'sww',    name:'Soft Wht Wheat',   symbol:'ZW=F', unit:'/bu', exchange:'CBOT' },
+      { id:'hrw',    name:'Hard Red Wheat',   symbol:'KE=F', unit:'/bu', exchange:'KCBT' },
     ]
   },
   {
+    tileId: 2,
     crops: [
-      { label:'Live Cattle · LEJ26 · Apr 2026',    code:'LE', contract:'LEJ26', monthYear:'J6', exchange:'XCME' },
-      { label:'Lean Hogs · HEJ26 · Apr 2026',      code:'HE', contract:'HEJ26', monthYear:'J6', exchange:'XCME' },
+      { id:'cattle', name:'Live Cattle',      symbol:'LE=F', unit:'/cwt',exchange:'CME'  },
+      { id:'hogs',   name:'Lean Hogs',        symbol:'HE=F', unit:'/cwt',exchange:'CME'  },
     ]
   },
 ];
 
-let tileActive = {0:0, 1:0, 2:0};
-let chartInterval = '1'; // '1' = daily, 'M' = monthly
+// NOTE: Hard Red Spring Wheat (MGE) is not available on Yahoo Finance.
+// KE=F is Hard Red Winter Wheat (KCBT) — the closest available proxy.
+// If MGE/HRSP is critical, this would need the GitHub Actions data approach.
 
-function buildCMEUrl(crop, interval) {
-  const params = new URLSearchParams({
-    type:         'l',           // line chart
-    code:         crop.code,
-    title:        `${crop.contract}`,
-    venue:        '0',
-    monthYear:    crop.monthYear,
-    year:         '2026',
-    exchangeCode: crop.exchange,
-    interval:     interval,
+let cropData    = {};  // symbol -> { price, change, pct, timestamps[], prices[] }
+let tileActive  = {0:0, 1:0, 2:0};
+let tileCharts  = {};
+let chartMode   = 'daily';
+
+// ── Yahoo Finance fetch ──
+// Uses the v8 chart endpoint which returns CORS headers
+async function fetchYahooChart(symbol, range, interval) {
+  // range:    '1d' = today, '1y' = 12 months
+  // interval: '5m' = 5-minute bars (daily), '1mo' = monthly (12-month)
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?range=${range}&interval=${interval}&includePrePost=false`;
+  const res = await fetch(url, {
+    headers: { 'Accept': 'application/json' }
   });
-  return `${CME_BASE}?${params.toString()}`;
+  if (!res.ok) throw new Error(`Yahoo HTTP ${res.status} for ${symbol}`);
+  const json = await res.json();
+  const result = json?.chart?.result?.[0];
+  if (!result) throw new Error(`No data returned for ${symbol}`);
+  return result;
 }
 
-function loadCMETile(tileIdx) {
-  const container = document.getElementById('cme-' + tileIdx);
-  if (!container) return;
-  const crop = TILE_CONFIG[tileIdx].crops[tileActive[tileIdx]];
-  const url  = buildCMEUrl(crop, chartInterval);
+async function fetchAllCrops() {
+  const range    = chartMode === 'daily' ? '1d' : '1y';
+  const interval = chartMode === 'daily' ? '5m' : '1mo';
 
-  container.innerHTML = `<div class="cme-loading">Loading ${crop.contract}…</div>`;
+  const fetches = TILE_PAIRS.flatMap(tp =>
+    tp.crops.map(async crop => {
+      try {
+        const result = await fetchYahooChart(crop.symbol, range, interval);
+        const meta   = result.meta;
+        const timestamps = result.timestamp || [];
+        const closes     = result.indicators?.quote?.[0]?.close || [];
 
-  // Small delay so loading message is visible before iframe blocks rendering
-  setTimeout(() => {
-    const iframe = document.createElement('iframe');
-    iframe.src = url;
-    iframe.style.cssText = 'width:100%;height:100%;border:none;display:block;';
-    iframe.title = crop.label;
-    // If CME blocks the embed, show a clear error rather than blank
-    iframe.onerror = () => {
-      container.innerHTML = `<div class="cme-loading" style="color:#c0392b;padding:12px;text-align:center;">
-        CME widget blocked.<br>
-        <a href="${url}" target="_blank" style="color:#2980b9;font-size:0.65rem;">Open chart in new tab ↗</a>
-      </div>`;
-    };
-    container.innerHTML = '';
-    container.appendChild(iframe);
-    // Update label
-    document.getElementById('t' + tileIdx + '-label').textContent = crop.label;
-  }, 150);
+        // Filter out null values
+        const pairs = timestamps
+          .map((t,i) => ({ t, v: closes[i] }))
+          .filter(p => p.v !== null && p.v !== undefined);
+
+        const currentPrice = meta.regularMarketPrice ?? pairs[pairs.length-1]?.v;
+        const prevClose    = meta.chartPreviousClose  ?? meta.previousClose;
+        const change       = currentPrice != null && prevClose != null
+          ? currentPrice - prevClose : null;
+        const pct          = change != null && prevClose
+          ? (change / prevClose) * 100 : null;
+
+        cropData[crop.symbol] = {
+          price:      currentPrice,
+          prevClose,
+          change,
+          pct,
+          pairs,      // [{t: unix timestamp, v: price}]
+          meta,
+          error:      false,
+        };
+      } catch(e) {
+        console.warn(`Failed to fetch ${crop.symbol}:`, e.message);
+        cropData[crop.symbol] = { error: true, errorMsg: e.message };
+      }
+    })
+  );
+
+  await Promise.all(fetches);
+
+  const t = new Date().toLocaleTimeString('en-US',
+    {timeZone:'America/Chicago', hour:'2-digit', minute:'2-digit'});
+  document.getElementById('mkt-updated').textContent = t + ' ' + getCDTZone();
 }
 
-function switchCME(tileIdx, cropIdx) {
-  tileActive[tileIdx] = cropIdx;
-  // Update tab active states
-  document.getElementById(`t${tileIdx}-tab0`).classList.toggle('active', cropIdx === 0);
-  document.getElementById(`t${tileIdx}-tab1`).classList.toggle('active', cropIdx === 1);
-  loadCMETile(tileIdx);
+// ── Build grid ──
+function buildGrid() {
+  const grid = document.getElementById('commodity-grid');
+  grid.innerHTML = '';
+  TILE_PAIRS.forEach(tp => {
+    const tile = document.createElement('div');
+    tile.className = 'commodity-tile';
+    tile.id = 'tile-' + tp.tileId;
+    tile.innerHTML = buildTileHTML(tp.tileId);
+    grid.appendChild(tile);
+  });
+  TILE_PAIRS.forEach(tp => drawTileChart(tp.tileId));
+}
+
+function buildTileHTML(ti) {
+  const tp   = TILE_PAIRS[ti];
+  const ai   = tileActive[ti];
+  const crop = tp.crops[ai];
+  const d    = cropData[crop.symbol];
+  const isL  = crop.id === 'cattle' || crop.id === 'hogs';
+
+  let priceBadge = '';
+  if (!d || d.error) {
+    priceBadge = `<span style="font-size:0.6rem;color:rgba(255,255,255,0.5)">
+      ${d?.errorMsg ? 'fetch failed' : 'loading…'}
+    </span>`;
+  } else if (d.price != null) {
+    const priceStr  = isL ? d.price.toFixed(2) : d.price.toFixed(4);
+    const changeStr = d.change != null ? Math.abs(d.change).toFixed(isL?2:4) : '—';
+    const pctStr    = d.pct    != null ? Math.abs(d.pct).toFixed(2) + '%' : '';
+    const dir = d.change > 0 ? 'up' : d.change < 0 ? 'down' : 'flat';
+    const sign= d.change > 0 ? '▲' : d.change < 0 ? '▼' : '—';
+    priceBadge = `
+      <span class="tile-price">$${priceStr}<span style="font-size:0.52rem;font-weight:400;color:rgba(255,255,255,0.7)">${crop.unit}</span></span>
+      <span class="tile-change ${dir}">${sign}${changeStr} (${d.change>0?'+':''}${d.pct!=null?d.pct.toFixed(2):'—'}%)</span>`;
+  }
+
+  const tabs = tp.crops.map((c,i) =>
+    `<button class="tile-tab ${i===ai?'active':''}" onclick="switchTileCrop(${ti},${i})">${c.name.split(' ')[0]}</button>`
+  ).join('');
+
+  return `
+    <div class="tile-header">
+      <div class="tile-crop-tabs">${tabs}</div>
+      <div class="tile-price-badge">${priceBadge}</div>
+    </div>
+    <div class="tile-chart"><canvas id="chart-tile-${ti}"></canvas></div>
+    <div class="tile-meta">
+      <span>${crop.exchange} · ${crop.symbol} · ${crop.name}</span>
+      <span>${chartMode === 'daily' ? 'Intraday' : '12-Month'} · Yahoo Finance</span>
+    </div>`;
+}
+
+function drawTileChart(ti) {
+  const tp   = TILE_PAIRS[ti];
+  const crop = tp.crops[tileActive[ti]];
+  const d    = cropData[crop.symbol];
+  const ctx  = document.getElementById('chart-tile-' + ti);
+  if (!ctx) return;
+  if (tileCharts[ti]) { tileCharts[ti].destroy(); delete tileCharts[ti]; }
+
+  // If no data yet, show loading state in the canvas area
+  if (!d || d.error || !d.pairs?.length) {
+    // Draw nothing — tile-meta will show the state
+    return;
+  }
+
+  const isL  = crop.id === 'cattle' || crop.id === 'hogs';
+  const isUp = (d.change ?? 0) >= 0;
+  const lc   = isUp ? '#27ae60' : '#e74c3c';
+
+  // Format labels
+  let labels, values;
+  if (chartMode === 'daily') {
+    labels = d.pairs.map(p => {
+      const dt = new Date(p.t * 1000);
+      return dt.toLocaleTimeString('en-US', {timeZone:'America/Chicago', hour:'2-digit', minute:'2-digit'});
+    });
+    values = d.pairs.map(p => p.v);
+  } else {
+    labels = d.pairs.map(p => {
+      const dt = new Date(p.t * 1000);
+      return dt.toLocaleDateString('en-US', {month:'short', year:'2-digit'});
+    });
+    values = d.pairs.map(p => p.v);
+  }
+
+  tileCharts[ti] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: values,
+        borderColor: lc,
+        backgroundColor: isUp ? 'rgba(39,174,96,0.08)' : 'rgba(231,76,60,0.08)',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.3,
+        pointRadius: chartMode === 'monthly' ? 3 : 0,
+        pointBackgroundColor: lc,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 300 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: c => ` $${parseFloat(c.raw).toFixed(isL?2:4)}${crop.unit}`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font:{size:8}, maxRotation:0, autoSkip:true, maxTicksLimit:8 }
+        },
+        y: {
+          grid: { color:'rgba(0,0,0,0.04)' },
+          ticks: { font:{size:8}, callback: v => '$'+parseFloat(v).toFixed(2) }
+        }
+      }
+    }
+  });
+}
+
+function switchTileCrop(ti, idx) {
+  tileActive[ti] = idx;
+  const tile = document.getElementById('tile-' + ti);
+  if (tileCharts[ti]) { tileCharts[ti].destroy(); delete tileCharts[ti]; }
+  tile.innerHTML = buildTileHTML(ti);
+  requestAnimationFrame(() => drawTileChart(ti));
 }
 
 function setChartMode(mode) {
-  chartInterval = mode === 'daily' ? '1' : 'M';
-  document.getElementById('btn-daily').classList.toggle('active',   mode === 'daily');
-  document.getElementById('btn-monthly').classList.toggle('active', mode === 'monthly');
-  document.getElementById('chart-mode-label').textContent = mode === 'daily' ? 'Daily' : '12-Month';
-  // Reload all three CME tiles with new interval
-  [0,1,2].forEach(i => loadCMETile(i));
+  chartMode = mode;
+  document.getElementById('btn-daily').classList.toggle('active',   mode==='daily');
+  document.getElementById('btn-monthly').classList.toggle('active', mode==='monthly');
+  document.getElementById('chart-mode-label').textContent = mode==='daily'?'Daily':'12-Month';
+  // Re-fetch with correct range/interval then redraw
+  fetchAllCrops().then(() => {
+    TILE_PAIRS.forEach(tp => {
+      const tile = document.getElementById('tile-'+tp.tileId);
+      if (tileCharts[tp.tileId]) { tileCharts[tp.tileId].destroy(); delete tileCharts[tp.tileId]; }
+      tile.innerHTML = buildTileHTML(tp.tileId);
+      requestAnimationFrame(() => drawTileChart(tp.tileId));
+    });
+  });
 }
 
-function initCMETiles() {
-  [0,1,2].forEach(i => loadCMETile(i));
-}
+// ══════════════════════════════════════
+// POTATO & BARLEY — read from GitHub
+// Pages hosted data/market-data.json
+// written by GitHub Actions + FRED
+// ══════════════════════════════════════
+let activeDataTile = 'potato';
 
-// ══════════════════════════════════════
-// FRED API KEY
-// Replace if you regenerate your key at fred.stlouisfed.org
-// ══════════════════════════════════════
-const FRED_API_KEY = '1e4d17925a207674f755cd02ae74cd62';
-
-// ══════════════════════════════════════
-// POTATOES — USDA AMS then FRED fallback
-// ══════════════════════════════════════
-async function fetchPotatoData() {
-  const el = document.getElementById('data-tile-potato');
-  el.innerHTML = '<div class="data-loading">Fetching USDA AMS Idaho potato data…</div>';
-  document.getElementById('tile-3-source').textContent = 'Attempting USDA AMS marsapi.ams.usda.gov…';
-
-  // ── Attempt 1: USDA AMS ──
+async function fetchLocalMarketData() {
+  // Path relative to GitHub Pages root
+  const url = './data/market-data.json';
   try {
-    const url = 'https://marsapi.ams.usda.gov/services/v1.2/reports/1079?q=commodity=Potatoes&sort_by=report_date&sort_order=desc&limit=5&api=1';
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('AMS HTTP ' + res.status);
+    const res  = await fetch(url + '?t=' + Date.now()); // cache-bust
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const json = await res.json();
-    const results = json?.results;
-    if (results && results.length > 0) {
-      renderPotatoAMS(results);
-      document.getElementById('tile-3-source').textContent =
-        'USDA AMS · Idaho/E. Oregon Shipping Point · Weekly · marsapi.ams.usda.gov';
-      return;
-    }
-    throw new Error('AMS returned no results');
-  } catch(e) {
-    console.warn('USDA AMS potato failed:', e.message);
-  }
-
-  // ── Attempt 2: FRED WPU011306 ──
-  try {
-    const fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=WPU011306&api_key=${FRED_API_KEY}&sort_order=desc&limit=14&file_type=json`;
-    const res  = await fetch(fredUrl);
-    if (!res.ok) throw new Error('FRED HTTP ' + res.status);
-    const json = await res.json();
-    const obs  = json?.observations?.filter(o => o.value !== '.');
-    if (!obs || obs.length < 2) throw new Error('FRED no data');
-    renderPotatoFRED(obs);
+    if (json.lastUpdated === 'pending') throw new Error('Data not yet fetched by Actions');
+    renderPotatoData(json.potato);
+    renderBarleyData(json.barley);
+    // Show when the data was last written by Actions
+    const updatedAt = new Date(json.lastUpdated).toLocaleString('en-US',
+      {timeZone:'America/Chicago', month:'short', day:'numeric',
+       hour:'2-digit', minute:'2-digit'});
     document.getElementById('tile-3-source').textContent =
-      'FRED WPU011306 · BLS PPI Potatoes · Monthly · ~4 wk lag · stlouisfed.org';
+      `FRED via GitHub Actions · last fetched: ${updatedAt} CT`;
   } catch(e) {
-    el.innerHTML = `<div class="data-error">
-      <strong>Data unavailable</strong><br>
-      USDA AMS: blocked (CORS)<br>
-      FRED: ${e.message}<br><br>
-      Sources:<br>
-      <a href="https://marsapi.ams.usda.gov" target="_blank">marsapi.ams.usda.gov</a><br>
-      <a href="https://fred.stlouisfed.org/series/WPU011306" target="_blank">FRED WPU011306</a><br>
-      <span style="color:#aaa">Last attempted: ${new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'})} ${getCDTZone()}</span>
-    </div>`;
-    document.getElementById('tile-3-source').textContent = 'Data unavailable — see tile for details';
+    const msg = e.message.includes('not yet fetched')
+      ? 'GitHub Actions has not run yet. Go to Actions tab in your repo and trigger "Fetch Market Data" manually.'
+      : `Could not load data/market-data.json — ${e.message}`;
+    document.getElementById('data-tile-potato').innerHTML =
+      `<div class="data-error"><strong>Data unavailable</strong><br>${msg}</div>`;
+    document.getElementById('data-tile-barley').innerHTML =
+      `<div class="data-error"><strong>Data unavailable</strong><br>${msg}</div>`;
+    document.getElementById('tile-3-source').textContent = 'Error loading local data file';
   }
 }
 
-function renderPotatoAMS(results) {
+function renderPotatoData(potatoObj) {
   const el  = document.getElementById('data-tile-potato');
-  const cur = results[0], prv = results[1] || null;
-  const curVal = parseFloat(cur.price || cur.avg_price);
-  const prvVal = prv ? parseFloat(prv.price || prv.avg_price) : null;
-
-  let html = `
-    <div class="data-row">
-      <div><div class="data-row-label">Current</div><div class="data-row-sub">${cur.report_date || '—'}</div></div>
-      <div style="text-align:right">
-        <div class="data-row-value">${isNaN(curVal) ? (cur.price || '—') : curVal.toFixed(2)}</div>
-        <div class="data-row-sub">${cur.unit || cur.price_unit || '$/cwt'}</div>
-      </div>
-    </div>`;
-
-  if (prv && !isNaN(curVal) && !isNaN(prvVal)) {
-    const diff = curVal - prvVal;
-    const pct  = ((diff / prvVal) * 100).toFixed(1);
-    const cls  = diff > 0 ? 'data-change-up' : diff < 0 ? 'data-change-down' : 'data-change-flat';
-    const sign = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
-    html += `
-      <div class="data-row">
-        <div><div class="data-row-label">Prior Week</div><div class="data-row-sub">${prv.report_date || '—'}</div></div>
-        <div style="text-align:right"><div class="data-row-value">${prvVal.toFixed(2)}</div></div>
-      </div>
-      <div class="data-row">
-        <div class="data-row-label">Wk/Wk Change</div>
-        <span class="${cls}">${sign} ${Math.abs(diff).toFixed(2)} (${diff>0?'+':''}${pct}%)</span>
-      </div>`;
+  const obs = potatoObj?.data || [];
+  if (!obs.length) {
+    el.innerHTML = `<div class="data-error">No potato data in market-data.json</div>`; return;
   }
-  html += `<div class="data-row"><span style="font-size:0.55rem;color:#aaa">Idaho/E. Oregon Shipping Point · USDA AMS Weekly</span></div>`;
-  el.innerHTML = html;
-}
-
-function renderPotatoFRED(obs) {
-  const el = document.getElementById('data-tile-potato');
   const cur = obs[0], prv = obs[1];
   const curVal = parseFloat(cur.value), prvVal = parseFloat(prv.value);
-  const diff = curVal - prvVal, pct = ((diff / prvVal) * 100).toFixed(1);
-  const cls  = diff > 0 ? 'data-change-up' : diff < 0 ? 'data-change-down' : 'data-change-flat';
-  const sign = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
+  const diff   = curVal - prvVal;
+  const pct    = ((diff/prvVal)*100).toFixed(1);
+  const cls    = diff>0?'data-change-up':diff<0?'data-change-down':'data-change-flat';
+  const sign   = diff>0?'▲':diff<0?'▼':'—';
 
-  // Look for same month prior year
+  // Year-over-year: find same month last year
   const curMonth = new Date(cur.date).getMonth();
-  const yoy = obs.find((o,i) => i > 0 &&
-    new Date(o.date).getMonth() === curMonth &&
-    new Date(o.date).getFullYear() === new Date(cur.date).getFullYear() - 1);
+  const yoy = obs.find((o,i) => i>0
+    && new Date(o.date).getMonth() === curMonth
+    && new Date(o.date).getFullYear() === new Date(cur.date).getFullYear()-1);
 
   let html = `
     <div class="data-row">
@@ -535,119 +536,39 @@ function renderPotatoFRED(obs) {
     </div>`;
 
   if (yoy) {
-    const yoyVal = parseFloat(yoy.value);
-    const yDiff  = curVal - yoyVal, yPct = ((yDiff/yoyVal)*100).toFixed(1);
-    const yCls   = yDiff > 0 ? 'data-change-up' : yDiff < 0 ? 'data-change-down' : 'data-change-flat';
-    const ySign  = yDiff > 0 ? '▲' : yDiff < 0 ? '▼' : '—';
-    html += `
-      <div class="data-row">
-        <div class="data-row-label">Yr/Yr Change</div>
-        <span class="${yCls}">${ySign} ${Math.abs(yDiff).toFixed(1)} pts (${yDiff>0?'+':''}${yPct}%)</span>
-      </div>`;
+    const yoyVal  = parseFloat(yoy.value);
+    const yDiff   = curVal-yoyVal, yPct=((yDiff/yoyVal)*100).toFixed(1);
+    const yCls    = yDiff>0?'data-change-up':yDiff<0?'data-change-down':'data-change-flat';
+    const ySign   = yDiff>0?'▲':yDiff<0?'▼':'—';
+    html += `<div class="data-row">
+      <div class="data-row-label">Yr/Yr Change</div>
+      <span class="${yCls}">${ySign} ${Math.abs(yDiff).toFixed(1)} pts (${yDiff>0?'+':''}${yPct}%)</span>
+    </div>`;
   }
   html += `<div class="data-row"><span style="font-size:0.52rem;color:#aaa">⚠ PPI index · not a cash price · ~4 wk lag · FRED WPU011306</span></div>`;
   el.innerHTML = html;
 }
 
-// ══════════════════════════════════════
-// BARLEY — USDA AMS then FRED fallback
-// ══════════════════════════════════════
-async function fetchBarleyData() {
-  const el = document.getElementById('data-tile-barley');
-  el.innerHTML = '<div class="data-loading">Fetching USDA AMS MT/ID barley data…</div>';
-
-  // ── Attempt 1: USDA AMS grain report ──
-  try {
-    const url = 'https://marsapi.ams.usda.gov/services/v1.2/reports/2437?q=commodity=Barley&sort_by=report_date&sort_order=desc&limit=5&api=1';
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('AMS HTTP ' + res.status);
-    const json = await res.json();
-    const results = json?.results;
-    if (results && results.length > 0) {
-      renderBarleyAMS(results);
-      document.getElementById('tile-3-source').textContent =
-        'USDA AMS · MT/ID Grain Report · Weekly · marsapi.ams.usda.gov';
-      return;
-    }
-    throw new Error('AMS barley no results');
-  } catch(e) {
-    console.warn('USDA AMS barley failed:', e.message);
-  }
-
-  // ── Attempt 2: FRED PBARLUSDA ──
-  try {
-    const fredUrl = `https://api.stlouisfed.org/fred/series/observations?series_id=PBARLUSDA&api_key=${FRED_API_KEY}&sort_order=desc&limit=5&file_type=json`;
-    const res  = await fetch(fredUrl);
-    if (!res.ok) throw new Error('FRED HTTP ' + res.status);
-    const json = await res.json();
-    const obs  = json?.observations?.filter(o => o.value !== '.');
-    if (!obs || obs.length < 2) throw new Error('FRED no data');
-    renderBarleyFRED(obs);
-    document.getElementById('tile-3-source').textContent =
-      'FRED PBARLUSDA · USDA Annual Avg Farm Price · stlouisfed.org';
-  } catch(e) {
-    el.innerHTML = `<div class="data-error">
-      <strong>Data unavailable</strong><br>
-      USDA AMS: blocked (CORS)<br>
-      FRED: ${e.message}<br><br>
-      Sources:<br>
-      <a href="https://marsapi.ams.usda.gov" target="_blank">marsapi.ams.usda.gov</a><br>
-      <a href="https://fred.stlouisfed.org/series/PBARLUSDA" target="_blank">FRED PBARLUSDA</a><br>
-      <span style="color:#aaa">Last attempted: ${new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'})} ${getCDTZone()}</span>
-    </div>`;
-    document.getElementById('tile-3-source').textContent = 'Data unavailable — see tile for details';
-  }
-}
-
-function renderBarleyAMS(results) {
+function renderBarleyData(barleyObj) {
   const el  = document.getElementById('data-tile-barley');
-  const cur = results[0], prv = results[1] || null;
-  const curVal = parseFloat(cur.price || cur.avg_price || cur.wtd_avg_price);
-  const prvVal = prv ? parseFloat(prv.price || prv.avg_price || prv.wtd_avg_price) : null;
-
-  let html = `
-    <div class="data-row">
-      <div><div class="data-row-label">Current Cash Bid</div><div class="data-row-sub">${cur.report_date || '—'} · ${cur.market_location_name || cur.office_city || 'MT/ID'}</div></div>
-      <div style="text-align:right">
-        <div class="data-row-value">${isNaN(curVal) ? (cur.price || '—') : '$'+curVal.toFixed(3)}</div>
-        <div class="data-row-sub">${cur.unit || cur.price_unit || '$/bu'}</div>
-      </div>
-    </div>`;
-
-  if (prv && !isNaN(curVal) && !isNaN(prvVal)) {
-    const diff = curVal - prvVal;
-    const pct  = ((diff / prvVal) * 100).toFixed(1);
-    const cls  = diff > 0 ? 'data-change-up' : diff < 0 ? 'data-change-down' : 'data-change-flat';
-    const sign = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
-    html += `
-      <div class="data-row">
-        <div><div class="data-row-label">Prior Week</div><div class="data-row-sub">${prv.report_date || '—'}</div></div>
-        <div style="text-align:right"><div class="data-row-value">$${prvVal.toFixed(3)}</div></div>
-      </div>
-      <div class="data-row">
-        <div class="data-row-label">Wk/Wk Change</div>
-        <span class="${cls}">${sign} $${Math.abs(diff).toFixed(3)}/bu (${diff>0?'+':''}${pct}%)</span>
-      </div>`;
+  const obs = barleyObj?.data || [];
+  if (!obs.length) {
+    el.innerHTML = `<div class="data-error">No barley data in market-data.json</div>`; return;
   }
-  html += `<div class="data-row"><span style="font-size:0.55rem;color:#aaa">MT/ID Cash Bid · USDA AMS Weekly Grain</span></div>`;
-  el.innerHTML = html;
-}
-
-function renderBarleyFRED(obs) {
-  const el = document.getElementById('data-tile-barley');
   const cur = obs[0], prv = obs[1];
   const curVal = parseFloat(cur.value), prvVal = parseFloat(prv.value);
-  const diff = curVal - prvVal, pct = ((diff / prvVal) * 100).toFixed(1);
-  const cls  = diff > 0 ? 'data-change-up' : diff < 0 ? 'data-change-down' : 'data-change-flat';
-  const sign = diff > 0 ? '▲' : diff < 0 ? '▼' : '—';
+  const diff   = curVal - prvVal;
+  const pct    = ((diff/prvVal)*100).toFixed(1);
+  const cls    = diff>0?'data-change-up':diff<0?'data-change-down':'data-change-flat';
+  const sign   = diff>0?'▲':diff<0?'▼':'—';
 
   const html = `
     <div class="data-row">
-      <div><div class="data-row-label">Annual Avg Farm Price</div><div class="data-row-sub">Crop year: ${cur.date?.substring(0,4) || '—'}</div></div>
+      <div><div class="data-row-label">Annual Avg Farm Price</div><div class="data-row-sub">Crop year: ${cur.date?.substring(0,4)||'—'}</div></div>
       <div style="text-align:right"><div class="data-row-value">$${curVal.toFixed(2)}<span style="font-size:0.6rem;font-weight:400">/bu</span></div></div>
     </div>
     <div class="data-row">
-      <div><div class="data-row-label">Prior Year</div><div class="data-row-sub">Crop year: ${prv.date?.substring(0,4) || '—'}</div></div>
+      <div><div class="data-row-label">Prior Year</div><div class="data-row-sub">Crop year: ${prv.date?.substring(0,4)||'—'}</div></div>
       <div style="text-align:right"><div class="data-row-value">$${prvVal.toFixed(2)}<span style="font-size:0.6rem;font-weight:400">/bu</span></div></div>
     </div>
     <div class="data-row">
@@ -658,14 +579,33 @@ function renderBarleyFRED(obs) {
   el.innerHTML = html;
 }
 
-// Toggle potato / barley view
 function showDataTile(which) {
-  document.getElementById('data-tile-potato').style.display = which === 'potato' ? 'flex' : 'none';
-  document.getElementById('data-tile-barley').style.display = which === 'barley' ? 'flex' : 'none';
-  document.getElementById('tab-potato').classList.toggle('active', which === 'potato');
-  document.getElementById('tab-barley').classList.toggle('active', which === 'barley');
+  activeDataTile = which;
+  document.getElementById('data-tile-potato').style.display = which==='potato'?'flex':'none';
+  document.getElementById('data-tile-barley').style.display = which==='barley'?'flex':'none';
+  document.getElementById('tab-potato').classList.toggle('active', which==='potato');
+  document.getElementById('tab-barley').classList.toggle('active', which==='barley');
   document.getElementById('tile-3-label').textContent =
-    which === 'potato' ? 'SE Idaho · USDA AMS / FRED' : 'MT/ID · USDA AMS / FRED';
+    which==='potato' ? 'SE Idaho · FRED PPI' : 'MT/ID · FRED Annual';
+}
+
+// Build tile 3 (potato/barley) HTML inline since it's different
+function buildPotatoBarleyTile() {
+  const tile = document.createElement('div');
+  tile.className = 'commodity-tile';
+  tile.id = 'tile-3';
+  tile.innerHTML = `
+    <div class="tile-header">
+      <div class="tile-crop-tabs">
+        <button class="tile-tab active" id="tab-potato" onclick="showDataTile('potato')">Potatoes</button>
+        <button class="tile-tab"        id="tab-barley" onclick="showDataTile('barley')">Barley</button>
+      </div>
+      <span style="font-size:0.56rem;color:rgba(255,255,255,0.65);font-style:italic" id="tile-3-label">SE Idaho · FRED PPI</span>
+    </div>
+    <div id="data-tile-potato" class="data-tile-body"><div class="data-loading">Loading…</div></div>
+    <div id="data-tile-barley" class="data-tile-body" style="display:none"><div class="data-loading">Loading…</div></div>
+    <div class="data-source-badge" id="tile-3-source">Loading from data/market-data.json…</div>`;
+  document.getElementById('commodity-grid').appendChild(tile);
 }
 
 // ══════════════════════════════════════
@@ -673,92 +613,80 @@ function showDataTile(which) {
 // ══════════════════════════════════════
 let gduStartDate = new Date('2026-04-10T00:00:00');
 function updateGDUDate() {
-  gduStartDate = new Date(document.getElementById('gdu-start-date').value + 'T00:00:00');
+  gduStartDate = new Date(document.getElementById('gdu-start-date').value+'T00:00:00');
   if (lastWeatherResults.length) renderWeather(lastWeatherResults);
 }
 function calcSeasonGDU(lat) {
-  const today = new Date(); if (today < gduStartDate) return 0;
-  const days  = Math.floor((today - gduStartDate) / 86400000);
-  const avg   = lat < 44 ? 6.2 : lat < 46 ? 4.8 : lat < 48 ? 3.5 : 2.2;
-  return Math.round(days * avg);
+  const today=new Date(); if(today<gduStartDate) return 0;
+  const days=Math.floor((today-gduStartDate)/86400000);
+  const avg=lat<44?6.2:lat<46?4.8:lat<48?3.5:2.2;
+  return Math.round(days*avg);
 }
-function gduStartLabel() {
-  return gduStartDate.toLocaleDateString('en-US', {month:'short', day:'numeric'});
+function gduStartLabel(){
+  return gduStartDate.toLocaleDateString('en-US',{month:'short',day:'numeric'});
 }
 
 // ══════════════════════════════════════
-// WEATHER — NWS API
+// WEATHER
 // ══════════════════════════════════════
-const LOCATIONS = [
-  {name:'Jackson',    state:'MN', lat:43.6244, lon:-94.9897},
-  {name:'Ida Grove',  state:'IA', lat:42.3411, lon:-95.4711},
-  {name:'Gettysburg', state:'SD', lat:45.0047, lon:-99.9579},
-  {name:'Yankton',    state:'SD', lat:42.8711, lon:-97.3978},
-  {name:'Culbertson', state:'MT', lat:48.1455, lon:-104.5202},
-  {name:'Billings',   state:'MT', lat:45.7833, lon:-108.5007},
-  {name:'Idaho Falls',state:'ID', lat:43.4666, lon:-112.0340},
+const LOCATIONS=[
+  {name:'Jackson',    state:'MN',lat:43.6244,lon:-94.9897},
+  {name:'Ida Grove',  state:'IA',lat:42.3411,lon:-95.4711},
+  {name:'Gettysburg', state:'SD',lat:45.0047,lon:-99.9579},
+  {name:'Yankton',    state:'SD',lat:42.8711,lon:-97.3978},
+  {name:'Culbertson', state:'MT',lat:48.1455,lon:-104.5202},
+  {name:'Billings',   state:'MT',lat:45.7833,lon:-108.5007},
+  {name:'Idaho Falls',state:'ID',lat:43.4666,lon:-112.0340},
 ];
-const WX_ICONS = {
-  'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','partly sunny':'⛅',
-  'partly cloudy':'⛅','mostly cloudy':'☁️','cloudy':'☁️','overcast':'☁️',
-  'rain':'🌧️','shower':'🌦️','thunder':'⛈️','snow':'❄️',
-  'blizzard':'🌨️','sleet':'🌨️','wind':'💨','fog':'🌫️','drizzle':'🌦️',
-};
-function getIcon(d) {
-  if (!d) return '🌡️';
-  const l = d.toLowerCase();
-  for (const [k,v] of Object.entries(WX_ICONS)) if (l.includes(k)) return v;
-  return '🌡️';
-}
+const WX_ICONS={'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','partly sunny':'⛅','partly cloudy':'⛅','mostly cloudy':'☁️','cloudy':'☁️','overcast':'☁️','rain':'🌧️','shower':'🌦️','thunder':'⛈️','snow':'❄️','blizzard':'🌨️','sleet':'🌨️','wind':'💨','fog':'🌫️','drizzle':'🌦️'};
+function getIcon(d){if(!d)return'🌡️';const l=d.toLowerCase();for(const[k,v]of Object.entries(WX_ICONS))if(l.includes(k))return v;return'🌡️';}
 
-let lastWeatherResults = [];
-const WX_GROUPS = [[0,1,2],[3,4,5],[6]];
-let wxSlide=0, wxTimer=null, wxProgStart=Date.now();
-const WX_ROTATE_MS = 30000;
+let lastWeatherResults=[];
+const WX_GROUPS=[[0,1,2],[3,4,5],[6]];
+let wxSlide=0,wxTimer=null,wxProgStart=Date.now();
+const WX_ROTATE_MS=30000;
 
-async function fetchWeather(loc) {
-  try {
-    const pt = await (await fetch(`https://api.weather.gov/points/${loc.lat},${loc.lon}`)).json();
-    const {gridId,gridX,gridY} = pt.properties;
-    const fc = await (await fetch(`https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}/forecast`)).json();
-    const periods = fc.properties.periods;
-    let hourlyPrecip = {};
-    try {
-      const hfc = await (await fetch(`https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}/forecast/hourly`)).json();
-      hfc.properties.periods.forEach(p => {
-        const d = new Date(p.startTime).toDateString();
-        if (!hourlyPrecip[d]) hourlyPrecip[d] = 0;
-        hourlyPrecip[d] = Math.max(hourlyPrecip[d], p.probabilityOfPrecipitation?.value || 0);
+async function fetchWeather(loc){
+  try{
+    const pt=await(await fetch(`https://api.weather.gov/points/${loc.lat},${loc.lon}`)).json();
+    const{gridId,gridX,gridY}=pt.properties;
+    const fc=await(await fetch(`https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}/forecast`)).json();
+    const periods=fc.properties.periods;
+    let hourlyPrecip={};
+    try{
+      const hfc=await(await fetch(`https://api.weather.gov/gridpoints/${gridId}/${gridX},${gridY}/forecast/hourly`)).json();
+      hfc.properties.periods.forEach(p=>{
+        const d=new Date(p.startTime).toDateString();
+        if(!hourlyPrecip[d])hourlyPrecip[d]=0;
+        hourlyPrecip[d]=Math.max(hourlyPrecip[d],p.probabilityOfPrecipitation?.value||0);
       });
-    } catch(e) {}
-    const days = [];
-    for (let i=0; i<periods.length && days.length<3; i++) {
-      const p = periods[i];
-      if (p.isDaytime) {
-        const n=periods[i+1], dt=new Date(p.startTime).toDateString();
-        days.push({name:p.name, hi:p.temperature, lo:n?n.temperature:'--',
-                   wind:p.windSpeed, precip:hourlyPrecip[dt]??'--', icon:getIcon(p.shortForecast)});
+    }catch(e){}
+    const days=[];
+    for(let i=0;i<periods.length&&days.length<3;i++){
+      const p=periods[i];
+      if(p.isDaytime){
+        const n=periods[i+1],dt=new Date(p.startTime).toDateString();
+        days.push({name:p.name,hi:p.temperature,lo:n?n.temperature:'--',
+                   wind:p.windSpeed,precip:hourlyPrecip[dt]??'--',icon:getIcon(p.shortForecast)});
       }
     }
-    return {...loc, days, gdu:calcSeasonGDU(loc.lat), error:false};
-  } catch(e) {
-    return {...loc, days:[], gdu:calcSeasonGDU(loc.lat), error:true};
-  }
+    return{...loc,days,gdu:calcSeasonGDU(loc.lat),error:false};
+  }catch(e){return{...loc,days:[],gdu:calcSeasonGDU(loc.lat),error:true};}
 }
 
-function buildLocationCard(loc) {
-  if (!loc) return '';
-  const labels = ['Today','Tmrw','Day 3'];
-  let html = `<div class="location-card">
+function buildLocationCard(loc){
+  if(!loc)return'';
+  const labels=['Today','Tmrw','Day 3'];
+  let html=`<div class="location-card">
     <div class="location-header"><span class="location-name">${loc.name}</span><span class="location-state">${loc.state}</span></div>`;
-  if (loc.error || !loc.days?.length) {
-    html += `<div class="wx-loading">NWS data unavailable</div>`;
-  } else {
-    loc.days.slice(0,3).forEach((day, i) => {
-      const hi     = typeof day.hi==='number' ? day.hi+'°' : '--';
-      const lo     = typeof day.lo==='number' ? day.lo+'°' : '--';
-      const precip = typeof day.precip==='number' ? day.precip+'%' : '--';
-      html += `<div class="wx-forecast-row">
+  if(loc.error||!loc.days?.length){
+    html+=`<div class="wx-loading">NWS data unavailable</div>`;
+  }else{
+    loc.days.slice(0,3).forEach((day,i)=>{
+      const hi=typeof day.hi==='number'?day.hi+'°':'--';
+      const lo=typeof day.lo==='number'?day.lo+'°':'--';
+      const precip=typeof day.precip==='number'?day.precip+'%':'--';
+      html+=`<div class="wx-forecast-row">
         <div class="wx-day"><span class="wx-day-label">${labels[i]}</span><span class="wx-icon">${day.icon}</span></div>
         <div class="wx-col"><span class="wx-col-label">High</span><span class="wx-hi">${hi}</span></div>
         <div class="wx-col"><span class="wx-col-label">Low</span><span class="wx-lo">${lo}</span></div>
@@ -767,7 +695,7 @@ function buildLocationCard(loc) {
       </div>`;
     });
   }
-  html += `<div class="gdu-bar">
+  html+=`<div class="gdu-bar">
     <span class="gdu-label">📊 YTD GDUs</span>
     <span class="gdu-value">${loc.gdu} GDU</span>
     <span class="gdu-since">since ${gduStartLabel()} · Base 50°F</span>
@@ -775,65 +703,84 @@ function buildLocationCard(loc) {
   return html;
 }
 
-function renderWeather(results) {
-  lastWeatherResults = results;
-  const carousel = document.getElementById('wx-carousel');
-  const dotsEl   = document.getElementById('wx-dots');
-  carousel.innerHTML = ''; dotsEl.innerHTML = '';
-  WX_GROUPS.forEach((group, si) => {
-    const slide = document.createElement('div');
-    slide.className = 'wx-slide' + (si===0?' active':'');
-    slide.id = 'wx-slide-' + si;
-    slide.innerHTML = group.map(idx => results[idx] ? buildLocationCard(results[idx]) : '').join('');
+function renderWeather(results){
+  lastWeatherResults=results;
+  const carousel=document.getElementById('wx-carousel');
+  const dotsEl=document.getElementById('wx-dots');
+  carousel.innerHTML='';dotsEl.innerHTML='';
+  WX_GROUPS.forEach((group,si)=>{
+    const slide=document.createElement('div');
+    slide.className='wx-slide'+(si===0?' active':'');
+    slide.id='wx-slide-'+si;
+    slide.innerHTML=group.map(idx=>results[idx]?buildLocationCard(results[idx]):'').join('');
     carousel.appendChild(slide);
-    const dot = document.createElement('div');
-    dot.className = 'wx-dot' + (si===0?' active':'');
-    dot.onclick = () => goWxSlide(si, true);
+    const dot=document.createElement('div');
+    dot.className='wx-dot'+(si===0?' active':'');
+    dot.onclick=()=>goWxSlide(si,true);
     dotsEl.appendChild(dot);
   });
-  wxSlide=0; wxProgStart=Date.now();
-  resetWxTimer(); animateWxProgress();
-  const t = new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'});
-  document.getElementById('wx-updated-label').textContent = 'updated: ' + t;
+  wxSlide=0;wxProgStart=Date.now();
+  resetWxTimer();animateWxProgress();
+  const t=new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'});
+  document.getElementById('wx-updated-label').textContent='updated: '+t;
 }
 
-function goWxSlide(idx, manual=false) {
-  document.querySelectorAll('.wx-slide').forEach((s,i) => s.classList.toggle('active', i===idx));
-  document.querySelectorAll('.wx-dot').forEach((d,i)   => d.classList.toggle('active', i===idx));
-  wxSlide=idx; wxProgStart=Date.now();
-  if (manual) resetWxTimer();
+function goWxSlide(idx,manual=false){
+  document.querySelectorAll('.wx-slide').forEach((s,i)=>s.classList.toggle('active',i===idx));
+  document.querySelectorAll('.wx-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
+  wxSlide=idx;wxProgStart=Date.now();
+  if(manual)resetWxTimer();
 }
-function resetWxTimer() {
-  clearInterval(wxTimer);
-  wxTimer = setInterval(() => goWxSlide((wxSlide+1) % WX_GROUPS.length), WX_ROTATE_MS);
-}
-function animateWxProgress() {
-  const fill = document.getElementById('wx-progress-fill'); if (!fill) return;
-  const pct  = Math.min((Date.now()-wxProgStart)/WX_ROTATE_MS*100, 100);
-  fill.style.width = pct+'%'; if (pct>=100) wxProgStart=Date.now();
+function resetWxTimer(){clearInterval(wxTimer);wxTimer=setInterval(()=>goWxSlide((wxSlide+1)%WX_GROUPS.length),WX_ROTATE_MS);}
+function animateWxProgress(){
+  const fill=document.getElementById('wx-progress-fill');if(!fill)return;
+  const pct=Math.min((Date.now()-wxProgStart)/WX_ROTATE_MS*100,100);
+  fill.style.width=pct+'%';if(pct>=100)wxProgStart=Date.now();
   requestAnimationFrame(animateWxProgress);
 }
-async function loadAllWeather() {
-  const results = await Promise.all(LOCATIONS.map(fetchWeather));
+async function loadAllWeather(){
+  const results=await Promise.all(LOCATIONS.map(fetchWeather));
   renderWeather(results);
 }
 
 // ══════════════════════════════════════
-// INIT
+// INIT — load order matters
 // ══════════════════════════════════════
-initCMETiles();
-fetchPotatoData();
-fetchBarleyData();
-loadAllWeather();
+async function init() {
+  // 1. Build grid structure (tiles 0-2 from Yahoo, tile 3 for FRED)
+  buildGrid();
+  buildPotatoBarleyTile();
 
-// Weather refreshes every 30 min automatically
-setInterval(loadAllWeather, 30 * 60 * 1000);
+  // 2. Fetch Yahoo Finance data then draw charts
+  await fetchAllCrops();
+  TILE_PAIRS.forEach(tp => {
+    const tile = document.getElementById('tile-'+tp.tileId);
+    tile.innerHTML = buildTileHTML(tp.tileId);
+    requestAnimationFrame(() => drawTileChart(tp.tileId));
+  });
 
-// Potato/barley: weekly/annual data — refresh daily is sufficient
-setInterval(fetchPotatoData, 24 * 60 * 60 * 1000);
-setInterval(fetchBarleyData, 24 * 60 * 60 * 1000);
+  // 3. Load FRED data from local JSON (written by GitHub Actions)
+  fetchLocalMarketData();
 
-// CME widgets are self-refreshing iframes — no interval needed
+  // 4. Weather
+  loadAllWeather();
+}
+
+init();
+
+// Auto-refresh intervals
+setInterval(async () => {
+  await fetchAllCrops();
+  TILE_PAIRS.forEach(tp => {
+    const tile = document.getElementById('tile-'+tp.tileId);
+    if(tileCharts[tp.tileId]){tileCharts[tp.tileId].destroy();delete tileCharts[tp.tileId];}
+    tile.innerHTML = buildTileHTML(tp.tileId);
+    requestAnimationFrame(()=>drawTileChart(tp.tileId));
+  });
+}, 15 * 60 * 1000); // Yahoo Finance: every 15 minutes
+
+setInterval(fetchLocalMarketData, 6 * 60 * 60 * 1000); // FRED JSON: every 6 hours
+setInterval(loadAllWeather,       30 * 60 * 1000);      // Weather: every 30 minutes
 
 scheduleMidnightReload();
 
