@@ -1,21 +1,20 @@
 name: Fetch Market Data
 
 on:
- schedule:
-    # Runs every hour during CT working hours (7am-6pm CT = 12pm-11pm UTC)
-    # Weekdays and weekends — adjust if you want weekdays only
-    - cron: '0 12,13,14,15,16,17,18,19,20,21,22,23 * * *'
-  
-  # Also allows you to trigger it manually from the Actions tab
+  schedule:
+    # Every hour 7am-6pm CT (12pm-11pm UTC) on weekdays
+    - cron: '0 12,13,14,15,16,17,18,19,20,21,22,23 * * 1-5'
+
+  # Allows manual trigger from the Actions tab
   workflow_dispatch:
 
 jobs:
   fetch-data:
     runs-on: ubuntu-latest
-    
+
     permissions:
-      contents: write  # needed to commit the JSON file back to repo
-    
+      contents: write
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
