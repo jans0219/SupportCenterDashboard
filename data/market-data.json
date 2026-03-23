@@ -1,14 +1,14 @@
 {
-  "lastUpdated": "2026-03-23T21:40:13.171263+00:00",
+  "lastUpdated": "2026-03-23T22:36:14.198918+00:00",
   "commodities": {
     "ZC=F": {
       "name": "Corn",
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 4.605,
-      "prevClose": 4.655,
-      "change": -0.05,
-      "pct": -1.07,
+      "prevClose": 4.595,
+      "change": 0.01,
+      "pct": 0.22,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -1240,9 +1240,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 11.645,
-      "prevClose": 11.6125,
-      "change": 0.0325,
-      "pct": 0.28,
+      "prevClose": 11.635,
+      "change": 0.01,
+      "pct": 0.09,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -2467,9 +2467,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 5.8925,
-      "prevClose": 5.9525,
-      "change": -0.06,
-      "pct": -1.01,
+      "prevClose": 5.8775,
+      "change": 0.015,
+      "pct": 0.26,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -3694,9 +3694,9 @@
       "exchange": "KCBT",
       "unit": "/bu",
       "currentPrice": 6.0525,
-      "prevClose": 6.0625,
-      "change": -0.01,
-      "pct": -0.16,
+      "prevClose": 6.0325,
+      "change": 0.02,
+      "pct": 0.33,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -4879,9 +4879,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 234.7,
-      "prevClose": 233.425,
-      "change": 1.275,
-      "pct": 0.55,
+      "prevClose": 234.65,
+      "change": 0.05,
+      "pct": 0.02,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -5357,9 +5357,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 104.375,
-      "prevClose": 104.475,
-      "change": -0.1,
-      "pct": -0.1,
+      "prevClose": 104.4,
+      "change": -0.025,
+      "pct": -0.02,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -5823,86 +5823,86 @@
     "fredUrl": "https://fred.stlouisfed.org/series/WPU011306",
     "data": [
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2026-02-01",
         "value": "77.244"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2026-01-01",
         "value": "80.534"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-12-01",
         "value": "83.761"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-11-01",
         "value": "83.664"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-10-01",
         "value": "83.859"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-09-01",
         "value": "106.365"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-08-01",
         "value": "126.842"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-07-01",
         "value": "120.582"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-06-01",
         "value": "102.038"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-05-01",
         "value": "104.460"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-04-01",
         "value": "109.777"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-03-01",
         "value": "112.648"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-02-01",
         "value": "115.420"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-18",
+        "realtime_end": "2026-03-18",
         "date": "2025-01-01",
         "value": "117.369"
       }
@@ -5914,32 +5914,32 @@
     "fredUrl": "https://fred.stlouisfed.org/series/PBARLUSDA",
     "data": [
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-16",
+        "realtime_end": "2026-03-16",
         "date": "2025-01-01",
         "value": "115.3624008640988"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-16",
+        "realtime_end": "2026-03-16",
         "date": "2024-01-01",
         "value": "136.1472368105689"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-16",
+        "realtime_end": "2026-03-16",
         "date": "2023-01-01",
         "value": "166.9144398520082"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-16",
+        "realtime_end": "2026-03-16",
         "date": "2022-01-01",
         "value": "225.2107703799052"
       },
       {
-        "realtime_start": "2026-03-23",
-        "realtime_end": "2026-03-23",
+        "realtime_start": "2026-03-16",
+        "realtime_end": "2026-03-16",
         "date": "2021-01-01",
         "value": "178.0853437642586"
       }
