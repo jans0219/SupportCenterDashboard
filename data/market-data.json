@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-01T19:15:28.237934+00:00",
+  "lastUpdated": "2026-04-01T20:49:44.605306+00:00",
   "commodities": {
     "ZC=F": {
       "name": "Corn",
@@ -5954,6 +5954,37 @@
     "source": "FRED PBARLUSDA \u2014 USDA Annual Average Farm Price, Barley",
     "seriesId": "PBARLUSDA",
     "fredUrl": "https://fred.stlouisfed.org/series/PBARLUSDA",
-    "data": []
+    "data": [
+      {
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
+        "date": "2025-01-01",
+        "value": "115.3626581774428"
+      },
+      {
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
+        "date": "2024-01-01",
+        "value": "136.1472368105689"
+      },
+      {
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
+        "date": "2023-01-01",
+        "value": "166.9144398520082"
+      },
+      {
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
+        "date": "2022-01-01",
+        "value": "225.2107703799052"
+      },
+      {
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
+        "date": "2021-01-01",
+        "value": "178.0853437642586"
+      }
+    ]
   }
 }
