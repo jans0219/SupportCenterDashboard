@@ -1,14 +1,14 @@
 {
-  "lastUpdated": "2026-04-02T23:37:25.617260+00:00",
+  "lastUpdated": "2026-04-03T13:10:17.169816+00:00",
   "commodities": {
     "ZC=F": {
       "name": "Corn",
       "exchange": "CBOT",
       "unit": "/bu",
-      "currentPrice": 4.52,
-      "prevClose": 4.5225,
+      "currentPrice": 4.92,
+      "prevClose": 4.9225,
       "change": -0.0025,
-      "pct": -0.06,
+      "pct": -0.05,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -1153,13 +1153,6 @@
           "o": 4.52,
           "h": 4.52,
           "l": 4.515
-        },
-        {
-          "t": 1775153999,
-          "c": 4.52,
-          "o": 4.52,
-          "h": 4.52,
-          "l": 4.52
         }
       ],
       "monthlyPairs": [
@@ -1221,14 +1214,14 @@
         },
         {
           "t": 1775016000,
-          "c": 4.5425,
+          "c": 4.5225,
           "o": 4.575,
-          "h": 4.6,
+          "h": 4.605,
           "l": 4.485
         },
         {
-          "t": 1775153999,
-          "c": 4.52,
+          "t": 1775153996,
+          "c": 4.92,
           "o": 4.54,
           "h": 4.605,
           "l": 4.5125
@@ -1239,10 +1232,10 @@
       "name": "Soybeans",
       "exchange": "CBOT",
       "unit": "/bu",
-      "currentPrice": 11.6275,
-      "prevClose": 11.635,
-      "change": -0.0075,
-      "pct": -0.06,
+      "currentPrice": 11.635,
+      "prevClose": 11.6375,
+      "change": -0.0025,
+      "pct": -0.02,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -2387,13 +2380,6 @@
           "o": 11.6325,
           "h": 11.6325,
           "l": 11.62
-        },
-        {
-          "t": 1775153997,
-          "c": 11.6275,
-          "o": 11.6275,
-          "h": 11.6275,
-          "l": 11.6275
         }
       ],
       "monthlyPairs": [
@@ -2455,14 +2441,14 @@
         },
         {
           "t": 1775016000,
-          "c": 11.685,
+          "c": 11.635,
           "o": 11.715,
           "h": 11.7475,
           "l": 11.53
         },
         {
-          "t": 1775153997,
-          "c": 11.6275,
+          "t": 1775153989,
+          "c": 11.635,
           "o": 11.6725,
           "h": 11.7425,
           "l": 11.62
@@ -2473,8 +2459,8 @@
       "name": "Soft Wht Wheat",
       "exchange": "CBOT",
       "unit": "/bu",
-      "currentPrice": 5.9775,
-      "prevClose": 5.9825,
+      "currentPrice": 6.525,
+      "prevClose": 6.53,
       "change": -0.005,
       "pct": -0.08,
       "marketState": "",
@@ -3621,13 +3607,6 @@
           "o": 5.9775,
           "h": 5.98,
           "l": 5.97
-        },
-        {
-          "t": 1775153999,
-          "c": 5.9775,
-          "o": 5.9775,
-          "h": 5.9775,
-          "l": 5.9775
         }
       ],
       "monthlyPairs": [
@@ -3689,14 +3668,14 @@
         },
         {
           "t": 1775016000,
-          "c": 5.975,
+          "c": 5.9825,
           "o": 6.18,
           "h": 6.2275,
           "l": 5.9325
         },
         {
-          "t": 1775153999,
-          "c": 5.9775,
+          "t": 1775153888,
+          "c": 6.525,
           "o": 5.975,
           "h": 6.0925,
           "l": 5.94
@@ -3707,10 +3686,10 @@
       "name": "Hard Red Wheat",
       "exchange": "KCBT",
       "unit": "/bu",
-      "currentPrice": 6.1425,
-      "prevClose": 6.1575,
+      "currentPrice": 6.73,
+      "prevClose": 6.745,
       "change": -0.015,
-      "pct": -0.24,
+      "pct": -0.22,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -4792,13 +4771,6 @@
           "o": 6.15,
           "h": 6.1525,
           "l": 6.14
-        },
-        {
-          "t": 1775153999,
-          "c": 6.1425,
-          "o": 6.1425,
-          "h": 6.1425,
-          "l": 6.1425
         }
       ],
       "monthlyPairs": [
@@ -4860,14 +4832,14 @@
         },
         {
           "t": 1775016000,
-          "c": 6.1375,
+          "c": 6.1575,
           "o": 6.36,
           "h": 6.43,
-          "l": 6.1
+          "l": 6.0875
         },
         {
           "t": 1775153999,
-          "c": 6.1425,
+          "c": 6.73,
           "o": 6.1375,
           "h": 6.255,
           "l": 6.0875
@@ -4878,10 +4850,10 @@
       "name": "Live Cattle",
       "exchange": "CME",
       "unit": "/cwt",
-      "currentPrice": 246.2,
-      "prevClose": 246.325,
-      "change": -0.125,
-      "pct": -0.05,
+      "currentPrice": 236.95,
+      "prevClose": 236.825,
+      "change": 0.125,
+      "pct": 0.05,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -5269,14 +5241,7 @@
           "c": 246.2,
           "o": 246.175,
           "h": 246.275,
-          "l": 246.1
-        },
-        {
-          "t": 1775153099,
-          "c": 246.2,
-          "o": 246.2,
-          "h": 246.2,
-          "l": 246.2
+          "l": 236.95
         }
       ],
       "monthlyPairs": [
@@ -5338,14 +5303,14 @@
         },
         {
           "t": 1775016000,
-          "c": 244.05,
+          "c": 246.2,
           "o": 243.025,
-          "h": 244.5,
-          "l": 242.925
+          "h": 246.325,
+          "l": 241.95
         },
         {
-          "t": 1775153099,
-          "c": 246.2,
+          "t": 1775153075,
+          "c": 236.95,
           "o": 234.5,
           "h": 246.575,
           "l": 241.95
@@ -5356,10 +5321,10 @@
       "name": "Lean Hogs",
       "exchange": "CME",
       "unit": "/cwt",
-      "currentPrice": 104.45,
-      "prevClose": 104.475,
-      "change": -0.025,
-      "pct": -0.02,
+      "currentPrice": 85.975,
+      "prevClose": 85.85,
+      "change": 0.125,
+      "pct": 0.15,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -5719,14 +5684,7 @@
           "c": 104.45,
           "o": 104.45,
           "h": 104.5,
-          "l": 104.4
-        },
-        {
-          "t": 1775153095,
-          "c": 104.45,
-          "o": 104.45,
-          "h": 104.45,
-          "l": 104.45
+          "l": 85.975
         }
       ],
       "monthlyPairs": [
@@ -5788,14 +5746,14 @@
         },
         {
           "t": 1775016000,
-          "c": 90.925,
+          "c": 90.35,
           "o": 90.375,
           "h": 91.075,
-          "l": 90.3
+          "l": 90.125
         },
         {
-          "t": 1775153095,
-          "c": 104.45,
+          "t": 1775153062,
+          "c": 85.975,
           "o": 85.975,
           "h": 86.35,
           "l": 85.65
@@ -5809,86 +5767,86 @@
     "fredUrl": "https://fred.stlouisfed.org/series/WPU011306",
     "data": [
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2026-02-01",
         "value": "77.244"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2026-01-01",
         "value": "80.534"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-12-01",
         "value": "83.761"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-11-01",
         "value": "83.664"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-10-01",
         "value": "83.859"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-09-01",
         "value": "106.365"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-08-01",
         "value": "126.842"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-07-01",
         "value": "120.582"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-06-01",
         "value": "102.038"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-05-01",
         "value": "104.460"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-04-01",
         "value": "109.777"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-03-01",
         "value": "112.648"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-02-01",
         "value": "115.420"
       },
       {
-        "realtime_start": "2026-03-18",
-        "realtime_end": "2026-03-18",
+        "realtime_start": "2026-03-19",
+        "realtime_end": "2026-03-19",
         "date": "2025-01-01",
         "value": "117.369"
       }
