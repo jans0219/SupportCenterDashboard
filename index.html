@@ -100,6 +100,10 @@
   .gdu-label { font-size:0.53rem; color:var(--dark-green); font-weight:600; text-transform:uppercase; }
   .gdu-value { font-size:0.7rem; font-weight:800; color:var(--green); }
   .gdu-since { font-size:0.5rem; color:#888; }
+  .rainfall-bar { background:#eef3fb; padding:4px 8px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); }
+  .rainfall-item { display:flex; align-items:baseline; gap:2px; }
+  .rainfall-label { font-size:0.5rem; color:#1a6e9e; font-weight:600; text-transform:uppercase; }
+  .rainfall-value { font-size:0.68rem; font-weight:800; color:#2980b9; }
   .wx-loading { text-align:center; color:#999; font-size:0.7rem; padding:8px; }
 
   footer { height:36px; background:var(--dark-green); color:rgba(255,255,255,0.75); font-size:0.68rem; display:flex; align-items:center; justify-content:space-between; padding:0 18px; flex-shrink:0; border-top:4px solid var(--yellow); }
@@ -570,6 +574,23 @@ async function fetchWeather(loc){
   }catch(e){return{...loc,days:[],gdu:calcSeasonGDU(loc.lat),error:true};}
 }
 
+async function fetchRainfall(lat,lon){
+  try{
+    const today=new Date();
+    const todayStr=today.toISOString().split('T')[0];
+    const yearStart=todayStr.slice(0,4)+'-01-01';
+    const[recent,historical]=await Promise.all([
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum&past_days=7&forecast_days=0&precipitation_unit=inch&timezone=America/Chicago`).then(r=>r.json()),
+      fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`).then(r=>r.json())
+    ]);
+    const rp=recent.daily?.precipitation_sum||[];
+    const rain24h=rp.length?(rp[rp.length-1]||0):0;
+    const rain7d=rp.reduce((s,v)=>s+(v||0),0);
+    const rainYTD=(historical.daily?.precipitation_sum||[]).reduce((s,v)=>s+(v||0),0);
+    return{rain24h:rain24h.toFixed(2),rain7d:rain7d.toFixed(2),rainYTD:rainYTD.toFixed(2)};
+  }catch(e){return{rain24h:'--',rain7d:'--',rainYTD:'--'};}
+}
+
 function buildLocationCard(loc){
   if(!loc)return'';
   const labels=['Today','Tmrw','Day 3'];
@@ -591,6 +612,7 @@ function buildLocationCard(loc){
       </div>`;
     });
   }
+  html+=`<div class="rainfall-bar"><span class="rainfall-item"><span class="rainfall-label">🌧 24hr</span><span class="rainfall-value">${loc.rain24h}"</span></span><span class="rainfall-item"><span class="rainfall-label">7-Day</span><span class="rainfall-value">${loc.rain7d}"</span></span><span class="rainfall-item"><span class="rainfall-label">YTD</span><span class="rainfall-value">${loc.rainYTD}"</span></span></div>`;
   html+=`<div class="gdu-bar"><span class="gdu-label">📊 YTD GDUs</span><span class="gdu-value">${loc.gdu} GDU</span><span class="gdu-since">since ${gduStartLabel()} · Base 50°F</span></div></div>`;
   return html;
 }
@@ -631,7 +653,11 @@ function animateWxProgress(){
   requestAnimationFrame(animateWxProgress);
 }
 async function loadAllWeather(){
-  const results=await Promise.all(LOCATIONS.map(fetchWeather));
+  const[wxResults,rainfallResults]=await Promise.all([
+    Promise.all(LOCATIONS.map(fetchWeather)),
+    Promise.all(LOCATIONS.map(loc=>fetchRainfall(loc.lat,loc.lon)))
+  ]);
+  const results=wxResults.map((wx,i)=>({...wx,...rainfallResults[i]}));
   renderWeather(results);
 }
 
