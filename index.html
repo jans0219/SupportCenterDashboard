@@ -100,10 +100,10 @@
   .gdu-label { font-size:0.53rem; color:var(--dark-green); font-weight:600; text-transform:uppercase; }
   .gdu-value { font-size:0.7rem; font-weight:800; color:var(--green); }
   .gdu-since { font-size:0.5rem; color:#888; }
-  .rainfall-bar { background:#eef3fb; padding:4px 8px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); }
-  .rainfall-item { display:flex; align-items:baseline; gap:2px; }
-  .rainfall-label { font-size:0.5rem; color:#1a6e9e; font-weight:600; text-transform:uppercase; }
-  .rainfall-value { font-size:0.68rem; font-weight:800; color:#2980b9; }
+  .rainfall-bar { background:#eef3fb; padding:4px 6px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); }
+  .rainfall-item { display:flex; align-items:baseline; gap:1px; }
+  .rainfall-label { font-size:0.46rem; color:#1a6e9e; font-weight:600; text-transform:uppercase; }
+  .rainfall-value { font-size:0.62rem; font-weight:800; color:#2980b9; }
   .wx-loading { text-align:center; color:#999; font-size:0.7rem; padding:8px; }
 
   footer { height:36px; background:var(--dark-green); color:rgba(255,255,255,0.75); font-size:0.68rem; display:flex; align-items:center; justify-content:space-between; padding:0 18px; flex-shrink:0; border-top:4px solid var(--yellow); }
@@ -186,15 +186,18 @@
 <script>
 
 // ══════════════════════════════════════
-// MIDNIGHT RELOAD
+// 6 AM CST DAILY RELOAD
 // ══════════════════════════════════════
-function scheduleMidnightReload() {
-  const now = new Date();
-  const chi = new Date(now.toLocaleString('en-US',{timeZone:'America/Chicago'}));
-  const ms  = ((23-chi.getHours())*3600+(59-chi.getMinutes())*60+(60-chi.getSeconds()))*1000;
-  setTimeout(()=>location.reload(), ms);
+function scheduleDailyReload() {
+  let reloadedToday = false;
+  let lastDay = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Chicago'})).getDate();
+  setInterval(() => {
+    const chi = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Chicago'}));
+    const day = chi.getDate();
+    if (day !== lastDay) { reloadedToday = false; lastDay = day; }
+    if (!reloadedToday && chi.getHours() >= 6) { reloadedToday = true; location.reload(); }
+  }, 30000);
 }
-scheduleMidnightReload();
 
 // ══════════════════════════════════════
 // CLOCK
@@ -579,16 +582,21 @@ async function fetchRainfall(lat,lon){
     const today=new Date();
     const todayStr=today.toISOString().split('T')[0];
     const yearStart=todayStr.slice(0,4)+'-01-01';
-    const[recent,historical]=await Promise.all([
+    const prevYear=String(today.getFullYear()-1);
+    const pytdStart=prevYear+'-01-01';
+    const pytdEnd=prevYear+todayStr.slice(4);
+    const[recent,historical,pytdData]=await Promise.all([
       fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum&past_days=7&forecast_days=0&precipitation_unit=inch&timezone=America/Chicago`).then(r=>r.json()),
-      fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`).then(r=>r.json())
+      fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`).then(r=>r.json()),
+      fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${pytdStart}&end_date=${pytdEnd}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`).then(r=>r.json())
     ]);
     const rp=recent.daily?.precipitation_sum||[];
     const rain24h=rp.length?(rp[rp.length-1]||0):0;
     const rain7d=rp.reduce((s,v)=>s+(v||0),0);
     const rainYTD=(historical.daily?.precipitation_sum||[]).reduce((s,v)=>s+(v||0),0);
-    return{rain24h:rain24h.toFixed(2),rain7d:rain7d.toFixed(2),rainYTD:rainYTD.toFixed(2)};
-  }catch(e){return{rain24h:'--',rain7d:'--',rainYTD:'--'};}
+    const rainPYTD=(pytdData.daily?.precipitation_sum||[]).reduce((s,v)=>s+(v||0),0);
+    return{rain24h:rain24h.toFixed(2),rain7d:rain7d.toFixed(2),rainYTD:rainYTD.toFixed(2),rainPYTD:rainPYTD.toFixed(2)};
+  }catch(e){return{rain24h:'--',rain7d:'--',rainYTD:'--',rainPYTD:'--'};}
 }
 
 function buildLocationCard(loc){
@@ -612,7 +620,7 @@ function buildLocationCard(loc){
       </div>`;
     });
   }
-  html+=`<div class="rainfall-bar"><span class="rainfall-item"><span class="rainfall-label">🌧 24hr</span><span class="rainfall-value">${loc.rain24h}"</span></span><span class="rainfall-item"><span class="rainfall-label">7-Day</span><span class="rainfall-value">${loc.rain7d}"</span></span><span class="rainfall-item"><span class="rainfall-label">YTD</span><span class="rainfall-value">${loc.rainYTD}"</span></span></div>`;
+  html+=`<div class="rainfall-bar"><span class="rainfall-item"><span class="rainfall-label">🌧 24hr</span><span class="rainfall-value">${loc.rain24h}"</span></span><span class="rainfall-item"><span class="rainfall-label">7-Day</span><span class="rainfall-value">${loc.rain7d}"</span></span><span class="rainfall-item"><span class="rainfall-label">YTD</span><span class="rainfall-value">${loc.rainYTD}"</span></span><span class="rainfall-item"><span class="rainfall-label">PYTD</span><span class="rainfall-value">${loc.rainPYTD}"</span></span></div>`;
   html+=`<div class="gdu-bar"><span class="gdu-label">📊 YTD GDUs</span><span class="gdu-value">${loc.gdu} GDU</span><span class="gdu-since">since ${gduStartLabel()} · Base 50°F</span></div></div>`;
   return html;
 }
@@ -704,7 +712,7 @@ setInterval(loadMarketData, 6 * 60 * 60 * 1000);
 // Weather every 30 minutes
 setInterval(loadAllWeather, 30 * 60 * 1000);
 
-scheduleMidnightReload();
+scheduleDailyReload();
 </script>
 </body>
 </html>
