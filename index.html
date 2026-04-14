@@ -186,15 +186,18 @@
 <script>
 
 // ══════════════════════════════════════
-// MIDNIGHT RELOAD
+// 6 AM CST DAILY RELOAD
 // ══════════════════════════════════════
-function scheduleMidnightReload() {
-  const now = new Date();
-  const chi = new Date(now.toLocaleString('en-US',{timeZone:'America/Chicago'}));
-  const ms  = ((23-chi.getHours())*3600+(59-chi.getMinutes())*60+(60-chi.getSeconds()))*1000;
-  setTimeout(()=>location.reload(), ms);
+function scheduleDailyReload() {
+  let reloadedToday = false;
+  let lastDay = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Chicago'})).getDate();
+  setInterval(() => {
+    const chi = new Date(new Date().toLocaleString('en-US',{timeZone:'America/Chicago'}));
+    const day = chi.getDate();
+    if (day !== lastDay) { reloadedToday = false; lastDay = day; }
+    if (!reloadedToday && chi.getHours() >= 6) { reloadedToday = true; location.reload(); }
+  }, 30000);
 }
-scheduleMidnightReload();
 
 // ══════════════════════════════════════
 // CLOCK
@@ -709,7 +712,7 @@ setInterval(loadMarketData, 6 * 60 * 60 * 1000);
 // Weather every 30 minutes
 setInterval(loadAllWeather, 30 * 60 * 1000);
 
-scheduleMidnightReload();
+scheduleDailyReload();
 </script>
 </body>
 </html>
