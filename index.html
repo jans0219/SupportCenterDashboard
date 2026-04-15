@@ -104,6 +104,28 @@
   .rainfall-item { display:flex; align-items:baseline; gap:1px; }
   .rainfall-label { font-size:0.46rem; color:#1a6e9e; font-weight:600; text-transform:uppercase; }
   .rainfall-value { font-size:0.62rem; font-weight:800; color:#2980b9; }
+  .wx-btn { background:var(--gray); border:1px solid var(--border); border-radius:3px; color:var(--dark-green); font-size:0.55rem; font-weight:700; padding:1px 6px; cursor:pointer; text-transform:uppercase; letter-spacing:0.3px; }
+  .wx-btn:hover { background:var(--light-green); }
+  .wx-btn.active { background:var(--green); color:white; border-color:var(--green); }
+  .wx-header-controls { display:flex; gap:4px; margin-left:auto; }
+  .wx-fullscreen-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:10px; padding:10px; overflow:auto; height:100%; }
+  body.wx-fs header, body.wx-fs footer, body.wx-fs .markets-panel { display:none !important; }
+  body.wx-fs .weather-panel { width:100vw !important; padding:8px 12px; }
+  body.wx-fs .wx-carousel { overflow:auto; }
+  body.wx-fs .wx-dots, body.wx-fs .wx-progress-bar { display:none; }
+  body.wx-fs .location-name { font-size:0.95rem; }
+  body.wx-fs .location-state { font-size:0.78rem; }
+  body.wx-fs .wx-day-label { font-size:0.65rem; }
+  body.wx-fs .wx-icon { font-size:1.4rem; }
+  body.wx-fs .wx-col-label { font-size:0.6rem; }
+  body.wx-fs .wx-hi { font-size:1.05rem; }
+  body.wx-fs .wx-lo { font-size:0.95rem; }
+  body.wx-fs .wx-wind, body.wx-fs .wx-precip { font-size:0.75rem; }
+  body.wx-fs .gdu-label, body.wx-fs .rainfall-label { font-size:0.6rem; }
+  body.wx-fs .gdu-value, body.wx-fs .rainfall-value { font-size:0.85rem; }
+  body.wx-fs .gdu-since { font-size:0.6rem; }
+  @media (max-width: 1100px) { .wx-fullscreen-grid { grid-template-columns:repeat(3, 1fr); } }
+  @media (max-width: 800px)  { .wx-fullscreen-grid { grid-template-columns:repeat(2, 1fr); } }
   .wx-loading { text-align:center; color:#999; font-size:0.7rem; padding:8px; }
 
   footer { height:36px; background:var(--dark-green); color:rgba(255,255,255,0.75); font-size:0.68rem; display:flex; align-items:center; justify-content:space-between; padding:0 18px; flex-shrink:0; border-top:4px solid var(--yellow); }
@@ -161,6 +183,11 @@
     <div class="section-title">
       Weather &amp; GDUs &nbsp;·&nbsp;
       <span id="wx-updated-label" style="font-weight:400;text-transform:none;letter-spacing:0;font-size:0.58rem;color:#777;">updated: --</span>
+      <span class="wx-header-controls">
+        <button class="wx-btn active" id="wx-days-3" title="3-day forecast">3d</button>
+        <button class="wx-btn" id="wx-days-7" title="7-day forecast">7d</button>
+        <button class="wx-btn" id="wx-fs-toggle" title="Toggle fullscreen weather">⛶</button>
+      </span>
     </div>
     <div class="wx-carousel" id="wx-carousel"><div class="wx-loading">Loading weather…</div></div>
     <div class="wx-dots" id="wx-dots"></div>
@@ -546,9 +573,13 @@ const WX_ICONS={'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','part
 function getIcon(d){if(!d)return'🌡️';const l=d.toLowerCase();for(const[k,v]of Object.entries(WX_ICONS))if(l.includes(k))return v;return'🌡️';}
 
 let lastWeatherResults=[];
-const WX_GROUPS=[[0,1,2],[3,4,5],[6]];
-let wxSlide=0,wxTimer=null,wxProgStart=Date.now();
+let forecastDays=3;            // 3 or 7
+let isFullscreen=false;
+let wxSlide=0,wxRafId=null,wxProgStart=Date.now();
 const WX_ROTATE_MS=30000;
+function getWxGroups(){
+  return forecastDays===7 ? [[0,1],[2,3],[4,5],[6]] : [[0,1,2],[3,4,5],[6]];
+}
 
 async function fetchWeather(loc){
   try{
@@ -566,7 +597,7 @@ async function fetchWeather(loc){
       });
     }catch(e){}
     const days=[];
-    for(let i=0;i<periods.length&&days.length<3;i++){
+    for(let i=0;i<periods.length&&days.length<7;i++){
       const p=periods[i];
       if(p.isDaytime){
         const n=periods[i+1],dt=new Date(p.startTime).toDateString();
@@ -578,36 +609,54 @@ async function fetchWeather(loc){
 }
 
 async function fetchRainfall(lat,lon){
+  // Helper: fetch JSON with timeout, return null on failure
+  const safeFetch=async url=>{ try{ const r=await fetch(url); if(!r.ok) return null; return await r.json(); }catch(e){ return null; } };
+  // Helper: sum a precipitation_sum array, ignoring nulls
+  const sumPrecip=arr=>(arr||[]).reduce((s,v)=>s+(typeof v==='number'?v:0),0);
   try{
     const today=new Date();
     const todayStr=today.toISOString().split('T')[0];
-    const yearStart=todayStr.slice(0,4)+'-01-01';
-    const prevYear=String(today.getFullYear()-1);
+    const year=today.getFullYear();
+    const yearStart=year+'-01-01';
+    const prevYear=year-1;
     const pytdStart=prevYear+'-01-01';
-    const pytdEnd=prevYear+todayStr.slice(4);
-    const[recent,historical,pytdData]=await Promise.all([
-      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum&past_days=7&forecast_days=0&precipitation_unit=inch&timezone=America/Chicago`).then(r=>r.json()),
-      fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`).then(r=>r.json()),
-      fetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${pytdStart}&end_date=${pytdEnd}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`).then(r=>r.json())
-    ]);
-    const rp=recent.daily?.precipitation_sum||[];
+    const pytdEnd=prevYear+todayStr.slice(4); // same MM-DD last year
+    // Historical-forecast-api is updated daily and covers Jan 1 → today reliably.
+    // Archive-api (ERA5) is the authoritative source for prior years.
+    const ytdUrl  = `https://historical-forecast-api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`;
+    const pytdUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${pytdStart}&end_date=${pytdEnd}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`;
+    const recentUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum&past_days=7&forecast_days=0&precipitation_unit=inch&timezone=America/Chicago`;
+    const[recent,ytdData,pytdData]=await Promise.all([safeFetch(recentUrl),safeFetch(ytdUrl),safeFetch(pytdUrl)]);
+    const rp=recent?.daily?.precipitation_sum||[];
     const rain24h=rp.length?(rp[rp.length-1]||0):0;
-    const rain7d=rp.reduce((s,v)=>s+(v||0),0);
-    const rainYTD=(historical.daily?.precipitation_sum||[]).reduce((s,v)=>s+(v||0),0);
-    const rainPYTD=(pytdData.daily?.precipitation_sum||[]).reduce((s,v)=>s+(v||0),0);
-    return{rain24h:rain24h.toFixed(2),rain7d:rain7d.toFixed(2),rainYTD:rainYTD.toFixed(2),rainPYTD:rainPYTD.toFixed(2)};
+    const rain7d=sumPrecip(rp);
+    let rainYTD=sumPrecip(ytdData?.daily?.precipitation_sum);
+    let rainPYTD=sumPrecip(pytdData?.daily?.precipitation_sum);
+    // Fallback: if YTD endpoint failed, try the archive API as a backup
+    if(rainYTD===0 && (!ytdData || !ytdData.daily)){
+      const fallback=await safeFetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`);
+      rainYTD=sumPrecip(fallback?.daily?.precipitation_sum);
+    }
+    return{
+      rain24h:rain24h.toFixed(2),
+      rain7d:rain7d.toFixed(2),
+      rainYTD:rainYTD>0?rainYTD.toFixed(2):'--',
+      rainPYTD:rainPYTD>0?rainPYTD.toFixed(2):'--'
+    };
   }catch(e){return{rain24h:'--',rain7d:'--',rainYTD:'--',rainPYTD:'--'};}
 }
 
 function buildLocationCard(loc){
   if(!loc)return'';
-  const labels=['Today','Tmrw','Day 3'];
+  const labels3=['Today','Tmrw','Day 3'];
+  const labels7=['Today','Tmrw','Day 3','Day 4','Day 5','Day 6','Day 7'];
+  const labels=forecastDays===7?labels7:labels3;
   let html=`<div class="location-card">
     <div class="location-header"><span class="location-name">${loc.name}</span><span class="location-state">${loc.state}</span></div>`;
   if(loc.error||!loc.days?.length){
     html+=`<div class="wx-loading">NWS data unavailable</div>`;
   }else{
-    loc.days.slice(0,3).forEach((day,i)=>{
+    loc.days.slice(0,forecastDays).forEach((day,i)=>{
       const hi=typeof day.hi==='number'?day.hi+'°':'--';
       const lo=typeof day.lo==='number'?day.lo+'°':'--';
       const precip=typeof day.precip==='number'?day.precip+'%':'--';
@@ -630,19 +679,28 @@ function renderWeather(results){
   const carousel=document.getElementById('wx-carousel');
   const dotsEl=document.getElementById('wx-dots');
   carousel.innerHTML='';dotsEl.innerHTML='';
-  WX_GROUPS.forEach((group,si)=>{
-    const slide=document.createElement('div');
-    slide.className='wx-slide'+(si===0?' active':'');
-    slide.id='wx-slide-'+si;
-    slide.innerHTML=group.map(idx=>results[idx]?buildLocationCard(results[idx]):'').join('');
-    carousel.appendChild(slide);
-    const dot=document.createElement('div');
-    dot.className='wx-dot'+(si===0?' active':'');
-    dot.onclick=()=>goWxSlide(si,true);
-    dotsEl.appendChild(dot);
-  });
+  if(isFullscreen){
+    // Fullscreen: render every location in a single grid, no carousel
+    const grid=document.createElement('div');
+    grid.className='wx-fullscreen-grid';
+    grid.innerHTML=results.map(r=>r?buildLocationCard(r):'').join('');
+    carousel.appendChild(grid);
+  }else{
+    const groups=getWxGroups();
+    groups.forEach((group,si)=>{
+      const slide=document.createElement('div');
+      slide.className='wx-slide'+(si===0?' active':'');
+      slide.id='wx-slide-'+si;
+      slide.innerHTML=group.map(idx=>results[idx]?buildLocationCard(results[idx]):'').join('');
+      carousel.appendChild(slide);
+      const dot=document.createElement('div');
+      dot.className='wx-dot'+(si===0?' active':'');
+      dot.onclick=()=>goWxSlide(si,true);
+      dotsEl.appendChild(dot);
+    });
+  }
   wxSlide=0;wxProgStart=Date.now();
-  resetWxTimer();animateWxProgress();
+  startWxCycle();
   const t=new Date().toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'});
   document.getElementById('wx-updated-label').textContent='updated: '+t;
 }
@@ -651,14 +709,42 @@ function goWxSlide(idx,manual=false){
   document.querySelectorAll('.wx-slide').forEach((s,i)=>s.classList.toggle('active',i===idx));
   document.querySelectorAll('.wx-dot').forEach((d,i)=>d.classList.toggle('active',i===idx));
   wxSlide=idx;wxProgStart=Date.now();
-  if(manual)resetWxTimer();
 }
-function resetWxTimer(){clearInterval(wxTimer);wxTimer=setInterval(()=>goWxSlide((wxSlide+1)%WX_GROUPS.length),WX_ROTATE_MS);}
-function animateWxProgress(){
-  const fill=document.getElementById('wx-progress-fill');if(!fill)return;
-  const pct=Math.min((Date.now()-wxProgStart)/WX_ROTATE_MS*100,100);
-  fill.style.width=pct+'%';if(pct>=100)wxProgStart=Date.now();
-  requestAnimationFrame(animateWxProgress);
+
+// Single RAF-driven loop that both animates the progress bar AND advances slides.
+// Replaces the old setInterval+RAF pair, which accumulated multiple callbacks
+// over a long-running session and stopped cycling reliably.
+function startWxCycle(){
+  if(wxRafId) cancelAnimationFrame(wxRafId);
+  wxProgStart=Date.now();
+  function tick(){
+    if(isFullscreen){ wxRafId=requestAnimationFrame(tick); return; }
+    const groups=getWxGroups();
+    const elapsed=Date.now()-wxProgStart;
+    const pct=Math.min(elapsed/WX_ROTATE_MS*100,100);
+    const fill=document.getElementById('wx-progress-fill');
+    if(fill) fill.style.width=pct+'%';
+    if(elapsed>=WX_ROTATE_MS && groups.length>1){
+      goWxSlide((wxSlide+1)%groups.length);
+    }
+    wxRafId=requestAnimationFrame(tick);
+  }
+  tick();
+}
+
+function setForecastDays(d){
+  forecastDays=d;
+  document.getElementById('wx-days-3').classList.toggle('active',d===3);
+  document.getElementById('wx-days-7').classList.toggle('active',d===7);
+  if(lastWeatherResults.length) renderWeather(lastWeatherResults);
+}
+
+function toggleFullscreenWeather(){
+  isFullscreen=!isFullscreen;
+  document.body.classList.toggle('wx-fs',isFullscreen);
+  document.getElementById('wx-fs-toggle').classList.toggle('active',isFullscreen);
+  document.getElementById('wx-fs-toggle').textContent=isFullscreen?'⤡':'⛶';
+  if(lastWeatherResults.length) renderWeather(lastWeatherResults);
 }
 async function loadAllWeather(){
   const[wxResults,rainfallResults]=await Promise.all([
@@ -673,6 +759,9 @@ async function loadAllWeather(){
 // INIT
 // ══════════════════════════════════════
 async function init() {
+  document.getElementById('wx-days-3').onclick=()=>setForecastDays(3);
+  document.getElementById('wx-days-7').onclick=()=>setForecastDays(7);
+  document.getElementById('wx-fs-toggle').onclick=toggleFullscreenWeather;
   await loadMarketData();
   loadAllWeather();
   startTileCarousels();
