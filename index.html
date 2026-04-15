@@ -96,10 +96,13 @@
   .wx-lo    { font-size:0.72rem; font-weight:600; color:#2980b9; }
   .wx-wind  { font-size:0.6rem; font-weight:600; color:var(--text-mid); text-align:center; }
   .wx-precip{ font-size:0.62rem; font-weight:700; color:#1a6e9e; }
-  .gdu-bar  { background:var(--light-green); padding:3px 8px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); }
-  .gdu-label { font-size:0.53rem; color:var(--dark-green); font-weight:600; text-transform:uppercase; }
-  .gdu-value { font-size:0.7rem; font-weight:800; color:var(--green); }
-  .gdu-since { font-size:0.5rem; color:#888; }
+  .gdu-bar  { background:var(--light-green); padding:3px 6px; display:flex; align-items:center; justify-content:space-between; gap:4px; border-top:1px solid var(--border); }
+  .gdu-item { display:flex; align-items:baseline; gap:2px; }
+  .gdu-label { font-size:0.5rem; color:var(--dark-green); font-weight:600; text-transform:uppercase; }
+  .gdu-value { font-size:0.68rem; font-weight:800; color:var(--green); }
+  .gdu-pytd-label { font-size:0.5rem; color:#8a6d3b; font-weight:600; text-transform:uppercase; }
+  .gdu-pytd-value { font-size:0.68rem; font-weight:800; color:#8a6d3b; }
+  .gdu-since { font-size:0.48rem; color:#888; }
   .rainfall-bar { background:#eef3fb; padding:4px 6px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); }
   .rainfall-item { display:flex; align-items:baseline; gap:1px; }
   .rainfall-label { font-size:0.46rem; color:#1a6e9e; font-weight:600; text-transform:uppercase; }
@@ -621,10 +624,14 @@ async function fetchRainfall(lat,lon){
     const prevYear=year-1;
     const pytdStart=prevYear+'-01-01';
     const pytdEnd=prevYear+todayStr.slice(4); // same MM-DD last year
+    // Request precipitation AND daily min/max temperatures so we can also
+    // compute real GDUs from actual observed temps (same fetch, no extra cost).
+    const dailyVars='precipitation_sum,temperature_2m_max,temperature_2m_min';
+    const units='&precipitation_unit=inch&temperature_unit=fahrenheit';
     // Historical-forecast-api is updated daily and covers Jan 1 → today reliably.
     // Archive-api (ERA5) is the authoritative source for prior years.
-    const ytdUrl  = `https://historical-forecast-api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`;
-    const pytdUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${pytdStart}&end_date=${pytdEnd}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`;
+    const ytdUrl  = `https://historical-forecast-api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=${dailyVars}${units}&timezone=America/Chicago`;
+    const pytdUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${pytdStart}&end_date=${pytdEnd}&daily=${dailyVars}${units}&timezone=America/Chicago`;
     const recentUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum&past_days=7&forecast_days=0&precipitation_unit=inch&timezone=America/Chicago`;
     const[recent,ytdData,pytdData]=await Promise.all([safeFetch(recentUrl),safeFetch(ytdUrl),safeFetch(pytdUrl)]);
     const rp=recent?.daily?.precipitation_sum||[];
@@ -633,17 +640,42 @@ async function fetchRainfall(lat,lon){
     let rainYTD=sumPrecip(ytdData?.daily?.precipitation_sum);
     let rainPYTD=sumPrecip(pytdData?.daily?.precipitation_sum);
     // Fallback: if YTD endpoint failed, try the archive API as a backup
+    let ytdSrc=ytdData;
     if(rainYTD===0 && (!ytdData || !ytdData.daily)){
-      const fallback=await safeFetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=precipitation_sum&precipitation_unit=inch&timezone=America/Chicago`);
-      rainYTD=sumPrecip(fallback?.daily?.precipitation_sum);
+      ytdSrc=await safeFetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=${dailyVars}${units}&timezone=America/Chicago`);
+      rainYTD=sumPrecip(ytdSrc?.daily?.precipitation_sum);
     }
     return{
       rain24h:rain24h.toFixed(2),
       rain7d:rain7d.toFixed(2),
       rainYTD:rainYTD>0?rainYTD.toFixed(2):'--',
-      rainPYTD:rainPYTD>0?rainPYTD.toFixed(2):'--'
+      rainPYTD:rainPYTD>0?rainPYTD.toFixed(2):'--',
+      ytdDates:ytdSrc?.daily?.time||null,
+      ytdTmax:ytdSrc?.daily?.temperature_2m_max||null,
+      ytdTmin:ytdSrc?.daily?.temperature_2m_min||null,
+      pytdDates:pytdData?.daily?.time||null,
+      pytdTmax:pytdData?.daily?.temperature_2m_max||null,
+      pytdTmin:pytdData?.daily?.temperature_2m_min||null
     };
   }catch(e){return{rain24h:'--',rain7d:'--',rainYTD:'--',rainPYTD:'--'};}
+}
+
+// Corn GDU (Base 50°F): cap Tmax at 86°F, Tmin at 50°F, then (max+min)/2 - 50.
+// Sums daily GDUs from startDate through the end of the provided series.
+function calcGDUFromTemps(tmaxArr,tminArr,dateArr,startDate){
+  if(!tmaxArr||!tminArr||!dateArr||!dateArr.length) return null;
+  let total=0, counted=0;
+  for(let i=0;i<dateArr.length;i++){
+    const d=new Date(dateArr[i]+'T12:00:00');
+    if(d<startDate) continue;
+    const tmax=tmaxArr[i], tmin=tminArr[i];
+    if(typeof tmax!=='number'||typeof tmin!=='number') continue;
+    const capMax=Math.min(tmax,86);
+    const capMin=Math.max(tmin,50);
+    total+=Math.max(0,(capMax+capMin)/2-50);
+    counted++;
+  }
+  return counted>0 ? Math.round(total) : null;
 }
 
 function buildLocationCard(loc){
@@ -670,7 +702,17 @@ function buildLocationCard(loc){
     });
   }
   html+=`<div class="rainfall-bar"><span class="rainfall-item"><span class="rainfall-label">🌧 24hr</span><span class="rainfall-value">${loc.rain24h}"</span></span><span class="rainfall-item"><span class="rainfall-label">7-Day</span><span class="rainfall-value">${loc.rain7d}"</span></span><span class="rainfall-item"><span class="rainfall-label">YTD</span><span class="rainfall-value">${loc.rainYTD}"</span></span><span class="rainfall-item"><span class="rainfall-label">PYTD</span><span class="rainfall-value">${loc.rainPYTD}"</span></span></div>`;
-  html+=`<div class="gdu-bar"><span class="gdu-label">📊 YTD GDUs</span><span class="gdu-value">${loc.gdu} GDU</span><span class="gdu-since">since ${gduStartLabel()} · Base 50°F</span></div></div>`;
+  // Prefer GDUs calculated from real temperatures; fall back to the latitude-based formula if unavailable.
+  const pytdStart=new Date(gduStartDate); pytdStart.setFullYear(pytdStart.getFullYear()-1);
+  const ytdReal=calcGDUFromTemps(loc.ytdTmax,loc.ytdTmin,loc.ytdDates,gduStartDate);
+  const pytdReal=calcGDUFromTemps(loc.pytdTmax,loc.pytdTmin,loc.pytdDates,pytdStart);
+  const ytdShow=ytdReal!==null?ytdReal:loc.gdu;
+  const pytdShow=pytdReal!==null?pytdReal:'--';
+  html+=`<div class="gdu-bar" title="Base 50°F · YTD computed from observed daily temperatures">
+    <span class="gdu-item"><span class="gdu-label">📊 YTD</span><span class="gdu-value">${ytdShow}</span></span>
+    <span class="gdu-item"><span class="gdu-pytd-label">PYTD</span><span class="gdu-pytd-value">${pytdShow}</span></span>
+    <span class="gdu-since">since ${gduStartLabel()}</span>
+  </div></div>`;
   return html;
 }
 
