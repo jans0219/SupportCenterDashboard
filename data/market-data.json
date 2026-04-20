@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-20T20:52:22.251357+00:00",
+  "lastUpdated": "2026-04-20T21:50:41.282531+00:00",
   "commodities": {
     "ZC=F": {
       "name": "Corn",
@@ -3010,9 +3010,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 246.15,
-      "prevClose": 247.35,
-      "change": -1.2,
-      "pct": -0.49,
+      "prevClose": 246.075,
+      "change": 0.075,
+      "pct": 0.03,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -3488,9 +3488,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 101.775,
-      "prevClose": 101.05,
-      "change": 0.725,
-      "pct": 0.72,
+      "prevClose": 101.725,
+      "change": 0.05,
+      "pct": 0.05,
       "marketState": "",
       "error": false,
       "errorMsg": "",
