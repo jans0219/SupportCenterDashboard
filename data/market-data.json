@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-24T20:53:29.262966+00:00",
+  "lastUpdated": "2026-04-24T21:51:12.037460+00:00",
   "commodities": {
     "ZC=F": {
       "name": "Corn",
@@ -5900,32 +5900,32 @@
     "fredUrl": "https://fred.stlouisfed.org/series/PBARLUSDA",
     "data": [
       {
-        "realtime_start": "2026-03-31",
-        "realtime_end": "2026-03-31",
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
         "date": "2025-01-01",
         "value": "115.3626581774428"
       },
       {
-        "realtime_start": "2026-03-31",
-        "realtime_end": "2026-03-31",
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
         "date": "2024-01-01",
         "value": "136.1472368105689"
       },
       {
-        "realtime_start": "2026-03-31",
-        "realtime_end": "2026-03-31",
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
         "date": "2023-01-01",
         "value": "166.9144398520082"
       },
       {
-        "realtime_start": "2026-03-31",
-        "realtime_end": "2026-03-31",
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
         "date": "2022-01-01",
         "value": "225.2107703799052"
       },
       {
-        "realtime_start": "2026-03-31",
-        "realtime_end": "2026-03-31",
+        "realtime_start": "2026-03-25",
+        "realtime_end": "2026-03-25",
         "date": "2021-01-01",
         "value": "178.0853437642586"
       }
