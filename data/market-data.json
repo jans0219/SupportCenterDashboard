@@ -1,14 +1,14 @@
 {
-  "lastUpdated": "2026-04-28T20:18:43.219845+00:00",
+  "lastUpdated": "2026-04-28T22:00:42.363276+00:00",
   "commodities": {
     "ZC=F": {
       "name": "Corn",
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 4.755,
-      "prevClose": 4.6925,
-      "change": 0.0625,
-      "pct": 1.33,
+      "prevClose": 4.755,
+      "change": 0.0,
+      "pct": 0.0,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -1233,9 +1233,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 11.9025,
-      "prevClose": 11.92,
-      "change": -0.0175,
-      "pct": -0.15,
+      "prevClose": 11.8925,
+      "change": 0.01,
+      "pct": 0.08,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -2460,9 +2460,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 6.5825,
-      "prevClose": 6.2975,
-      "change": 0.285,
-      "pct": 4.53,
+      "prevClose": 6.5775,
+      "change": 0.005,
+      "pct": 0.08,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -3694,9 +3694,9 @@
       "exchange": "KCBT",
       "unit": "/bu",
       "currentPrice": 7.0225,
-      "prevClose": 6.7525,
-      "change": 0.27,
-      "pct": 4.0,
+      "prevClose": 7.0225,
+      "change": 0.0,
+      "pct": 0.0,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -4900,9 +4900,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 253.45,
-      "prevClose": 248.95,
-      "change": 4.5,
-      "pct": 1.81,
+      "prevClose": 253.5,
+      "change": -0.05,
+      "pct": -0.02,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -5378,9 +5378,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 102.0,
-      "prevClose": 102.175,
-      "change": -0.175,
-      "pct": -0.17,
+      "prevClose": 101.975,
+      "change": 0.025,
+      "pct": 0.02,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -5856,128 +5856,12 @@
     "source": "FRED WPU011306 \u2014 BLS Producer Price Index, Potatoes (monthly, ~4 wk lag)",
     "seriesId": "WPU011306",
     "fredUrl": "https://fred.stlouisfed.org/series/WPU011306",
-    "data": [
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2026-03-01",
-        "value": "82.524"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2026-02-01",
-        "value": "77.244"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2026-01-01",
-        "value": "80.534"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-12-01",
-        "value": "83.761"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-11-01",
-        "value": "83.664"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-10-01",
-        "value": "83.859"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-09-01",
-        "value": "106.365"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-08-01",
-        "value": "126.842"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-07-01",
-        "value": "120.582"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-06-01",
-        "value": "102.038"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-05-01",
-        "value": "104.460"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-04-01",
-        "value": "109.777"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-03-01",
-        "value": "112.648"
-      },
-      {
-        "realtime_start": "2026-04-17",
-        "realtime_end": "2026-04-17",
-        "date": "2025-02-01",
-        "value": "115.420"
-      }
-    ]
+    "data": []
   },
   "barley": {
     "source": "FRED PBARLUSDA \u2014 USDA Annual Average Farm Price, Barley",
     "seriesId": "PBARLUSDA",
     "fredUrl": "https://fred.stlouisfed.org/series/PBARLUSDA",
-    "data": [
-      {
-        "realtime_start": "2026-04-09",
-        "realtime_end": "2026-04-09",
-        "date": "2025-01-01",
-        "value": "115.3626581774428"
-      },
-      {
-        "realtime_start": "2026-04-09",
-        "realtime_end": "2026-04-09",
-        "date": "2024-01-01",
-        "value": "136.1472368105689"
-      },
-      {
-        "realtime_start": "2026-04-09",
-        "realtime_end": "2026-04-09",
-        "date": "2023-01-01",
-        "value": "166.9144398520082"
-      },
-      {
-        "realtime_start": "2026-04-09",
-        "realtime_end": "2026-04-09",
-        "date": "2022-01-01",
-        "value": "225.2107703799052"
-      },
-      {
-        "realtime_start": "2026-04-09",
-        "realtime_end": "2026-04-09",
-        "date": "2021-01-01",
-        "value": "178.0853437642586"
-      }
-    ]
+    "data": []
   }
 }
