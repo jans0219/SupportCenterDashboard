@@ -581,7 +581,7 @@ let isFullscreen=false;
 let wxSlide=0,wxRafId=null,wxProgStart=Date.now();
 const WX_ROTATE_MS=30000;
 function getWxGroups(){
-  return forecastDays===7 ? [[0,1],[2,3],[4,5],[6]] : [[0,1,2],[3,4,5],[6]];
+  return [[0,1],[2,3],[4,5],[6]];
 }
 
 async function fetchWeather(loc){
@@ -612,10 +612,9 @@ async function fetchWeather(loc){
 }
 
 async function fetchRainfall(lat,lon){
-  // Helper: fetch JSON with timeout, return null on failure
   const safeFetch=async url=>{ try{ const r=await fetch(url); if(!r.ok) return null; return await r.json(); }catch(e){ return null; } };
-  // Helper: sum a precipitation_sum array, ignoring nulls
   const sumPrecip=arr=>(arr||[]).reduce((s,v)=>s+(typeof v==='number'?v:0),0);
+  const hasNumbers=arr=>arr&&arr.some(v=>typeof v==='number');
   try{
     const today=new Date();
     const todayStr=today.toISOString().split('T')[0];
@@ -623,33 +622,36 @@ async function fetchRainfall(lat,lon){
     const yearStart=year+'-01-01';
     const prevYear=year-1;
     const pytdStart=prevYear+'-01-01';
-    const pytdEnd=prevYear+todayStr.slice(4); // same MM-DD last year
-    // Request precipitation AND daily min/max temperatures so we can also
-    // compute real GDUs from actual observed temps (same fetch, no extra cost).
+    const pytdEnd=prevYear+todayStr.slice(4);
+    // Clamp ytd end_date back 2 days so historical-forecast-api has the data
+    const safeEnd=new Date(today); safeEnd.setDate(safeEnd.getDate()-2);
+    const safeEndStr=safeEnd.toISOString().split('T')[0];
     const dailyVars='precipitation_sum,temperature_2m_max,temperature_2m_min';
     const units='&precipitation_unit=inch&temperature_unit=fahrenheit';
-    // Historical-forecast-api is updated daily and covers Jan 1 → today reliably.
-    // Archive-api (ERA5) is the authoritative source for prior years.
-    const ytdUrl  = `https://historical-forecast-api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=${dailyVars}${units}&timezone=America/Chicago`;
-    const pytdUrl = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${pytdStart}&end_date=${pytdEnd}&daily=${dailyVars}${units}&timezone=America/Chicago`;
-    const recentUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum&past_days=7&forecast_days=0&precipitation_unit=inch&timezone=America/Chicago`;
+    // forecast_days=1 ensures the API returns the full recent time series
+    const recentUrl=`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_sum&past_days=7&forecast_days=1&precipitation_unit=inch&timezone=America/Chicago`;
+    const ytdUrl=`https://historical-forecast-api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${safeEndStr}&daily=${dailyVars}${units}&timezone=America/Chicago`;
+    const pytdUrl=`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${pytdStart}&end_date=${pytdEnd}&daily=${dailyVars}${units}&timezone=America/Chicago`;
     const[recent,ytdData,pytdData]=await Promise.all([safeFetch(recentUrl),safeFetch(ytdUrl),safeFetch(pytdUrl)]);
+    // Recent: last 7 completed days (exclude today's partial forecast at end)
     const rp=recent?.daily?.precipitation_sum||[];
-    const rain24h=rp.length?(rp[rp.length-1]||0):0;
-    const rain7d=sumPrecip(rp);
-    let rainYTD=sumPrecip(ytdData?.daily?.precipitation_sum);
-    let rainPYTD=sumPrecip(pytdData?.daily?.precipitation_sum);
-    // Fallback: if YTD endpoint failed, try the archive API as a backup
+    const pastDays=rp.length>7?rp.slice(0,7):rp;
+    const rain24h=pastDays.length?(pastDays[pastDays.length-1]||0):0;
+    const rain7d=sumPrecip(pastDays);
+    // YTD: try historical-forecast first, then archive as fallback
     let ytdSrc=ytdData;
-    if(rainYTD===0 && (!ytdData || !ytdData.daily)){
+    let ytdPrecip=ytdSrc?.daily?.precipitation_sum;
+    if(!hasNumbers(ytdPrecip)){
       ytdSrc=await safeFetch(`https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lon}&start_date=${yearStart}&end_date=${todayStr}&daily=${dailyVars}${units}&timezone=America/Chicago`);
-      rainYTD=sumPrecip(ytdSrc?.daily?.precipitation_sum);
+      ytdPrecip=ytdSrc?.daily?.precipitation_sum;
     }
+    let rainYTD=sumPrecip(ytdPrecip);
+    let rainPYTD=sumPrecip(pytdData?.daily?.precipitation_sum);
     return{
       rain24h:rain24h.toFixed(2),
       rain7d:rain7d.toFixed(2),
-      rainYTD:rainYTD>0?rainYTD.toFixed(2):'--',
-      rainPYTD:rainPYTD>0?rainPYTD.toFixed(2):'--',
+      rainYTD:hasNumbers(ytdPrecip)?rainYTD.toFixed(2):'--',
+      rainPYTD:hasNumbers(pytdData?.daily?.precipitation_sum)?rainPYTD.toFixed(2):'--',
       ytdDates:ytdSrc?.daily?.time||null,
       ytdTmax:ytdSrc?.daily?.temperature_2m_max||null,
       ytdTmin:ytdSrc?.daily?.temperature_2m_min||null,
