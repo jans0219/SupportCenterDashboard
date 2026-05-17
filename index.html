@@ -509,9 +509,10 @@ function setChartMode(mode) {
 // ══════════════════════════════════════
 // MARKET TAB SWITCHING
 // ══════════════════════════════════════
-let activeMarketTab='commodities';
+let activeMarketTab=localStorage.getItem('mktTab')||'commodities';
 function switchMarketTab(tab){
   activeMarketTab=tab;
+  localStorage.setItem('mktTab',tab);
   document.getElementById('mkt-tab-comm').classList.toggle('active',tab==='commodities');
   document.getElementById('mkt-tab-addl').classList.toggle('active',tab==='additional');
   document.getElementById('mkt-page-commodities').classList.toggle('active',tab==='commodities');
@@ -1018,6 +1019,7 @@ async function init() {
   document.getElementById('wx-days-7').onclick=()=>setForecastDays(7);
   document.getElementById('wx-fs-toggle').onclick=toggleFullscreenWeather;
   applyFullscreenState();
+  if(activeMarketTab!=='commodities') switchMarketTab(activeMarketTab);
   await loadMarketData();
   loadAllWeather();
   startTileCarousels();
