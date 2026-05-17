@@ -36,6 +36,17 @@
   .main-content { display:flex; flex:1; overflow:hidden; }
 
   .markets-panel { flex:1; display:flex; flex-direction:column; padding:8px 8px 6px 10px; overflow:hidden; border-right:2px solid var(--border); }
+  .mkt-tabs { display:flex; gap:4px; }
+  .mkt-tab { background:var(--gray); border:1px solid var(--border); border-radius:3px; color:var(--dark-green); font-size:0.58rem; font-weight:700; padding:2px 8px; cursor:pointer; text-transform:uppercase; letter-spacing:0.3px; }
+  .mkt-tab.active { background:var(--green); color:white; border-color:var(--green); }
+  .mkt-page { display:none; flex:1; flex-direction:column; min-height:0; overflow:hidden; }
+  .mkt-page.active { display:flex; }
+  .fert-section { display:flex; gap:6px; flex:1; min-height:0; }
+  .fert-chart-box { flex:1; border:1px solid var(--border); border-radius:6px; overflow:hidden; display:flex; flex-direction:column; background:var(--white); box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+  .fert-chart-header { background:var(--dark-green); color:white; padding:4px 8px; font-size:0.6rem; font-weight:700; text-transform:uppercase; }
+  .fert-chart-body { flex:1; position:relative; min-height:0; padding:4px; }
+  .fert-chart-body canvas { width:100%!important; height:100%!important; }
+  .fert-chart-meta { font-size:0.5rem; color:#999; padding:2px 8px; background:var(--gray); border-top:1px solid var(--border); }
   .section-title { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--green); border-bottom:2px solid var(--yellow); padding-bottom:3px; margin-bottom:6px; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
   .market-status { width:7px; height:7px; border-radius:50%; background:#27ae60; display:inline-block; animation:pulse 2s infinite; }
   @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
@@ -174,12 +185,21 @@
   <div class="markets-panel">
     <div class="section-title">
       <span class="market-status"></span>
-      Commodity Markets &nbsp;·&nbsp;
+      <span class="mkt-tabs">
+        <button class="mkt-tab active" id="mkt-tab-comm" onclick="switchMarketTab('commodities')">Commodities</button>
+        <button class="mkt-tab" id="mkt-tab-addl" onclick="switchMarketTab('additional')">Add'l Markets</button>
+      </span>
+      &nbsp;·&nbsp;
       <span id="chart-mode-label">Daily</span> &nbsp;·&nbsp;
-      Yahoo Finance via GitHub Actions (6-hr refresh) &nbsp;·&nbsp;
-      Potato/Barley: FRED
+      Yahoo Finance (6-hr refresh)
     </div>
-    <div class="commodity-grid" id="commodity-grid"></div>
+    <div class="mkt-page active" id="mkt-page-commodities">
+      <div class="commodity-grid" id="commodity-grid"></div>
+    </div>
+    <div class="mkt-page" id="mkt-page-additional">
+      <div class="commodity-grid" id="stock-grid" style="margin-bottom:6px;"></div>
+      <div class="fert-section" id="fert-section"></div>
+    </div>
   </div>
 
   <div class="weather-panel">
@@ -293,6 +313,9 @@ async function loadMarketData() {
     // Render potato/barley
     renderPotatoData(json.potato);
     renderBarleyData(json.barley);
+
+    // Build additional markets if that tab is active
+    if(activeMarketTab==='additional') buildAdditionalMarkets();
 
   } catch(e) {
     console.error('Failed to load market-data.json:', e.message);
@@ -453,6 +476,140 @@ function setChartMode(mode) {
     const tile = document.getElementById('tile-'+tp.tileId);
     if (tile) { tile.innerHTML = buildTileHTML(tp.tileId); requestAnimationFrame(()=>drawTileChart(tp.tileId)); }
   });
+  buildStockTiles();
+}
+
+// ══════════════════════════════════════
+// MARKET TAB SWITCHING
+// ══════════════════════════════════════
+let activeMarketTab='commodities';
+function switchMarketTab(tab){
+  activeMarketTab=tab;
+  document.getElementById('mkt-tab-comm').classList.toggle('active',tab==='commodities');
+  document.getElementById('mkt-tab-addl').classList.toggle('active',tab==='additional');
+  document.getElementById('mkt-page-commodities').classList.toggle('active',tab==='commodities');
+  document.getElementById('mkt-page-additional').classList.toggle('active',tab==='additional');
+  if(tab==='additional' && marketData) buildAdditionalMarkets();
+}
+
+// ══════════════════════════════════════
+// ADDITIONAL MARKETS — Stocks + Fertilizer
+// ══════════════════════════════════════
+const STOCK_TICKERS=['DE','CNH','AGCO','TITN'];
+let stockCharts={};
+let fertCharts={};
+
+function buildAdditionalMarkets(){
+  buildStockTiles();
+  buildFertilizerCharts();
+}
+
+function buildStockTiles(){
+  if(!marketData?.stocks) return;
+  const grid=document.getElementById('stock-grid');
+  if(!grid) return;
+  Object.values(stockCharts).forEach(c=>c.destroy());
+  stockCharts={};
+  grid.innerHTML='';
+  STOCK_TICKERS.forEach(sym=>{
+    const d=marketData.stocks[sym];
+    if(!d) return;
+    const tile=document.createElement('div');
+    tile.className='commodity-tile';
+    tile.id='tile-stk-'+sym;
+    const isUp=(d.change??0)>=0;
+    const dir=d.change>0?'up':d.change<0?'down':'flat';
+    const sign=d.change>0?'▲':d.change<0?'▼':'—';
+    let priceBadge='';
+    if(!d.error && d.currentPrice!=null){
+      const chg=d.change!=null?Math.abs(d.change).toFixed(2):'—';
+      const pct=d.pct!=null?(d.pct>0?'+':'')+d.pct.toFixed(2)+'%':'';
+      priceBadge=`<span class="tile-price">$${d.currentPrice.toFixed(2)}</span>
+        <span class="tile-change ${dir}">${sign}${chg} (${pct})</span>`;
+    }else{
+      priceBadge=`<span style="font-size:0.6rem;color:rgba(255,255,255,0.5)">${d.errorMsg||'no data'}</span>`;
+    }
+    const modeLabel=chartMode==='daily'?'Intraday':'12-Month';
+    tile.innerHTML=`
+      <div class="tile-header">
+        <div class="tile-crop-tabs"><button class="tile-tab active">${sym}</button></div>
+        <div class="tile-price-badge">${priceBadge}</div>
+      </div>
+      <div class="tile-chart"><canvas id="chart-stk-${sym}"></canvas></div>
+      <div class="tile-meta"><span>${d.exchange} · ${d.name}</span><span>${modeLabel} · Yahoo Finance</span></div>`;
+    grid.appendChild(tile);
+  });
+  requestAnimationFrame(()=>{
+    STOCK_TICKERS.forEach(sym=>{
+      const d=marketData.stocks[sym];
+      if(!d||d.error) return;
+      const ctx=document.getElementById('chart-stk-'+sym);
+      if(!ctx) return;
+      const pairs=chartMode==='daily'?(d.dailyPairs||[]):(d.yearlyPairs||[]);
+      if(!pairs.length) return;
+      const isUp=(d.change??0)>=0;
+      const lc=isUp?'#27ae60':'#e74c3c';
+      const labels=pairs.map(p=>{
+        const dt=new Date(p.t*1000);
+        return chartMode==='daily'
+          ?dt.toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'})
+          :dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      });
+      stockCharts[sym]=new Chart(ctx,{
+        type:'line',
+        data:{labels,datasets:[{data:pairs.map(p=>p.c),borderColor:lc,
+          backgroundColor:isUp?'rgba(39,174,96,0.08)':'rgba(231,76,60,0.08)',
+          borderWidth:2,fill:true,tension:0.3,pointRadius:0,pointBackgroundColor:lc}]},
+        options:{responsive:true,maintainAspectRatio:false,animation:{duration:300},
+          plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${parseFloat(c.raw).toFixed(2)}`}}},
+          scales:{x:{grid:{display:false},ticks:{font:{size:8},maxRotation:0,autoSkip:true,maxTicksLimit:8}},
+            y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:8},callback:v=>'$'+parseFloat(v).toFixed(0)}}}}
+      });
+    });
+  });
+}
+
+function buildFertilizerCharts(){
+  if(!marketData?.fertilizer) return;
+  const section=document.getElementById('fert-section');
+  if(!section) return;
+  Object.values(fertCharts).forEach(c=>c.destroy());
+  fertCharts={};
+  section.innerHTML='';
+  const yearColors=['#2980b9','#e67e22','#27ae60'];
+  const now=new Date();
+  const curYear=now.getFullYear();
+  const years=[curYear-2,curYear-1,curYear];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  Object.entries(marketData.fertilizer).forEach(([seriesId,info])=>{
+    if(!info.data||!info.data.length) return;
+    const box=document.createElement('div');
+    box.className='fert-chart-box';
+    box.innerHTML=`
+      <div class="fert-chart-header">${info.label}</div>
+      <div class="fert-chart-body"><canvas id="fert-${seriesId}"></canvas></div>
+      <div class="fert-chart-meta">FRED ${seriesId} · PPI Index · Monthly</div>`;
+    section.appendChild(box);
+    requestAnimationFrame(()=>{
+      const ctx=document.getElementById('fert-'+seriesId);
+      if(!ctx) return;
+      const datasets=years.map((yr,yi)=>{
+        const yrData=info.data.filter(o=>o.date.startsWith(yr.toString()));
+        const pts=Array(12).fill(null);
+        yrData.forEach(o=>{const m=parseInt(o.date.split('-')[1])-1;pts[m]=parseFloat(o.value);});
+        return{label:''+yr,data:pts,borderColor:yearColors[yi],backgroundColor:'transparent',
+          borderWidth:yr===curYear?3:1.5,tension:0.3,pointRadius:yr===curYear?3:1,
+          pointBackgroundColor:yearColors[yi],borderDash:yr===curYear?[]:[4,2],spanGaps:true};
+      });
+      fertCharts[seriesId]=new Chart(ctx,{
+        type:'line',data:{labels:months,datasets},
+        options:{responsive:true,maintainAspectRatio:false,animation:{duration:300},
+          plugins:{legend:{display:true,position:'bottom',labels:{font:{size:9},boxWidth:16,padding:6}}},
+          scales:{x:{grid:{display:false},ticks:{font:{size:8}}},
+            y:{grid:{color:'rgba(0,0,0,0.04)'},ticks:{font:{size:8}}}}}
+      });
+    });
+  });
 }
 
 // ══════════════════════════════════════
@@ -576,8 +733,9 @@ const WX_ICONS={'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','part
 function getIcon(d){if(!d)return'🌡️';const l=d.toLowerCase();for(const[k,v]of Object.entries(WX_ICONS))if(l.includes(k))return v;return'🌡️';}
 
 let lastWeatherResults=[];
+let lastRainfallCache={};  // keyed by "lat,lon", holds last good rainfall+temp data
 let forecastDays=3;            // 3 or 7
-let isFullscreen=false;
+let isFullscreen=localStorage.getItem('wxFullscreen')==='true';
 let wxSlide=0,wxRafId=null,wxProgStart=Date.now();
 const WX_ROTATE_MS=30000;
 function getWxGroups(){
@@ -684,11 +842,19 @@ function calcGDUFromTemps(tmaxArr,tminArr,dateArr,startDate){
   return counted>0 ? Math.round(total) : null;
 }
 
+function buildForecastLabels(n){
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const labels=['Today','Tmrw'];
+  const today=new Date();
+  for(let i=2;i<n;i++){
+    const d=new Date(today);d.setDate(d.getDate()+i);
+    labels.push(days[d.getDay()]);
+  }
+  return labels;
+}
 function buildLocationCard(loc){
   if(!loc)return'';
-  const labels3=['Today','Tmrw','Day 3'];
-  const labels7=['Today','Tmrw','Day 3','Day 4','Day 5','Day 6','Day 7'];
-  const labels=forecastDays===7?labels7:labels3;
+  const labels=buildForecastLabels(forecastDays);
   let html=`<div class="location-card">
     <div class="location-header"><span class="location-name">${loc.name}</span><span class="location-state">${loc.state}</span></div>`;
   if(loc.error||!loc.days?.length){
@@ -789,17 +955,31 @@ function setForecastDays(d){
 
 function toggleFullscreenWeather(){
   isFullscreen=!isFullscreen;
+  localStorage.setItem('wxFullscreen',isFullscreen);
+  applyFullscreenState();
+  if(lastWeatherResults.length) renderWeather(lastWeatherResults);
+}
+function applyFullscreenState(){
   document.body.classList.toggle('wx-fs',isFullscreen);
   document.getElementById('wx-fs-toggle').classList.toggle('active',isFullscreen);
   document.getElementById('wx-fs-toggle').textContent=isFullscreen?'⤡':'⛶';
-  if(lastWeatherResults.length) renderWeather(lastWeatherResults);
 }
 async function loadAllWeather(){
   const[wxResults,rainfallResults]=await Promise.all([
     Promise.all(LOCATIONS.map(fetchWeather)),
     Promise.all(LOCATIONS.map(loc=>fetchRainfall(loc.lat,loc.lon)))
   ]);
-  const results=wxResults.map((wx,i)=>({...wx,...rainfallResults[i]}));
+  const results=wxResults.map((wx,i)=>{
+    const key=wx.lat+','+wx.lon;
+    const rf=rainfallResults[i];
+    // Cache good rainfall data; reuse cache when API returns blanks
+    const isBad=!rf||(!rf.ytdDates&&rf.rainYTD==='--');
+    if(!isBad){
+      lastRainfallCache[key]=rf;
+    }
+    const merged=isBad&&lastRainfallCache[key]?lastRainfallCache[key]:rf;
+    return{...wx,...(merged||{})};
+  });
   renderWeather(results);
 }
 
@@ -810,6 +990,7 @@ async function init() {
   document.getElementById('wx-days-3').onclick=()=>setForecastDays(3);
   document.getElementById('wx-days-7').onclick=()=>setForecastDays(7);
   document.getElementById('wx-fs-toggle').onclick=toggleFullscreenWeather;
+  applyFullscreenState();
   await loadMarketData();
   loadAllWeather();
   startTileCarousels();
