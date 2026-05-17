@@ -167,6 +167,44 @@ def build_output():
               f"daily_pts={len(commodities[symbol]['dailyPairs'])}  "
               f"monthly_pts={len(commodities[symbol]['monthlyPairs'])}")
 
+    # ── Ag Equipment Stocks ──
+    STOCKS = [
+        ('DE',   'Deere & Co',       'NYSE'),
+        ('CNH',  'CNH Industrial',   'NYSE'),
+        ('AGCO', 'AGCO Corp',        'NYSE'),
+        ('TITN', 'Titan Machinery',  'NASDAQ'),
+    ]
+
+    stocks = {}
+    for symbol, name, exchange in STOCKS:
+        print(f"\nFetching stock daily:  {symbol}...")
+        daily_result = fetch_yahoo(symbol, range_param='1d', interval='5m')
+        time.sleep(0.5)
+
+        print(f"Fetching stock yearly: {symbol}...")
+        yearly_result = fetch_yahoo(symbol, range_param='1y', interval='1d')
+        time.sleep(0.5)
+
+        daily_data  = extract_chart_data(daily_result,  symbol)
+        yearly_data = extract_chart_data(yearly_result, symbol)
+
+        stocks[symbol] = {
+            'name':         name,
+            'exchange':     exchange,
+            'currentPrice': daily_data.get('currentPrice'),
+            'prevClose':    daily_data.get('prevClose'),
+            'change':       daily_data.get('change'),
+            'pct':          daily_data.get('pct'),
+            'marketState':  daily_data.get('marketState', ''),
+            'error':        daily_data.get('error', False),
+            'errorMsg':     daily_data.get('errorMsg', ''),
+            'dailyPairs':   daily_data.get('pairs', []),
+            'yearlyPairs':  yearly_data.get('pairs', []),
+        }
+        print(f"  -> price=${stocks[symbol]['currentPrice']}  "
+              f"daily_pts={len(stocks[symbol]['dailyPairs'])}  "
+              f"yearly_pts={len(stocks[symbol]['yearlyPairs'])}")
+
     # ── FRED ──
     print("\nFetching FRED WPU011306 (Potatoes PPI)...")
     potato_obs = fetch_fred('WPU011306', limit=14)
@@ -174,9 +212,29 @@ def build_output():
     print("Fetching FRED PBARLUSDA (Barley annual)...")
     barley_obs = fetch_fred('PBARLUSDA', limit=5)
 
+    # Fertilizer PPI series (36 months = 3 years of monthly data)
+    # WPU series = PPI by Commodity; PCU series = PPI by Industry
+    FERT_SERIES = [
+        ('WPU0652013A',    'NH3 / Nitrogen Fertilizers',   36),
+        ('PCU325312325312','DAP / Phosphate Fertilizers',   36),
+        ('WPU0652',        'All Fertilizer Materials',      36),
+    ]
+
+    fertilizer = {}
+    for series_id, label, limit in FERT_SERIES:
+        print(f"Fetching FRED {series_id} ({label})...")
+        obs = fetch_fred(series_id, limit=limit)
+        fertilizer[series_id] = {
+            'label':    label,
+            'seriesId': series_id,
+            'data':     obs,
+        }
+        print(f"  -> {len(obs)} observations")
+
     output = {
         "lastUpdated": datetime.now(timezone.utc).isoformat(),
         "commodities": commodities,
+        "stocks": stocks,
         "potato": {
             "source":   "FRED WPU011306 — BLS Producer Price Index, Potatoes (monthly, ~4 wk lag)",
             "seriesId": "WPU011306",
@@ -189,6 +247,7 @@ def build_output():
             "fredUrl":  "https://fred.stlouisfed.org/series/PBARLUSDA",
             "data":     barley_obs,
         },
+        "fertilizer": fertilizer,
     }
 
     os.makedirs('data', exist_ok=True)
