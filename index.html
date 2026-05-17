@@ -576,8 +576,9 @@ const WX_ICONS={'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','part
 function getIcon(d){if(!d)return'🌡️';const l=d.toLowerCase();for(const[k,v]of Object.entries(WX_ICONS))if(l.includes(k))return v;return'🌡️';}
 
 let lastWeatherResults=[];
+let lastRainfallCache={};  // keyed by "lat,lon", holds last good rainfall+temp data
 let forecastDays=3;            // 3 or 7
-let isFullscreen=false;
+let isFullscreen=localStorage.getItem('wxFullscreen')==='true';
 let wxSlide=0,wxRafId=null,wxProgStart=Date.now();
 const WX_ROTATE_MS=30000;
 function getWxGroups(){
@@ -684,11 +685,19 @@ function calcGDUFromTemps(tmaxArr,tminArr,dateArr,startDate){
   return counted>0 ? Math.round(total) : null;
 }
 
+function buildForecastLabels(n){
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const labels=['Today','Tmrw'];
+  const today=new Date();
+  for(let i=2;i<n;i++){
+    const d=new Date(today);d.setDate(d.getDate()+i);
+    labels.push(days[d.getDay()]);
+  }
+  return labels;
+}
 function buildLocationCard(loc){
   if(!loc)return'';
-  const labels3=['Today','Tmrw','Day 3'];
-  const labels7=['Today','Tmrw','Day 3','Day 4','Day 5','Day 6','Day 7'];
-  const labels=forecastDays===7?labels7:labels3;
+  const labels=buildForecastLabels(forecastDays);
   let html=`<div class="location-card">
     <div class="location-header"><span class="location-name">${loc.name}</span><span class="location-state">${loc.state}</span></div>`;
   if(loc.error||!loc.days?.length){
@@ -789,17 +798,31 @@ function setForecastDays(d){
 
 function toggleFullscreenWeather(){
   isFullscreen=!isFullscreen;
+  localStorage.setItem('wxFullscreen',isFullscreen);
+  applyFullscreenState();
+  if(lastWeatherResults.length) renderWeather(lastWeatherResults);
+}
+function applyFullscreenState(){
   document.body.classList.toggle('wx-fs',isFullscreen);
   document.getElementById('wx-fs-toggle').classList.toggle('active',isFullscreen);
   document.getElementById('wx-fs-toggle').textContent=isFullscreen?'⤡':'⛶';
-  if(lastWeatherResults.length) renderWeather(lastWeatherResults);
 }
 async function loadAllWeather(){
   const[wxResults,rainfallResults]=await Promise.all([
     Promise.all(LOCATIONS.map(fetchWeather)),
     Promise.all(LOCATIONS.map(loc=>fetchRainfall(loc.lat,loc.lon)))
   ]);
-  const results=wxResults.map((wx,i)=>({...wx,...rainfallResults[i]}));
+  const results=wxResults.map((wx,i)=>{
+    const key=wx.lat+','+wx.lon;
+    const rf=rainfallResults[i];
+    // Cache good rainfall data; reuse cache when API returns blanks
+    const isBad=!rf||(!rf.ytdDates&&rf.rainYTD==='--');
+    if(!isBad){
+      lastRainfallCache[key]=rf;
+    }
+    const merged=isBad&&lastRainfallCache[key]?lastRainfallCache[key]:rf;
+    return{...wx,...(merged||{})};
+  });
   renderWeather(results);
 }
 
@@ -810,6 +833,7 @@ async function init() {
   document.getElementById('wx-days-3').onclick=()=>setForecastDays(3);
   document.getElementById('wx-days-7').onclick=()=>setForecastDays(7);
   document.getElementById('wx-fs-toggle').onclick=toggleFullscreenWeather;
+  applyFullscreenState();
   await loadMarketData();
   loadAllWeather();
   startTileCarousels();
