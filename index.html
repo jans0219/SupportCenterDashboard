@@ -436,12 +436,16 @@ function drawTileChart(ti) {
   const isL  = crop.symbol === 'LE=F' || crop.symbol === 'HE=F';
   const isUp = (d.change ?? 0) >= 0;
   const lc   = isUp ? '#27ae60' : '#e74c3c';
-  const pairs = chartMode === 'daily' ? (d.dailyPairs || []) : (d.monthlyPairs || []);
+  let pairs = chartMode === 'daily' ? (d.dailyPairs || []) : (d.monthlyPairs || []);
+  let usedFallback = false;
+  if (!pairs.length && chartMode === 'daily' && (d.monthlyPairs||[]).length) {
+    pairs = d.monthlyPairs; usedFallback = true;
+  }
   if (!pairs.length) return;
 
   const labels = pairs.map(p => {
     const dt = new Date(p.t * 1000);
-    return chartMode === 'daily'
+    return (chartMode === 'daily' && !usedFallback)
       ? dt.toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'})
       : dt.toLocaleDateString('en-US',{month:'short',year:'2-digit'});
   });
@@ -573,13 +577,15 @@ function buildStockTiles(){
       if(!d||d.error) return;
       const ctx=document.getElementById('chart-stk-'+sym);
       if(!ctx) return;
-      const pairs=chartMode==='daily'?(d.dailyPairs||[]):(d.yearlyPairs||[]);
+      let pairs=chartMode==='daily'?(d.dailyPairs||[]):(d.yearlyPairs||[]);
+      let fb=false;
+      if(!pairs.length&&chartMode==='daily'&&(d.yearlyPairs||[]).length){pairs=d.yearlyPairs;fb=true;}
       if(!pairs.length) return;
       const isUp=(d.change??0)>=0;
       const lc=isUp?'#27ae60':'#e74c3c';
       const labels=pairs.map(p=>{
         const dt=new Date(p.t*1000);
-        return chartMode==='daily'
+        return(chartMode==='daily'&&!fb)
           ?dt.toLocaleTimeString('en-US',{timeZone:'America/Chicago',hour:'2-digit',minute:'2-digit'})
           :dt.toLocaleDateString('en-US',{month:'short',day:'numeric'});
       });
@@ -761,7 +767,7 @@ const WX_ICONS={'sunny':'☀️','clear':'☀️','mostly sunny':'🌤️','part
 function getIcon(d){if(!d)return'🌡️';const l=d.toLowerCase();for(const[k,v]of Object.entries(WX_ICONS))if(l.includes(k))return v;return'🌡️';}
 
 let lastWeatherResults=[];
-let lastRainfallCache={};  // keyed by "lat,lon", holds last good rainfall+temp data
+let lastRainfallCache=(()=>{try{return JSON.parse(localStorage.getItem('rfCache'))||{};}catch(e){return{};}})();
 let forecastDays=3;            // 3 or 7
 let isFullscreen=localStorage.getItem('wxFullscreen')==='true';
 let wxSlide=0,wxRafId=null,wxProgStart=Date.now();
@@ -1008,6 +1014,7 @@ async function loadAllWeather(){
     const merged=isBad&&lastRainfallCache[key]?lastRainfallCache[key]:rf;
     return{...wx,...(merged||{})};
   });
+  try{localStorage.setItem('rfCache',JSON.stringify(lastRainfallCache));}catch(e){}
   renderWeather(results);
 }
 
