@@ -1,14 +1,14 @@
 {
-  "lastUpdated": "2026-08-13T21:48:09.433616+00:00",
+  "lastUpdated": "2026-08-13T22:43:59.992513+00:00",
   "commodities": {
     "ZC=F": {
       "name": "Corn",
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 4.7225,
-      "prevClose": 4.8075,
-      "change": -0.085,
-      "pct": -1.77,
+      "prevClose": 4.72,
+      "change": 0.0025,
+      "pct": 0.05,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -1240,9 +1240,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 11.83,
-      "prevClose": 11.8325,
-      "change": -0.0025,
-      "pct": -0.02,
+      "prevClose": 11.8225,
+      "change": 0.0075,
+      "pct": 0.06,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -2474,9 +2474,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 6.685,
-      "prevClose": 6.6975,
-      "change": -0.0125,
-      "pct": -0.19,
+      "prevClose": 6.6825,
+      "change": 0.0025,
+      "pct": 0.04,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -3708,9 +3708,9 @@
       "exchange": "KCBT",
       "unit": "/bu",
       "currentPrice": 7.3475,
-      "prevClose": 7.3775,
-      "change": -0.03,
-      "pct": -0.41,
+      "prevClose": 7.3475,
+      "change": 0.0,
+      "pct": 0.0,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -4891,7 +4891,7 @@
           "c": 7.3475,
           "o": 7.3775,
           "h": 7.5225,
-          "l": 7.305
+          "l": 7.2975
         }
       ]
     },
@@ -4900,9 +4900,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 220.3,
-      "prevClose": 223.8,
-      "change": -3.5,
-      "pct": -1.56,
+      "prevClose": 220.05,
+      "change": 0.25,
+      "pct": 0.11,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -5385,9 +5385,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 82.175,
-      "prevClose": 83.55,
-      "change": -1.375,
-      "pct": -1.65,
+      "prevClose": 82.125,
+      "change": 0.05,
+      "pct": 0.06,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -8219,14 +8219,14 @@
         },
         {
           "t": 1786628400,
-          "o": 10.58,
+          "o": 10.57,
           "h": 10.585,
           "l": 10.5097,
           "c": 10.51
         },
         {
           "t": 1786628700,
-          "o": 10.505,
+          "o": 10.5,
           "h": 10.5063,
           "l": 10.435,
           "c": 10.45
@@ -8317,7 +8317,7 @@
         },
         {
           "t": 1786632600,
-          "o": 10.24,
+          "o": 10.235,
           "h": 10.2995,
           "l": 10.235,
           "c": 10.27
@@ -8709,7 +8709,7 @@
         },
         {
           "t": 1786649400,
-          "o": 10.39,
+          "o": 10.38,
           "h": 10.41,
           "l": 10.38,
           "c": 10.405
@@ -10493,13 +10493,6 @@
           "h": 10.82,
           "l": 10.38,
           "c": 10.48
-        },
-        {
-          "t": 1786455000,
-          "o": 10.49,
-          "h": 10.85,
-          "l": 10.49,
-          "c": 10.63
         },
         {
           "t": 1786541400,
@@ -12715,6 +12708,20 @@
           "c": 112.33
         },
         {
+          "t": 1784640600,
+          "o": 113.29,
+          "h": 114.11,
+          "l": 111.36,
+          "c": 111.79
+        },
+        {
+          "t": 1784727000,
+          "o": 112.36,
+          "h": 117.95,
+          "l": 112.36,
+          "c": 117.28
+        },
+        {
           "t": 1784813400,
           "o": 118.1,
           "h": 120.33,
@@ -12755,6 +12762,13 @@
           "h": 110.95,
           "l": 105.4,
           "c": 107.13
+        },
+        {
+          "t": 1785504600,
+          "o": 104.05,
+          "h": 106.34,
+          "l": 102.14,
+          "c": 102.16
         },
         {
           "t": 1785763800,
@@ -15104,32 +15118,32 @@
     "fredUrl": "https://fred.stlouisfed.org/series/PBARLUSDA",
     "data": [
       {
-        "realtime_start": "2026-07-02",
-        "realtime_end": "2026-07-02",
+        "realtime_start": "2026-07-07",
+        "realtime_end": "2026-07-07",
         "date": "2025-01-01",
         "value": "115.3626581774428"
       },
       {
-        "realtime_start": "2026-07-02",
-        "realtime_end": "2026-07-02",
+        "realtime_start": "2026-07-07",
+        "realtime_end": "2026-07-07",
         "date": "2024-01-01",
         "value": "136.1472368105689"
       },
       {
-        "realtime_start": "2026-07-02",
-        "realtime_end": "2026-07-02",
+        "realtime_start": "2026-07-07",
+        "realtime_end": "2026-07-07",
         "date": "2023-01-01",
         "value": "166.9144398520082"
       },
       {
-        "realtime_start": "2026-07-02",
-        "realtime_end": "2026-07-02",
+        "realtime_start": "2026-07-07",
+        "realtime_end": "2026-07-07",
         "date": "2022-01-01",
         "value": "225.2107703799052"
       },
       {
-        "realtime_start": "2026-07-02",
-        "realtime_end": "2026-07-02",
+        "realtime_start": "2026-07-07",
+        "realtime_end": "2026-07-07",
         "date": "2021-01-01",
         "value": "178.0853437642586"
       }
