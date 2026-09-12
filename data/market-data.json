@@ -1,14 +1,14 @@
 {
-  "lastUpdated": "2026-09-11T22:19:10.772149+00:00",
+  "lastUpdated": "2026-09-12T00:56:44.444742+00:00",
   "commodities": {
     "ZC=F": {
       "name": "Corn",
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 5.32,
-      "prevClose": 5.3375,
-      "change": -0.0175,
-      "pct": -0.33,
+      "prevClose": 5.3025,
+      "change": 0.0175,
+      "pct": 0.33,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -1247,9 +1247,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 12.99,
-      "prevClose": 13.3225,
-      "change": -0.3325,
-      "pct": -2.5,
+      "prevClose": 12.965,
+      "change": 0.025,
+      "pct": 0.19,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -2488,9 +2488,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 7.2625,
-      "prevClose": 7.4125,
-      "change": -0.15,
-      "pct": -2.02,
+      "prevClose": 7.2525,
+      "change": 0.01,
+      "pct": 0.14,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -3729,9 +3729,9 @@
       "exchange": "KCBT",
       "unit": "/bu",
       "currentPrice": 7.995,
-      "prevClose": 8.1875,
-      "change": -0.1925,
-      "pct": -2.35,
+      "prevClose": 7.985,
+      "change": 0.01,
+      "pct": 0.13,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -8238,13 +8238,6 @@
           "h": 682.0,
           "l": 671.4,
           "c": 677.94
-        },
-        {
-          "t": 1789133400,
-          "o": 685.92,
-          "h": 692.6493,
-          "l": 675.43,
-          "c": 675.74
         }
       ]
     },
@@ -10563,13 +10556,6 @@
           "h": 13.9,
           "l": 13.37,
           "c": 13.5
-        },
-        {
-          "t": 1789133400,
-          "o": 13.76,
-          "h": 14.015,
-          "l": 13.525,
-          "c": 13.58
         }
       ]
     },
@@ -12888,13 +12874,6 @@
           "h": 126.05,
           "l": 121.48,
           "c": 121.93
-        },
-        {
-          "t": 1789133400,
-          "o": 123.9,
-          "h": 126.045,
-          "l": 120.73,
-          "c": 121.1
         }
       ]
     },
@@ -15087,13 +15066,6 @@
           "h": 24.24,
           "l": 23.57,
           "c": 23.64
-        },
-        {
-          "t": 1789133400,
-          "o": 24.47,
-          "h": 24.47,
-          "l": 23.16,
-          "c": 23.22
         }
       ]
     }
@@ -15195,32 +15167,32 @@
     "fredUrl": "https://fred.stlouisfed.org/series/PBARLUSDA",
     "data": [
       {
-        "realtime_start": "2026-08-10",
-        "realtime_end": "2026-08-10",
+        "realtime_start": "2026-08-24",
+        "realtime_end": "2026-08-24",
         "date": "2025-01-01",
         "value": "115.3626581774428"
       },
       {
-        "realtime_start": "2026-08-10",
-        "realtime_end": "2026-08-10",
+        "realtime_start": "2026-08-24",
+        "realtime_end": "2026-08-24",
         "date": "2024-01-01",
         "value": "136.1472368105689"
       },
       {
-        "realtime_start": "2026-08-10",
-        "realtime_end": "2026-08-10",
+        "realtime_start": "2026-08-24",
+        "realtime_end": "2026-08-24",
         "date": "2023-01-01",
         "value": "166.9144398520082"
       },
       {
-        "realtime_start": "2026-08-10",
-        "realtime_end": "2026-08-10",
+        "realtime_start": "2026-08-24",
+        "realtime_end": "2026-08-24",
         "date": "2022-01-01",
         "value": "225.2107703799052"
       },
       {
-        "realtime_start": "2026-08-10",
-        "realtime_end": "2026-08-10",
+        "realtime_start": "2026-08-24",
+        "realtime_end": "2026-08-24",
         "date": "2021-01-01",
         "value": "178.0853437642586"
       }
