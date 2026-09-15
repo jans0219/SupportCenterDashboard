@@ -1,14 +1,14 @@
 {
-  "lastUpdated": "2026-09-15T20:03:29.719217+00:00",
+  "lastUpdated": "2026-09-15T23:27:41.494221+00:00",
   "commodities": {
     "ZC=F": {
       "name": "Corn",
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 5.3575,
-      "prevClose": 5.3325,
-      "change": 0.025,
-      "pct": 0.47,
+      "prevClose": 5.3575,
+      "change": 0.0,
+      "pct": 0.0,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -1240,9 +1240,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 13.1925,
-      "prevClose": 13.0425,
-      "change": 0.15,
-      "pct": 1.15,
+      "prevClose": 13.1875,
+      "change": 0.005,
+      "pct": 0.04,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -2481,9 +2481,9 @@
       "exchange": "CBOT",
       "unit": "/bu",
       "currentPrice": 7.2775,
-      "prevClose": 7.22,
-      "change": 0.0575,
-      "pct": 0.8,
+      "prevClose": 7.285,
+      "change": -0.0075,
+      "pct": -0.1,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -3722,9 +3722,9 @@
       "exchange": "KCBT",
       "unit": "/bu",
       "currentPrice": 7.96,
-      "prevClose": 7.925,
-      "change": 0.035,
-      "pct": 0.44,
+      "prevClose": 7.9625,
+      "change": -0.0025,
+      "pct": -0.03,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -4893,9 +4893,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 223.2,
-      "prevClose": 225.15,
-      "change": -1.95,
-      "pct": -0.87,
+      "prevClose": 223.35,
+      "change": -0.15,
+      "pct": -0.07,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -5378,9 +5378,9 @@
       "exchange": "CME",
       "unit": "/cwt",
       "currentPrice": 69.575,
-      "prevClose": 71.25,
-      "change": -1.675,
-      "pct": -2.35,
+      "prevClose": 69.65,
+      "change": -0.075,
+      "pct": -0.11,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -5863,10 +5863,10 @@
     "DE": {
       "name": "Deere & Co",
       "exchange": "NYSE",
-      "currentPrice": 683.9,
+      "currentPrice": 684.04,
       "prevClose": 681.46,
-      "change": 2.44,
-      "pct": 0.36,
+      "change": 2.58,
+      "pct": 0.38,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -6399,7 +6399,7 @@
         {
           "t": 1789501500,
           "o": 682.09,
-          "h": 683.04,
+          "h": 683.09,
           "l": 682.025,
           "c": 682.855
         },
@@ -6415,7 +6415,14 @@
           "o": 681.96,
           "h": 684.75,
           "l": 681.775,
-          "c": 683.9
+          "c": 684.15
+        },
+        {
+          "t": 1789502400,
+          "o": 684.04,
+          "h": 684.04,
+          "l": 684.04,
+          "c": 684.04
         }
       ],
       "yearlyPairs": [
@@ -8174,17 +8181,17 @@
           "o": 681.4,
           "h": 689.37,
           "l": 680.5854,
-          "c": 683.9
+          "c": 684.04
         }
       ]
     },
     "CNH": {
       "name": "CNH Industrial",
       "exchange": "NYSE",
-      "currentPrice": 14.03,
+      "currentPrice": 14.0,
       "prevClose": 13.75,
-      "change": 0.28,
-      "pct": 2.04,
+      "change": 0.25,
+      "pct": 1.82,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -8733,14 +8740,14 @@
           "o": 13.975,
           "h": 14.02,
           "l": 13.97,
-          "c": 14.015
+          "c": 14.02
         },
         {
           "t": 1789502400,
-          "o": 14.03,
-          "h": 14.03,
-          "l": 14.03,
-          "c": 14.03
+          "o": 14.0,
+          "h": 14.0,
+          "l": 14.0,
+          "c": 14.0
         }
       ],
       "yearlyPairs": [
@@ -10499,17 +10506,17 @@
           "o": 13.76,
           "h": 14.355,
           "l": 13.69,
-          "c": 14.03
+          "c": 14.0
         }
       ]
     },
     "AGCO": {
       "name": "AGCO Corp",
       "exchange": "NYSE",
-      "currentPrice": 123.82,
+      "currentPrice": 123.79,
       "prevClose": 122.3,
-      "change": 1.52,
-      "pct": 1.24,
+      "change": 1.49,
+      "pct": 1.22,
       "marketState": "",
       "error": false,
       "errorMsg": "",
@@ -11055,10 +11062,17 @@
         },
         {
           "t": 1789502100,
-          "o": 124.04,
+          "o": 124.0,
           "h": 124.16,
           "l": 123.705,
-          "c": 123.82
+          "c": 123.89
+        },
+        {
+          "t": 1789502400,
+          "o": 123.79,
+          "h": 123.79,
+          "l": 123.79,
+          "c": 123.79
         }
       ],
       "yearlyPairs": [
@@ -12817,7 +12831,7 @@
           "o": 122.41,
           "h": 125.6,
           "l": 122.055,
-          "c": 123.82
+          "c": 123.79
         }
       ]
     },
